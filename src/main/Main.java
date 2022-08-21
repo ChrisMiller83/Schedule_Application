@@ -5,10 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import DAO.JDBC;
+import DAO.DBConnection;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -23,7 +22,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        JDBC.makeConnection();
+        DBConnection.makeConnection();
         launch(args);
     }
 }

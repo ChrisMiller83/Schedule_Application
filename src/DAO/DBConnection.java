@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class JDBC {
+public class DBConnection {
  private static final String protocol = "jdbc";
      private static final String vendor = ":mysql:";
          private static final String location = "//localhost/";
