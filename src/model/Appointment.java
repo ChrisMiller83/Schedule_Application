@@ -1,8 +1,13 @@
 package model;
 
+import DAO.AppointmentDAO;
 import DAO.ContactDaoImpl;
 import DAO.UserDaoImpl;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -26,6 +31,7 @@ public class Appointment {
     private int userId;
     private int contactId;
 
+
     /**
      * Appointment constructor
      * @param apptId the appointment's id number
@@ -44,8 +50,8 @@ public class Appointment {
      * @param contactId  contact id
      */
     public Appointment(int apptId, String apptTitle, String apptDescription, String apptLocation,
-                       String apptType, LocalDateTime startDateTime, LocalDateTime endDateTime,
-                       LocalDateTime createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy,
+                       String apptType, Timestamp startDateTime, Timestamp endDateTime,
+                       Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy,
                        int customerId, int userId, int contactId) {
         this.apptId = apptId;
         this.apptTitle = apptTitle;
@@ -318,3 +324,5 @@ public class Appointment {
         return user;
     }
 }
+
+
