@@ -65,9 +65,13 @@ public class AppointmentDAO {
             " = ?, " + COLUMN_APPT_LAST_UPDATE_BY + " = ?, " + COLUMN_CUSTOMER_ID + " = ?, " + COLUMN_USER_ID +
             " = ?, " + COLUMN_CONTACT_ID + " = ?) ";
 
+    public static final String DELETE_AN_APPOINTMENT = "DELETE FROM " + TABLE_APPOINTMENTS + " WHERE " +
+            COLUMN_APPT_ID + " = ?";
+
     private PreparedStatement queryAllAppointments;
     private PreparedStatement addAppointments;
     private PreparedStatement updateAppointment;
+    private PreparedStatement deleteAppointment;
 
 
 
@@ -162,9 +166,24 @@ public class AppointmentDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
+    public static void deleteAppointment(Appointment appointment){
+        List<Appointment> appointmentList = Appointment.appointments;
+
+        try {
+            PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_AN_APPOINTMENT);
+            deleteAppt.setInt(INDEX_APPT_ID, appointment.getapptId());
+            ResultSet result = deleteAppt.executeQuery();
+            appointmentList.remove(appointment);
+            Appointment.appointments = appointmentList;
+
+            // add delete appointment report
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

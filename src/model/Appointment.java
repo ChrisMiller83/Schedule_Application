@@ -1,11 +1,6 @@
 package model;
 
-import DAO.ContactDaoImpl;
-import DAO.UserDaoImpl;
-
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +13,9 @@ public class Appointment {
     private String apptDescription;
     private String apptLocation;
     private String apptType;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
-    private LocalDateTime createdDate;
+    private Timestamp startDateTime;
+    private Timestamp endDateTime;
+    private Timestamp createdDate;
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
@@ -71,27 +66,27 @@ public class Appointment {
     /**
      * @param apptId sets the appointment id
      */
-    public void setapptId(int apptId) {
+    public void setApptId(int apptId) {
         this.apptId = apptId;
     }
 
     /**
      * @return returns the apptId
      */
-    public int getapptId() {
+    public int getApptId() {
         return apptId;
     }
 
     /**
-     * setapptTitle
-     * @param apptTitle sets the appointments apptapptTitle
+     * setApptTitle
+     * @param apptTitle sets the appointments apptTitle
      */
     public void setApptTitle(String apptTitle) {
         this.apptTitle = apptTitle;
     }
 
     /**
-     * getapptTitle
+     * getApptTitle
      * @return returns the appointments apptTitle
      */
     public String getApptTitle() {
@@ -150,7 +145,7 @@ public class Appointment {
      * setStartDateTime
      * @param startDateTime sets the date and time the appointment starts
      */
-    public void setStartDateTime(LocalDateTime startDateTime) {
+    public void setStartDateTime(Timestamp startDateTime) {
         this.startDateTime = startDateTime;
     }
 
@@ -166,7 +161,7 @@ public class Appointment {
      * setEndDateTime
      * @param endDateTime sets the date and time the appointment ends
      */
-    public void setEndDateTime(LocalDateTime endDateTime) {
+    public void setEndDateTime(Timestamp endDateTime) {
         this.endDateTime = endDateTime;
     }
 
@@ -182,7 +177,7 @@ public class Appointment {
      * setCreatedDate
      * @param createdDate sets the date and time the appointment was created
      */
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -290,44 +285,20 @@ public class Appointment {
         return contactId;
     }
 
-    /**
-     * getContact gets the contact from the Contact model associated with the appointment.
-     * @return returns the contact
-     * @throws SQLException throws SQL error if found and continues.
-     */
-    public Contact getContact() throws SQLException {
-        ContactDaoImpl contactDao = new ContactDaoImpl();
-        Contact contact = contactDao.getContact(getContactId());
-        return contact;
-    }
 
-    /**
-     * getContactName gets the contact name from the Contact model associated with the appointment.
-     * @return returns the contact's name.
-     * @throws SQLException throws SQL error if found and continues.
-     */
-    public String getContactName() throws SQLException {
-        Contact contact = getContact();
-        String name = contact.getContactName();
-        return name;
-    }
 
-    /**
-     * getUser gets the user from the User model associated with the appointment.
-     * @return returns the User
-     * @throws SQLException throws SQL error if found and continues.
-     */
-    public User getUser() throws Exception {
-        UserDaoImpl userDao = new UserDaoImpl();
-        User user = UserDaoImpl.getUser(getUserId());
-        return user;
-    }
+
 
     public static List<Appointment> getAppointments() {
         return appointments;
     }
 
-    public static void updateAppt(int getapptId, Appointment appointment) {
+    public static void updateAppt(int index, Appointment appointment) {
+        for (int i = 0; i < Appointment.getAppointments().size(); ++i) {
+            if (index == Appointment.getAppointments().get(i).getApptId()) {
+                Appointment.appointments.set(i, appointment);
+            }
+        }
     }
 }
 

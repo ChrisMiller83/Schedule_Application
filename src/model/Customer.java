@@ -1,10 +1,6 @@
 package model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 /**
  * Customer model class.
@@ -15,7 +11,7 @@ public class Customer {
     private String address;
     private String phoneNumber;
     private String zipCode;
-    private LocalDateTime createdDateTime;
+    private Timestamp createdDateTime;
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
@@ -42,7 +38,7 @@ public class Customer {
      * @param divisionID state id code
      */
     public Customer(int customerId, String customerName, String address,
-                    String phoneNumber, String zipCode, LocalDateTime createdDateTime,
+                    String phoneNumber, String zipCode, Timestamp createdDateTime,
                     String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int divisionID) {
         this.customerId = customerId;
         this.customerName = customerName;
@@ -95,16 +91,16 @@ public class Customer {
         return zipCode;
     }
 
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+    public void setCreatedDateTime(Timestamp createdDateTime) {
         this.createdDateTime = createdDateTime;
     }
 
-    public LocalDateTime getCreatedDateTime() {
+    public Timestamp getCreatedDateTime() {
         return createdDateTime;
     }
 
-    public String getFormattedCreatedDate() {
-        return TimeConversion.formatDate(getCreatedDateTime());
+    public Timestamp getFormattedCreatedDate() {
+        return getCreatedDateTime();
     }
 
     public void setCreatedBy(String createdBy) {
@@ -119,8 +115,8 @@ public class Customer {
         this.lastUpdated = lastUpdated;
     }
 
-    public String getFormattedLastUpdated() {
-        return TimeConversion.formateDate(getLastUpdated());
+    public Timestamp getFormattedLastUpdated() {
+        return getLastUpdated();
     }
 
     public Timestamp getLastUpdated() {

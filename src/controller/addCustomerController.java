@@ -24,10 +24,6 @@ import java.util.ResourceBundle;
 import static utilities.errorMessage.*;
 
 public class addCustomerController implements Initializable {
-    private FirstLevelDivisionDAOImpl firstLevelDivisionDAO = new FirstLevelDivisionDAOImpl();
-    private CountryDAOImpl countryDAO = new CountryDAOImpl();
-    private CustomerDAOImpl customerDAO = new CustomerDAOImpl();
-    private FilterDivisions filterDivisions = new FilterDivisions();
 
     private String name;
     private String phone;
@@ -39,11 +35,6 @@ public class addCustomerController implements Initializable {
     private Country selectedCountry;
     private FirstLevelDivision selectedDivision;
 
-    @FXML private ObservableList<FirstLevelDivision> firstLevelDivisions = firstLevelDivisionDAO.getAllDivisions();
-
-    @FXML private ObservableList<FirstLevelDivison> filteredDivisions = FXCollections.observableArrayList();
-
-    @FXML private ObservableList<Country> countries = countryDAO.getAllCountries();
 
     @FXML private TextField customerIdTF;
     @FXML private TextField customerNameTF;
@@ -67,19 +58,18 @@ public class addCustomerController implements Initializable {
         stage.show();
     }
 
-    public void saveCustomer(ActionEvent event) throws IOException, SQLException {
+    public void saveCustomer(ActionEvent event) throws IOException {
         Customer customer = new Customer(
-            Integer.parseInt(customerIdTF.getText());
-            customerNameTF.getText();
-            phoneNumTF.getText();
-            addressTF.getText();
-            cityTF.getText();
-            zipCodeTF.getText();
-            stateTF.getText().toUpperCase();
-            countryComboBox.getSelectionModel().getSelectedItem();
-            stateProvinceComboBox.getSelectionModel().getSelectedItem();
+            Integer.parseInt(customerIdTF.getText()),
+            customerNameTF.getText(),
+            phoneNumTF.getText(),
+            addressTF.getText(),
+            cityTF.getText(),
+            zipCodeTF.getText(),
+            countryComboBox.getSelectionModel().getSelectedItem(),
+            stateProvinceComboBox.getSelectionModel().getSelectedItem(),
         );
-        if (name.isEmpty() || phone.isEmpty() || address.isEmpty() || city.isEmpty() || zip.isEmpty() || state.isEmpty() || selectedCountry == null || selectedDivision == null) {
+        if (name.isEmpty() || phone.isEmpty() || address.isEmpty() || city.isEmpty() || zip.isEmpty() || selectedCountry == null || selectedDivision == null) {
             emptyField();
             return;
         }
