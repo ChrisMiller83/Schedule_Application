@@ -66,6 +66,8 @@ public class Appointment {
         this. contactId = contactId;
     }
 
+
+
     /**
      * @param apptId sets the appointment id
      */
@@ -323,6 +325,9 @@ public class Appointment {
 
     public static List<Appointment> getAppointments() {
         return appointments;
+    }
+
+    public static void updateAppt(int getapptId, Appointment appointment) {
     }
 }
 

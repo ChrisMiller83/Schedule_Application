@@ -4,6 +4,7 @@ import model.Appointment;
 import model.User;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class AppointmentDAO {
@@ -118,10 +119,10 @@ public class AppointmentDAO {
                addAppointments.setString(INDEX_APPT_TYPE, appointment.getApptType());
                addAppointments.setTimestamp(INDEX_APPT_START, appointment.getStartDateTime());
                addAppointments.setTimestamp(INDEX_APPT_END, appointment.getEndDateTime());
-               addAppointments.setTimestamp(INDEX_APPT_CREATED_DATE, appointment.getCreatedDate());
+               addAppointments.setTimestamp(INDEX_APPT_CREATED_DATE, Timestamp.valueOf(LocalDateTime.now()));
                addAppointments.setString(INDEX_APPT_CREATED_BY, User.currentUser.getUserName());
-               addAppointments.setTimestamp(INDEX_APPT_LAST_UPDATE, appointment.getLastUpdated());
-               addAppointments.setString(INDEX_APPT_LAST_UPDATED_BY, appointment.getLastUpdatedBy());
+               addAppointments.setTimestamp(INDEX_APPT_LAST_UPDATE, Timestamp.valueOf(LocalDateTime.now()));
+               addAppointments.setString(INDEX_APPT_LAST_UPDATED_BY, User.currentUser.getUserName());
                addAppointments.setInt(INDEX_APPT_CUSTOMER_ID, appointment.getCustomerId());
                addAppointments.setInt(INDEX_APPT_USER_ID, appointment.getUserId());
                addAppointments.setInt(INDEX_APPT_CONTACT_ID, appointment.getContactId());
@@ -141,7 +142,22 @@ public class AppointmentDAO {
         try {
             PreparedStatement updateAppointments = DBConnection.getConnection().prepareStatement(UPDATE_AN_APPOINTMENT);
 
+            updateAppointments.setString(INDEX_APPT_TITLE, appointment.getApptTitle());
+            updateAppointments.setString(INDEX_APPT_DESCRIPTION, appointment.getApptDescription());
+            updateAppointments.setString(INDEX_APPT_LOCATION, appointment.getApptLocation());
+            updateAppointments.setString(INDEX_APPT_TYPE, appointment.getApptType());
+            updateAppointments.setTimestamp(INDEX_APPT_START, appointment.getStartDateTime());
+            updateAppointments.setTimestamp(INDEX_APPT_END, appointment.getEndDateTime());
+            updateAppointments.setTimestamp(INDEX_APPT_LAST_UPDATE, Timestamp.valueOf(LocalDateTime.now()));
+            updateAppointments.setString(INDEX_APPT_LAST_UPDATED_BY, User.currentUser.getUserName());
+            updateAppointments.setInt(INDEX_APPT_CUSTOMER_ID, appointment.getCustomerId());
+            updateAppointments.setInt(INDEX_APPT_USER_ID, appointment.getUserId());
+            updateAppointments.setInt(INDEX_APPT_CONTACT_ID, appointment.getContactId());
 
+            updateAppointments.executeQuery();
+            Appointment.updateAppt(appointment.getapptId(), appointment);
+            // add update message window
+            // add appointment report
 
         } catch (SQLException e) {
             e.printStackTrace();
