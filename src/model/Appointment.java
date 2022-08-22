@@ -1,16 +1,13 @@
 package model;
 
-import DAO.AppointmentDAO;
 import DAO.ContactDaoImpl;
 import DAO.UserDaoImpl;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Appointment model class
@@ -30,7 +27,7 @@ public class Appointment {
     private int customerId;
     private int userId;
     private int contactId;
-
+    public static List<Appointment> appointments = new ArrayList<>();
 
     /**
      * Appointment constructor
@@ -159,7 +156,7 @@ public class Appointment {
      * getStartDateTime
      * @return returns the date and time the appointment starts
      */
-    public LocalDateTime getStartDateTime() {
+    public Timestamp getStartDateTime() {
         return startDateTime;
     }
 
@@ -175,7 +172,7 @@ public class Appointment {
      * getEndDateTime
      * @return returns the date and time the appointment ends
      */
-    public LocalDateTime getEndDateTime() {
+    public Timestamp getEndDateTime() {
         return endDateTime;
     }
 
@@ -191,7 +188,7 @@ public class Appointment {
      * getCreatedDate
      * @return returns the date and time the appointment was created
      */
-    public LocalDateTime getCreatedDate(){
+    public Timestamp getCreatedDate(){
         return createdDate;
     }
 
@@ -322,6 +319,10 @@ public class Appointment {
         UserDaoImpl userDao = new UserDaoImpl();
         User user = UserDaoImpl.getUser(getUserId());
         return user;
+    }
+
+    public static List<Appointment> getAppointments() {
+        return appointments;
     }
 }
 
