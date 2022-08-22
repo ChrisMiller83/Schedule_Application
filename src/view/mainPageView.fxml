@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: Teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.mainPageController">
+    <children>
+        <Label alignment="CENTER" layoutX="150.0" layoutY="10.0" prefHeight="23.0" prefWidth="200.0" text="Appointment Scheduler" textAlignment="CENTER">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="160.0" layoutY="50.0" prefHeight="17.0" prefWidth="75.0" text="Time Zone: " />
+        <Label fx:id="timeZoneLabel" alignment="CENTER" layoutX="235.0" layoutY="50.0" prefHeight="17.0" prefWidth="135.0" text="Time Zone/Location" />
+        <Button fx:id="appointmentsBtn" layoutX="175.0" layoutY="100.0" mnemonicParsing="false" onAction="#toAppointmentsView" prefHeight="28.0" prefWidth="150.0" text="Appointments">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="customersBtn" layoutX="175.0" layoutY="175.0" mnemonicParsing="false" onAction="#toCustomersView" prefHeight="28.0" prefWidth="150.0" text="Customers">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="viewReportsBtn" layoutX="175.0" layoutY="250.0" mnemonicParsing="false" onAction="#toReportsView" prefHeight="28.0" prefWidth="150.0" text="View Reports">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="logOutBtn" layoutX="175.0" layoutY="325.0" mnemonicParsing="false" onAction="#logOutUserToLoginPage" prefHeight="28.0" prefWidth="150.0" style="-fx-background-color: orange;" text="Log Out" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="quitBtn" layoutX="175.0" layoutY="400.0" mnemonicParsing="false" onAction="#quitApp" prefHeight="28.0" prefWidth="150.0" style="-fx-background-color: red;" text="Quit" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

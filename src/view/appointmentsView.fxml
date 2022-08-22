@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: Teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.appointmentsController">
+    <children>
+        <Button fx:id="scheduleApptBtn" layoutX="100.0" layoutY="100.0" mnemonicParsing="false" onAction="#toScheduleAppointmentView" prefHeight="28.0" prefWidth="200.0" text="Schedule New Appointment">
+            <font>
+                <Font size="14" />
+            </font>
+        </Button>
+        <Button fx:id="updateApptBtn" layoutX="400.0" layoutY="100.0" mnemonicParsing="false" onAction="#toUpdateAppointmentView" prefHeight="28.0" prefWidth="200.0" text="Update Appointment">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="deleteApptBtn" layoutX="700.0" layoutY="100.0" mnemonicParsing="false" onAction="#deleteAppointment" prefHeight="28.0" prefWidth="200.0" text="Delete Appointment">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <RadioButton fx:id="allApptRBtn" layoutX="100.0" layoutY="150.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="250.0" selected="true" text="View All Appointments">
+            <font>
+                <Font size="14.0" />
+            </font>
+            <toggleGroup>
+                <ToggleGroup fx:id="selectedView" />
+            </toggleGroup>
+        </RadioButton>
+        <RadioButton fx:id="monthlyApptBtn" layoutX="700.0" layoutY="150.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="250.0" text="View Current Month Appointments" toggleGroup="$selectedView">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </RadioButton>
+        <RadioButton fx:id="weeklyApptRBtn" layoutX="400.0" layoutY="150.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="250.0" text="View Current Weekly Appointments" toggleGroup="$selectedView">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </RadioButton>
+        <TableView fx:id="appointmentsTable" layoutX="10.0" layoutY="194.0" prefHeight="419.0" prefWidth="980.0">
+            <columns>
+                <TableColumn fx:id="appointmentIdCol" minWidth="100.0" prefWidth="100.0" text="Appointment ID" />
+                <TableColumn fx:id="titleCol" minWidth="100.0" prefWidth="100.0" text="Title" />
+                <TableColumn fx:id="descriptionCol" minWidth="150.0" prefWidth="150.0" text="Description" />
+                <TableColumn fx:id="locationCol" minWidth="100.0" prefWidth="100.0" text="Location" />
+                <TableColumn fx:id="contactCol" minWidth="100.0" prefWidth="100.0" text="Contact" />
+                <TableColumn fx:id="typeCol" minWidth="100.0" prefWidth="100.0" text="Type" />
+                <TableColumn fx:id="dateCol" minWidth="100.0" prefWidth="100.0" text="Date" />
+                <TableColumn fx:id="startTimeCol" minWidth="75.0" prefWidth="75.0" text="Start Time" />
+                <TableColumn fx:id="endTimeCol" minWidth="75.0" prefWidth="75.0" text="End Time" />
+                <TableColumn fx:id="customerIdCol" minWidth="75.0" prefWidth="75.0" text="Customer ID" />
+                <TableColumn fx:id="userIdCol" minWidth="75.0" prefWidth="75.0" text="User ID" />
+            </columns>
+        </TableView>
+        <Button fx:id="mainMenuBtn" layoutX="435.0" layoutY="650.0" mnemonicParsing="false" onAction="#toMainMenu" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: brown;" text="Main Menu" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Button>
+        <Label alignment="CENTER" layoutX="400.0" layoutY="40.0" prefHeight="23.0" prefWidth="200.0" text="Appointments" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
