@@ -1,5 +1,8 @@
 package model;
 
+import DAO.CountryDAO;
+import DAO.DivisionDAO;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +26,16 @@ public class Customer {
 
     /**
      * Empty default Customer constructor.
+     * @param i
+     * @param text
+     * @param phoneNumTFText
+     * @param addressTFText
+     * @param cityTFText
+     * @param zipCodeTFText
+     * @param selectedItem
+     * @param item
      */
-    public Customer() {
+    public Customer(int i, String text, String phoneNumTFText, String addressTFText, String cityTFText, String zipCodeTFText, CountryDAO selectedItem, DivisionDAO item) {
     }
 
     /**

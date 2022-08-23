@@ -1,9 +1,13 @@
 package controller;
 
+import DAO.CountryDAO;
+import DAO.DivisionDAO;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Country;
+import model.FirstLevelDivision;
 import utilities.ChangeView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,8 +47,8 @@ public class addCustomerController implements Initializable {
     @FXML private TextField cityTF;
     @FXML private TextField zipCodeTF;
     @FXML private TextField stateTF;
-    @FXML private ComboBox<Country> countryComboBox;
-    @FXML private ComboBox<FirstLevelDivision> stateProvinceComboBox;
+    @FXML private ComboBox<CountryDAO> countryComboBox;
+    @FXML private ComboBox<DivisionDAO> stateProvinceComboBox;
     @FXML private Button cancelBtn;
     @FXML private Button saveBtn;
 
@@ -67,8 +71,7 @@ public class addCustomerController implements Initializable {
             cityTF.getText(),
             zipCodeTF.getText(),
             countryComboBox.getSelectionModel().getSelectedItem(),
-            stateProvinceComboBox.getSelectionModel().getSelectedItem(),
-        );
+            stateProvinceComboBox.getSelectionModel().getSelectedItem());
         if (name.isEmpty() || phone.isEmpty() || address.isEmpty() || city.isEmpty() || zip.isEmpty() || selectedCountry == null || selectedDivision == null) {
             emptyField();
             return;
@@ -91,7 +94,7 @@ public class addCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         countryComboBox.setPromptText("Select a country");
-        countryComboBox.setItems(countries);
+        countryComboBox.setItems(countryComboBox.getItems());
         stateProvinceComboBox.setPromptText("Select a country first");
         stateProvinceComboBox.setItems(null);
     }
