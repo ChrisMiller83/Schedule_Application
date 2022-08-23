@@ -11,12 +11,12 @@ import java.util.List;
 public class FirstLevelDivision {
     private int divisionId;
     private String division;
-    private LocalDateTime createdDate;
+    private Timestamp createdDate;
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
     private int countryId;
-    public static List<FirstLevelDivision> divisions = new ArrayList<>();
+    public static List<FirstLevelDivision> divisionArrayList = new ArrayList<>();
 
     /**
      * Default Empty FirstLevelDivision Constructor
@@ -34,7 +34,7 @@ public class FirstLevelDivision {
      * @param lastUpdatedBy user's name who last updated/changed state/province info
      * @param countryId country id number of the state/province
      */
-    public FirstLevelDivision(int divisionId, String division, LocalDateTime createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int countryId) {
+    public FirstLevelDivision(int divisionId, String division, Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int countryId) {
         this.divisionId = divisionId;
         this.division = division;
         this.createdDate = createdDate;
@@ -60,11 +60,11 @@ public class FirstLevelDivision {
         return division;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
@@ -101,7 +101,7 @@ public class FirstLevelDivision {
     }
 
     public static List<FirstLevelDivision> getDivisions() {
-        return divisions;
+        return divisionArrayList;
     }
 
     @Override

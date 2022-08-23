@@ -12,7 +12,7 @@ public class User {
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
-    public static List<User> users = new ArrayList<>();
+    public static List<User> userArrayList = new ArrayList<>();
     public static User currentUser;
 
     public User(int userId, String userName, String password, Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy) {
@@ -79,6 +79,10 @@ public class User {
 
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
+    }
+
+    public static List<User> getUserArrayList() {
+        return userArrayList;
     }
 
 
