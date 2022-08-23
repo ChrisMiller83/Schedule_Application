@@ -41,7 +41,7 @@ public class ContactDAO {
                 Contact.contacts.add(contact);
             }
 
-            // add reports for contacts
+            // TODO: add reports for contacts
         } catch (SQLException e) {
             e.printStackTrace();
         }
