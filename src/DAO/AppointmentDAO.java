@@ -133,7 +133,7 @@ public class AppointmentDAO {
                ResultSet result = addAppointments.executeQuery();
                appointmentList.add(appointment);
 
-                /* add report statement */
+               // TODO: add report statement
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -159,8 +159,8 @@ public class AppointmentDAO {
 
             updateAppointments.executeQuery();
             Appointment.updateAppt(appointment.getApptId(), appointment);
-            // add update message window
-            // add appointment report
+            // TODO: add update message window
+            // TODO: add appointment report
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,7 +177,7 @@ public class AppointmentDAO {
             appointmentList.remove(appointment);
             Appointment.appointments = appointmentList;
 
-            // add delete appointment report
+            // TODO: add delete appointment report
 
         } catch (SQLException e) {
             e.printStackTrace();
