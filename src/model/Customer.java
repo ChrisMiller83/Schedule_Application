@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Customer model class.
@@ -16,6 +18,7 @@ public class Customer {
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
     private int divisionID;
+    public static List<Customer> customers = new ArrayList<>();
 
 
     /**
@@ -137,6 +140,10 @@ public class Customer {
 
     public int getDivisionID() {
         return divisionID;
+    }
+
+    public static List<Customer> getCustomers() {
+        return customers;
     }
 
     @Override

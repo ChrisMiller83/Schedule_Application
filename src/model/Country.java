@@ -1,8 +1,8 @@
 package model;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Country model class.
@@ -10,10 +10,12 @@ import java.time.LocalTime;
 public class Country {
     private int countryId;
     private String country;
-    private LocalDateTime createdDate;
+    private Timestamp createdDate;
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
+    public static List<Country> countries = new ArrayList<>();
+
 
     /**
      * Country constructor
@@ -24,7 +26,7 @@ public class Country {
      * @param lastUpdated date and time country was last updated
      * @param lastUpdatedBy user's name who last updated the country
      */
-    public Country(int countryId, String country, LocalDateTime createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy) {
+    public Country(int countryId, String country, Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy) {
         this.countryId = countryId;
         this.country = country;
         this.createdDate = createdDate;
@@ -69,7 +71,7 @@ public class Country {
      * setCreatedDate
      * @param createdDate set the date and time the country was created in the db
      */
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -77,7 +79,7 @@ public class Country {
      * getCreatedDate
      * @return returns the date and time the country was created in the db
      */
-    public LocalDateTime getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
@@ -127,6 +129,23 @@ public class Country {
      */
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
+    }
+
+    /**
+     * getCountry
+     * @return returns a list of countries
+     */
+    public static List<Country> getCountries() {
+        return countries;
+    }
+
+    public static int getCountryId(int index) {
+        for (FirstLevelDivision divisions : FirstLevelDivision.getDivisions()) {
+            if (index == divisions.getDivisionId()) {
+                return divisions.getCountryId();
+            }
+        }
+        return 0;
     }
 
     /**

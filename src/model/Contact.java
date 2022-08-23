@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Contact model class.
  */
@@ -7,6 +10,7 @@ public class Contact {
     private int contactId;
     private String contactName;
     private String email;
+    public static List<Contact> contacts = new ArrayList<>();
 
     /**
      * Contact constructor.
@@ -66,6 +70,14 @@ public class Contact {
      */
     public String getEmail() {
         return email;
+    }
+
+    /**
+     * getContacts
+     * @return returns a list of contacts
+     */
+    public static List<Contact> getContacts() {
+        return contacts;
     }
 
     /**

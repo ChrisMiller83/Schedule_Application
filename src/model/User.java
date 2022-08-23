@@ -1,8 +1,6 @@
 package model;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,14 +8,14 @@ public class User {
     private int userId;
     private String userName;
     private String password;
-    private LocalDateTime createdDate;
+    private Timestamp createdDate;
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
     public static List<User> users = new ArrayList<>();
     public static User currentUser;
 
-    public User(int userId, String userName, String password, LocalDateTime createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy) {
+    public User(int userId, String userName, String password, Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -51,11 +49,11 @@ public class User {
         return password;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 

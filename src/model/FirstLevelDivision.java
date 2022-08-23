@@ -2,6 +2,8 @@ package model;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * First Level Division Class
@@ -14,6 +16,7 @@ public class FirstLevelDivision {
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
     private int countryId;
+    public static List<FirstLevelDivision> divisions = new ArrayList<>();
 
     /**
      * Default Empty FirstLevelDivision Constructor
@@ -95,6 +98,10 @@ public class FirstLevelDivision {
 
     public int getCountryId() {
         return countryId;
+    }
+
+    public static List<FirstLevelDivision> getDivisions() {
+        return divisions;
     }
 
     @Override
