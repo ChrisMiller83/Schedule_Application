@@ -18,7 +18,6 @@ public class AppointmentDAO {
     /**
      * CONSTANTS used to prevent SQL injection into the appointments table
      */
-
     public static final String TABLE_APPOINTMENTS = "appointments";
     public static final String COLUMN_APPT_ID = "Appointment_ID";
     public static final String COLUMN_APPT_TITLE = "Title";
@@ -116,7 +115,7 @@ public class AppointmentDAO {
         } else {
             try {
                PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);
-               addAppointments.setInt(INDEX_APPT_ID, appointment.getapptId());
+               addAppointments.setInt(INDEX_APPT_ID, appointment.getApptId());
                addAppointments.setString(INDEX_APPT_TITLE, appointment.getApptTitle());
                addAppointments.setString(INDEX_APPT_DESCRIPTION, appointment.getApptDescription());
                addAppointments.setString(INDEX_APPT_LOCATION, appointment.getApptLocation());
@@ -159,7 +158,7 @@ public class AppointmentDAO {
             updateAppointments.setInt(INDEX_APPT_CONTACT_ID, appointment.getContactId());
 
             updateAppointments.executeQuery();
-            Appointment.updateAppt(appointment.getapptId(), appointment);
+            Appointment.updateAppt(appointment.getApptId(), appointment);
             // add update message window
             // add appointment report
 
@@ -173,7 +172,7 @@ public class AppointmentDAO {
 
         try {
             PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_AN_APPOINTMENT);
-            deleteAppt.setInt(INDEX_APPT_ID, appointment.getapptId());
+            deleteAppt.setInt(INDEX_APPT_ID, appointment.getApptId());
             ResultSet result = deleteAppt.executeQuery();
             appointmentList.remove(appointment);
             Appointment.appointments = appointmentList;
