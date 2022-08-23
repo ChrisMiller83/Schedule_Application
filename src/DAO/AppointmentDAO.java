@@ -98,7 +98,7 @@ public class AppointmentDAO {
                 Appointment appointment = new Appointment(apptId, apptTitle, apptDescription, apptLocation,apptType,
                         startDateTime, endDateTime, createdDate, createdBy, lastUpdated, lastUpdatedBy, customerId,
                         userId, contactId);
-                Appointment.appointments.add(appointment);
+                Appointment.appointmentArrayList.add(appointment);
 
             }
             // add report for loaded appointments
@@ -108,9 +108,9 @@ public class AppointmentDAO {
     }
 
     public static void addAppointment(Appointment appointment) {
-        List<Appointment> appointmentList = Appointment.appointments;
+        List<Appointment> appointmentList = Appointment.appointmentArrayList;
 
-        if(Appointment.appointments.contains(appointment)) {
+        if(Appointment.appointmentArrayList.contains(appointment)) {
             // error alert appointment already scheduled
         } else {
             try {
@@ -131,7 +131,7 @@ public class AppointmentDAO {
                addAppointments.setInt(INDEX_APPT_CONTACT_ID, appointment.getContactId());
 
                ResultSet result = addAppointments.executeQuery();
-               appointmentList.add(appointment);
+               Appointment.appointmentArrayList.add(appointment);
 
                // TODO: add report statement
 
@@ -168,14 +168,14 @@ public class AppointmentDAO {
     }
 
     public static void deleteAppointment(Appointment appointment){
-        List<Appointment> appointmentList = Appointment.appointments;
+        List<Appointment> appointmentList = Appointment.appointmentArrayList;
 
         try {
             PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_AN_APPOINTMENT);
             deleteAppt.setInt(INDEX_APPT_ID, appointment.getApptId());
             ResultSet result = deleteAppt.executeQuery();
             appointmentList.remove(appointment);
-            Appointment.appointments = appointmentList;
+            Appointment.appointmentArrayList = appointmentList;
 
             // TODO: add delete appointment report
 

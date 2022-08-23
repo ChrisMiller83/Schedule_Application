@@ -38,7 +38,7 @@ public class ContactDAO {
                 String contactName = result.getString(COLUMN_CONTACT_NAME);
                 String email = result.getString(COLUMN_CONTACT_EMAIL);
                 Contact contact = new Contact(contactId, contactName, email);
-                Contact.contacts.add(contact);
+                Contact.contactArrayList.add(contact);
             }
 
             // TODO: add reports for contacts

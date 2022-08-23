@@ -49,7 +49,7 @@ public class CountryDAO {
                 String lastUpdatedBy = result.getString(COLUMN_LAST_UPDATED_BY);
 
                 Country countries = new Country(countryId, country, createdDate, createdBy, lastUpdated, lastUpdatedBy);
-                Country.countries.add(countries);
+                Country.countryArrayList.add(countries);
             }
 
             // TODO: add countries report

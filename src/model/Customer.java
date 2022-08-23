@@ -11,14 +11,14 @@ public class Customer {
     private int customerId;
     private String customerName;
     private String address;
-    private String phoneNumber;
     private String zipCode;
-    private Timestamp createdDateTime;
+    private String phoneNumber;
+    private Timestamp createdDate;
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
     private int divisionID;
-    public static List<Customer> customers = new ArrayList<>();
+    public static List<Customer> customerArrayList = new ArrayList<>();
 
 
     /**
@@ -34,21 +34,21 @@ public class Customer {
      * @param address customers street address
      * @param phoneNumber customers phone number
      * @param zipCode customers zip code
-     * @param createdDateTime date and time customer was created
+     * @param createdDate date and time customer was created
      * @param createdBy user's name who created the customer
      * @param lastUpdated date and time customer info was updated or changed
      * @param lastUpdatedBy user's name that last updated the customer info
      * @param divisionID state id code
      */
     public Customer(int customerId, String customerName, String address,
-                    String phoneNumber, String zipCode, Timestamp createdDateTime,
+                    String phoneNumber, String zipCode, Timestamp createdDate,
                     String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int divisionID) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.zipCode = zipCode;
-        this.createdDateTime = createdDateTime;
+        this.createdDate = createdDate;
         this.createdBy = createdBy;
         this.lastUpdated = lastUpdated;
         this.lastUpdatedBy = lastUpdatedBy;
@@ -95,11 +95,11 @@ public class Customer {
     }
 
     public void setCreatedDateTime(Timestamp createdDateTime) {
-        this.createdDateTime = createdDateTime;
+        this.createdDate = createdDate;
     }
 
     public Timestamp getCreatedDateTime() {
-        return createdDateTime;
+        return createdDate;
     }
 
     public Timestamp getFormattedCreatedDate() {
@@ -143,7 +143,7 @@ public class Customer {
     }
 
     public static List<Customer> getCustomers() {
-        return customers;
+        return customerArrayList;
     }
 
     @Override

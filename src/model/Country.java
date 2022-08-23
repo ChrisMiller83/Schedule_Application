@@ -14,7 +14,7 @@ public class Country {
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
-    public static List<Country> countries = new ArrayList<>();
+    public static List<Country> countryArrayList = new ArrayList<>();
 
 
     /**
@@ -136,7 +136,7 @@ public class Country {
      * @return returns a list of countries
      */
     public static List<Country> getCountries() {
-        return countries;
+        return countryArrayList;
     }
 
     public static int getCountryId(int index) {

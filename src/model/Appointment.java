@@ -22,7 +22,7 @@ public class Appointment {
     private int customerId;
     private int userId;
     private int contactId;
-    public static List<Appointment> appointments = new ArrayList<>();
+    public static List<Appointment> appointmentArrayList = new ArrayList<>();
 
     /**
      * Appointment constructor
@@ -290,13 +290,13 @@ public class Appointment {
 
 
     public static List<Appointment> getAppointments() {
-        return appointments;
+        return appointmentArrayList;
     }
 
     public static void updateAppt(int index, Appointment appointment) {
         for (int i = 0; i < Appointment.getAppointments().size(); ++i) {
             if (index == Appointment.getAppointments().get(i).getApptId()) {
-                Appointment.appointments.set(i, appointment);
+                Appointment.appointmentArrayList.set(i, appointment);
             }
         }
     }

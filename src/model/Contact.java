@@ -10,7 +10,7 @@ public class Contact {
     private int contactId;
     private String contactName;
     private String email;
-    public static List<Contact> contacts = new ArrayList<>();
+    public static List<Contact> contactArrayList = new ArrayList<>();
 
     /**
      * Contact constructor.
@@ -77,7 +77,7 @@ public class Contact {
      * @return returns a list of contacts
      */
     public static List<Contact> getContacts() {
-        return contacts;
+        return contactArrayList;
     }
 
     /**
