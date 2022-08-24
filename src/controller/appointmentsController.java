@@ -1,46 +1,63 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Appointment;
 import utilities.ChangeView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class appointmentsController implements Initializable {
 
 
-    public Button scheduleApptBtn;
-    public Button updateApptBtn;
-    public Button deleteApptBtn;
-    public RadioButton allApptRBtn;
-    public ToggleGroup selectedView;
-    public RadioButton monthlyApptBtn;
-    public RadioButton weeklyApptRBtn;
-    public TableView appointmentsTable;
-    public TableColumn appointmentIdCol;
-    public TableColumn titleCol;
-    public TableColumn descriptionCol;
-    public TableColumn locationCol;
-    public TableColumn contactCol;
-    public TableColumn typeCol;
-    public TableColumn dateCol;
-    public TableColumn startTimeCol;
-    public TableColumn endTimeCol;
-    public TableColumn customerIdCol;
-    public TableColumn userIdCol;
-    public Button mainMenuBtn;
+
+    ObservableList<Appointment> appointmentObservableList = FXCollections.observableList(Appointment.appointmentArrayList);
+
+    public ObservableList<Appointment> appointmentObservableList() {
+        return appointmentObservableList;
+    }
+
+    @FXML private Button scheduleApptBtn;
+    @FXML private Button updateApptBtn;
+    @FXML private Button deleteApptBtn;
+    @FXML private RadioButton allApptRBtn;
+    @FXML private ToggleGroup selectedView;
+    @FXML private RadioButton monthlyApptBtn;
+    @FXML private RadioButton weeklyApptRBtn;
+    @FXML private TableView<Appointment> appointmentsTableView;
+    @FXML private TableColumn<Appointment, Integer> appointmentIdCol;
+    @FXML private TableColumn<Appointment, String> titleCol;
+    @FXML private TableColumn<Appointment, String> descriptionCol;
+    @FXML private TableColumn<Appointment, String> locationCol;
+    @FXML private TableColumn<Appointment, String> typeCol;
+    @FXML private TableColumn<Appointment, Timestamp> startTimeCol;
+    @FXML private TableColumn<Appointment, Timestamp> endTimeCol;
+    @FXML private TableColumn<Appointment, Timestamp> createDateCol;
+    @FXML private TableColumn<Appointment, String> createdByCol;
+    @FXML private TableColumn<Appointment, Timestamp> lastUpdateCol;
+    @FXML private TableColumn<Appointment, String> lastUpdatedByCol;
+    @FXML private TableColumn<Appointment, Integer> customerIdCol;
+    @FXML private TableColumn<Appointment, Integer> userIdCol;
+    @FXML private TableColumn<Appointment, String> contactCol;
+    @FXML private Button mainMenuBtn;
 
 
 
-    public void toScheduleAppointmentView(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load((getClass().getResource("/view/scheduleAppointmentView.fxml")));
+    public void toAddApptView(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load((getClass().getResource("/view/addApptView.fxml")));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -56,6 +73,9 @@ public class appointmentsController implements Initializable {
     }
 
     public void deleteAppointment(ActionEvent actionEvent) throws IOException {
+        Appointment deleteAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
+        Appointment.appointmentArrayList.remove(deleteAppt);
+        // TODO: add delete message and report
 
     }
 
@@ -69,7 +89,27 @@ public class appointmentsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setApptTableView(appointmentObservableList);
 
+
+    }
+
+    private void setApptTableView(ObservableList<Appointment> appointments) {
+        appointmentsTableView.setItems(appointments);
+        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitle"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescription"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocation"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("apptType"));
+        startTimeCol.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        createDateCol.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
+        createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
+        lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdated"));
+        lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
 
     }
 }

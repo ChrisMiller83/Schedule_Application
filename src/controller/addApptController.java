@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class scheduleAppointmentController implements Initializable {
+public class addApptController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
