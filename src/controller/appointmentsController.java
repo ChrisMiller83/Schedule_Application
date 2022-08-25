@@ -1,5 +1,6 @@
 package controller;
 
+import DAO.AppointmentDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,14 +22,10 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 public class appointmentsController implements Initializable {
+    ObservableList<Appointment> appointmentObservableList = FXCollections.observableList(Appointment.getAllAppointmentsList());
 
+    private static Appointment apptToUpdate;
 
-
-    ObservableList<Appointment> appointmentObservableList = FXCollections.observableList(Appointment.appointmentArrayList);
-
-    public ObservableList<Appointment> appointmentObservableList() {
-        return appointmentObservableList;
-    }
 
     @FXML private Button scheduleApptBtn;
     @FXML private Button updateApptBtn;
@@ -74,7 +71,7 @@ public class appointmentsController implements Initializable {
 
     public void deleteAppointment(ActionEvent actionEvent) throws IOException {
         Appointment deleteAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
-        Appointment.appointmentArrayList.remove(deleteAppt);
+        Appointment.getAllAppointmentsList().remove(deleteAppt);
         // TODO: add delete message and report
 
     }
@@ -89,13 +86,15 @@ public class appointmentsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setApptTableView(appointmentObservableList);
+        AppointmentDAO.loadAllAppointments();
+        setApptTableView(Appointment.getAllAppointmentsList());
+
 
 
     }
 
     private void setApptTableView(ObservableList<Appointment> appointments) {
-        appointmentsTableView.setItems(appointments);
+        appointmentsTableView.setItems(Appointment.getAllAppointmentsList());
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitle"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescription"));
@@ -111,5 +110,9 @@ public class appointmentsController implements Initializable {
         userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
         contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
 
+    }
+
+    public ObservableList<Appointment> appointmentObservableList() {
+        return appointmentObservableList;
     }
 }

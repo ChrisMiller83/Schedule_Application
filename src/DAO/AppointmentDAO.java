@@ -1,5 +1,6 @@
 package DAO;
 
+import javafx.collections.ObservableList;
 import model.Appointment;
 import model.User;
 
@@ -74,7 +75,7 @@ public class AppointmentDAO {
 
 
 
-    public static void loadAllAppointments() {
+    public static ObservableList<Appointment> loadAllAppointments() {
         try {
             PreparedStatement loadAppts = DBConnection.getConnection().prepareStatement(QUERY_ALL_APPOINTMENTS);
             ResultSet result = loadAppts.executeQuery();
@@ -98,19 +99,20 @@ public class AppointmentDAO {
                 Appointment appointment = new Appointment(apptId, apptTitle, apptDescription, apptLocation,apptType,
                         startDateTime, endDateTime, createdDate, createdBy, lastUpdated, lastUpdatedBy, customerId,
                         userId, contactId);
-                Appointment.appointmentArrayList.add(appointment);
+                Appointment.getAllAppointmentsList().add(appointment);
 
             }
             // add report for loaded appointments
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public static void addAppointment(Appointment appointment) {
-        List<Appointment> appointmentList = Appointment.appointmentArrayList;
+        List<Appointment> appointmentList = Appointment.getAllAppointmentsList();
 
-        if(Appointment.appointmentArrayList.contains(appointment)) {
+        if(Appointment.getAllAppointmentsList().contains(appointment)) {
             // error alert appointment already scheduled
         } else {
             try {
@@ -131,7 +133,7 @@ public class AppointmentDAO {
                addAppointments.setInt(INDEX_APPT_CONTACT_ID, appointment.getContactId());
 
                ResultSet result = addAppointments.executeQuery();
-               Appointment.appointmentArrayList.add(appointment);
+               Appointment.getAllAppointmentsList().add(appointment);
 
                // TODO: add report statement
 
@@ -168,14 +170,14 @@ public class AppointmentDAO {
     }
 
     public static void deleteAppointment(Appointment appointment){
-        List<Appointment> appointmentList = Appointment.appointmentArrayList;
+        List<Appointment> appointmentList = Appointment.getAllAppointmentsList();
 
         try {
             PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_AN_APPOINTMENT);
             deleteAppt.setInt(INDEX_APPT_ID, appointment.getApptId());
             ResultSet result = deleteAppt.executeQuery();
             appointmentList.remove(appointment);
-            Appointment.appointmentArrayList = appointmentList;
+            //Appointment.getAllAppointmentsList() = appointmentList;
 
             // TODO: add delete appointment report
 
