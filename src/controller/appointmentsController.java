@@ -111,7 +111,9 @@ public class appointmentsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         AppointmentDAO.loadAllAppointments();
+
         apptTableView(appointmentObservableList);
+        // TODO: fix loading issues of duplication appt table view
     }
 
     private void apptTableView(ObservableList<Appointment> appointments) {
