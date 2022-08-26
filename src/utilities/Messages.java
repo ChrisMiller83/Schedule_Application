@@ -1,10 +1,11 @@
 package utilities;
 
 import javafx.scene.control.Alert;
+import model.Appointment;
 
 import java.sql.SQLException;
 
-public class errorMessage {
+public class Messages {
 
     public static void emptyField() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -17,6 +18,29 @@ public class errorMessage {
         Alert alert = new Alert((Alert.AlertType.ERROR));
         alert.setTitle("ERROR");
         alert.setContentText("There was an error: " + e.getMessage());
+        alert.showAndWait();
+    }
+
+    public static void upcomingAppointment (Appointment appointment) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("You have an upcoming appointment:");
+        alert.setHeaderText("Appointment ID: " + appointment.getApptId() + "\n" +
+                "Start Time: " + appointment.getStartDateTime().toLocalDateTime().toLocalDate() + "\n" +
+                "With " + appointment.getContactId() + " and " + appointment.getCustomerId());
+        alert.showAndWait();
+    }
+
+    public static void noUpcomingAppointment () {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("You have no upcoming appointments:");
+        alert.setHeaderText("No upcoming appointments");
+        alert.showAndWait();
+    }
+
+    public static void invalidLogin () {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Unable to Login");
+        alert.setHeaderText("Please check your username and password.");
         alert.showAndWait();
     }
 

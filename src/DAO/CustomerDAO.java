@@ -36,10 +36,13 @@ public class CustomerDAO {
 
     public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS;
 
-    public static void loadAllCountries() {
+    public static final String QUERY_ALL_CUSTOMER_NAMES = "SELECT " + TABLE_CUSTOMERS + '.' + COLUMN_CUSTOMER_NAME +
+            " FROM " + TABLE_CUSTOMERS;
+
+    public static void loadAllCustomers() {
         try {
-            PreparedStatement loadCountries = DBConnection.getConnection().prepareStatement(QUERY_ALL_CUSTOMERS);
-            ResultSet result = loadCountries.executeQuery();
+            PreparedStatement loadCustomers = DBConnection.getConnection().prepareStatement(QUERY_ALL_CUSTOMERS);
+            ResultSet result = loadCustomers.executeQuery();
 
             while (result.next()) {
                 int customerId = result.getInt(COLUMN_CUSTOMER_ID);
@@ -57,6 +60,21 @@ public class CustomerDAO {
                 Customer.customerArrayList.add(customer);
             }
             // TODO: add customer report
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadAllCustomerNames () {
+        try {
+            PreparedStatement loadCustomerNames = DBConnection.getConnection().prepareStatement(QUERY_ALL_CUSTOMER_NAMES);
+            ResultSet result = loadCustomerNames.executeQuery();
+
+            while (result.next()) {
+                String customerName = result.getString(COLUMN_CUSTOMER_NAME);
+                Customer customer = new Customer(customerName);
+                Customer.customerNamesList.add(customer);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

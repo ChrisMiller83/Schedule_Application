@@ -2,6 +2,8 @@ package model;
 
 import DAO.CountryDAO;
 import DAO.DivisionDAO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class Customer {
     private String lastUpdatedBy;
     private int divisionID;
     public static List<Customer> customerArrayList = new ArrayList<>();
+    public static List<Customer> customerNamesList = new ArrayList<>();
 
 
     /**
@@ -65,6 +68,11 @@ public class Customer {
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionID = divisionID;
     }
+
+    public Customer(String customerName) {
+        this.customerName = customerName;
+    }
+
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
@@ -156,6 +164,8 @@ public class Customer {
     public static List<Customer> getCustomers() {
         return customerArrayList;
     }
+
+    public static List<Customer> getCustomerNamesList() { return customerNamesList; }
 
     @Override
     public String toString() {

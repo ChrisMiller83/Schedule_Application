@@ -11,10 +11,10 @@ import java.io.IOException;
 public class ChangeView {
     private static final String rootName = "/view/";
 
-    public static void changeView (ActionEvent event, String viewName) throws IOException {
+    public static void changeView (ActionEvent actionEvent, String viewName) throws IOException {
         String fullViewName = rootName + viewName;
         Parent root = FXMLLoader.load(ChangeView.class.getResource(fullViewName));
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 
 public class DBConnection {
      private static final String protocol = "jdbc";
@@ -15,6 +16,7 @@ public class DBConnection {
      private static String password = "Passw0rd!"; // Password
      private static Connection connection = null;  // Connection Interface
      private static PreparedStatement preparedStatement;
+     public static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
      public static void makeConnection() {
 
