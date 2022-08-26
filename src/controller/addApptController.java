@@ -1,7 +1,6 @@
 package controller;
 
-import DAO.CustomerDAO;
-import DAO.DBConnection;
+import DAO.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +15,7 @@ import model.Appointment;
 import model.Contact;
 import model.Customer;
 import model.User;
+import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class addApptController implements Initializable {
@@ -43,10 +44,11 @@ public class addApptController implements Initializable {
     @FXML private Button saveBtn;
 
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        UserDAO.loadAllUsers();
+        CustomerDAO.loadAllCustomers();
+        ContactDAO.loadAllContacts();
         setCustomerCB();
         setUserIdTF();
         setContactCB();
@@ -104,6 +106,36 @@ public class addApptController implements Initializable {
     }
 
     public void saveAppointment(ActionEvent actionEvent) throws IOException {
+        try {
+            Integer apptId = Integer.parseInt(appointmentIdTF.getText());
+            Integer customerId = customerCB.getValue().getCustomerId();
+            Integer userId = User.currentUser.getUserId();
+            Integer contactId = contactCB.getValue().getContactId();
+            String title = titleTF.getText();
+            String description = descriptionTA.getText();
+            String type = typeTF.getText();
+            String location = locationTF.getText();
+            Timestamp startDateTime = timestamp(startDatePicker.getValue(), startTimeCB.getValue());
+            Timestamp endDateTime = timestamp(endDatePicker.getValue(), endTimeCB.getValue());
+            Timestamp createdDate = Timestamp.valueOf(LocalDateTime.now());
+            String createdBy = userTF.getText();
+            Timestamp lastUpdate = Timestamp.valueOf(LocalDateTime.now());
+            String lastUpdatedBy = userTF.getText();
+
+            //TODO add check for overlapping appointments
+
+            if (!customerCB.hasProperties()) {
+                Messages.emptyField();
+                return;
+            }
+
+            Appointment appointment = new Appointment(apptId, title, description, location, type, startDateTime, endDateTime,
+                    createdDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+            AppointmentDAO.addAppointment(appointment);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
 

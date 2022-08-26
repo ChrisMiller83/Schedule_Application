@@ -24,7 +24,6 @@ public class Customer {
     private String lastUpdatedBy;
     private int divisionID;
     public static List<Customer> customerArrayList = new ArrayList<>();
-    public static List<Customer> customerNamesList = new ArrayList<>();
 
 
     /**
@@ -67,10 +66,6 @@ public class Customer {
         this.lastUpdated = lastUpdated;
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionID = divisionID;
-    }
-
-    public Customer(String customerName) {
-        this.customerName = customerName;
     }
 
 
@@ -165,7 +160,7 @@ public class Customer {
         return customerArrayList;
     }
 
-    public static List<Customer> getCustomerNamesList() { return customerNamesList; }
+
 
     @Override
     public String toString() {

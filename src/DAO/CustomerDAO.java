@@ -65,20 +65,7 @@ public class CustomerDAO {
         }
     }
 
-    public static void loadAllCustomerNames () {
-        try {
-            PreparedStatement loadCustomerNames = DBConnection.getConnection().prepareStatement(QUERY_ALL_CUSTOMER_NAMES);
-            ResultSet result = loadCustomerNames.executeQuery();
 
-            while (result.next()) {
-                String customerName = result.getString(COLUMN_CUSTOMER_NAME);
-                Customer customer = new Customer(customerName);
-                Customer.customerNamesList.add(customer);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }

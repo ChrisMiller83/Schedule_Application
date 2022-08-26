@@ -113,7 +113,7 @@ public class AppointmentDAO {
         List<Appointment> appointmentList = Appointment.getAllAppointmentsList();
 
         if(Appointment.getAllAppointmentsList().contains(appointment)) {
-            // error alert appointment already scheduled
+            // TODO error alert appointment already scheduled
         } else {
             try {
                PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);

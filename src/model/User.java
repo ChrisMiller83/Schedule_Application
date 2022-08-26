@@ -1,5 +1,7 @@
 package model;
 
+import DAO.UserDAO;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ public class User {
     private String lastUpdatedBy;
     public static List<User> userArrayList = new ArrayList<>();
     public static User currentUser;
+    
 
     public User(int userId, String userName, String password, Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy) {
         this.userId = userId;

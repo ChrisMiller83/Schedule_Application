@@ -51,15 +51,7 @@ public class loginController implements Initializable {
     }
 
     public void loginToMainPage(ActionEvent actionEvent) throws IOException {
-        File file = new File("src/files/login_activity.txt");
-        file.createNewFile();
-        FileWriter fileWriter = new FileWriter(file, true);
-        BufferedWriter loginUser = new BufferedWriter(fileWriter);
-        loginUser.write(userNameTF.getText() + " " + ZonedDateTime.now(ZoneId.systemDefault()));
         if (isValid()) {
-            loginUser.write("Login Successful");
-            loginUser.newLine();
-            loginUser.close();
             checkUpcomingAppointments();
             if(!checkUpcomingAppointments()) {
                 Messages.noUpcomingAppointment();
@@ -70,17 +62,9 @@ public class loginController implements Initializable {
             stage.show();
             stage.setScene(scene);
         } else {
-            loginUser.write("Unsuccessful Login");
-            loginUser.newLine();
-            loginUser.close();
             Messages.invalidLogin();
         }
-
-
-
     }
-
-
 
     private boolean isValid() {
         for (User user : User.getUserArrayList()) {
@@ -108,7 +92,7 @@ public class loginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        User.getUserArrayList();
+        UserDAO.loadAllUsers();
         setZoneID(zoneID);
         // TODO add code if user language is French
 
