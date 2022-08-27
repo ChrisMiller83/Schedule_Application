@@ -20,20 +20,25 @@ import utilities.Messages;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
+import java.time.chrono.ChronoLocalDate;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 public class addApptController implements Initializable {
+    private ZonedDateTime startTimeConversion;
+    private ZonedDateTime endTimeConversion;
+
+    private ZonedDateTime timeConversion(LocalDateTime time) {
+        return ZonedDateTime.of(time, ZoneId.of("America/New_York"));
+    }
 
     @FXML private TextField appointmentIdTF;
     @FXML private TextField userTF;
     @FXML private ChoiceBox<Customer> customerCB;
     @FXML private TextField titleTF;
     @FXML private TextField locationTF;
-    @FXML private TextField typeTF;
+    @FXML private ChoiceBox<String> typeCB;
     @FXML private ChoiceBox<Contact> contactCB;
     @FXML private DatePicker startDatePicker;
     @FXML private ChoiceBox<LocalTime> startTimeCB;
@@ -52,8 +57,9 @@ public class addApptController implements Initializable {
         setCustomerCB();
         setUserIdTF();
         setContactCB();
-        setApptID();
+//        setApptID();
         setTimeCB();
+        setTypeCB();
     }
 
     private void setCustomerCB() {
@@ -71,14 +77,20 @@ public class addApptController implements Initializable {
         contactCB.setItems(contactObservableList);
     }
 
-    private void setApptID() {
-        int max_id = 0;
-        for (Appointment appointment : Appointment.appointmentsList) {
-            if (appointment.getApptId() >= max_id) {
-                max_id = appointment.getApptId() + 1;
-            }
-        }
-        appointmentIdTF.setText(String.valueOf(max_id));
+//    private void setApptID() {
+//        int max_id = 1;
+//        for (Appointment appointment : Appointment.appointmentsList) {
+//            if (appointment.getApptId() >= max_id) {
+//                max_id = appointment.getApptId() + 1;
+//            }
+//        }
+//        appointmentIdTF.setText(String.valueOf(max_id));
+//    }
+
+    private void setTypeCB() {
+        ObservableList<String> typeList = FXCollections.observableArrayList();
+        typeList.addAll("Lunch", "Planning Session", "Follow-up", "Project Meeting", "Open Meeting");
+        typeCB.setItems(typeList);
     }
 
     private Timestamp timestamp(LocalDate date, LocalTime time) {
@@ -86,15 +98,18 @@ public class addApptController implements Initializable {
     }
 
     private void setTimeCB() {
-        LocalTime timeChoice = LocalTime.of(8, 0);
-        ObservableList<LocalTime> timeObservableList = FXCollections.observableArrayList(timeChoice);
+        ObservableList<LocalTime> timeOptions = FXCollections.observableArrayList();
+        LocalTime startTime = LocalTime.of(8, 0);
+        LocalTime endTime = LocalTime.of(22, 0);
 
-        while (!timeChoice.equals (LocalTime.of(22, 0))){
-            timeChoice = timeChoice.plusMinutes(15);
-            timeObservableList.add(timeChoice);
+        timeOptions.add(startTime);
+
+        while (startTime.isBefore(endTime)){
+            startTime = startTime.plusMinutes(15);
+            timeOptions.add(startTime);
         }
-        startTimeCB.setItems(timeObservableList);
-        endTimeCB.setItems(timeObservableList);
+        startTimeCB.setItems(timeOptions);
+        endTimeCB.setItems(timeOptions);
     }
 
     public void cancelToAppointments(ActionEvent actionEvent) throws IOException {
@@ -105,22 +120,24 @@ public class addApptController implements Initializable {
         stage.show();
     }
 
-    public void saveAppointment(ActionEvent actionEvent) throws IOException {
+    @FXML
+    void saveAppointment(ActionEvent actionEvent) throws IOException {
         try {
-            Integer apptId = Integer.parseInt(appointmentIdTF.getText());
-            Integer customerId = customerCB.getValue().getCustomerId();
-            Integer userId = User.currentUser.getUserId();
-            Integer contactId = contactCB.getValue().getContactId();
-            String title = titleTF.getText();
-            String description = descriptionTA.getText();
-            String type = typeTF.getText();
-            String location = locationTF.getText();
-            Timestamp startDateTime = timestamp(startDatePicker.getValue(), startTimeCB.getValue());
-            Timestamp endDateTime = timestamp(endDatePicker.getValue(), endTimeCB.getValue());
-            Timestamp createdDate = Timestamp.valueOf(LocalDateTime.now());
-            String createdBy = userTF.getText();
-            Timestamp lastUpdate = Timestamp.valueOf(LocalDateTime.now());
-            String lastUpdatedBy = userTF.getText();
+            AppointmentDAO.addAppointment(
+            Integer.parseInt(appointmentIdTF.getText()),
+            titleTF.getText(),
+            descriptionTA.getText(),
+            typeCB.getValue(),
+            locationTF.getText(),
+            timestamp(startDatePicker.getValue(), startTimeCB.getSelectionModel().getSelectedItem()),
+            timestamp(endDatePicker.getValue(), endTimeCB.getSelectionModel().getSelectedItem()),
+            LocalDateTime.now(),
+            userTF.getText(),
+            LocalDateTime.now(),
+            userTF.getText(),
+            customerCB.getValue().getCustomerId(),
+            User.currentUser.getUserId(),
+            contactCB.getValue().getContactId());
 
             //TODO add check for overlapping appointments
 
@@ -129,9 +146,11 @@ public class addApptController implements Initializable {
                 return;
             }
 
-            Appointment appointment = new Appointment(apptId, title, description, location, type, startDateTime, endDateTime,
-                    createdDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
-            AppointmentDAO.addAppointment(appointment);
+//            AppointmentDAO.addAppointment(apptId,title, description, location, type, startDateTime, endDateTime, createdDate,
+//                    createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+//            Appointment appointment = new Appointment(apptId, title, description, location, type, startDateTime, endDateTime,
+//                    createdDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+//            AppointmentDAO.addAppointment(appointment);
 
 
 
@@ -147,4 +166,72 @@ public class addApptController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    private boolean apptIsValid() {
+        if (titleTF.getText().isEmpty()) {
+            Messages.emptyField(1);
+            return false;
+        }
+        if (descriptionTA.getText().isEmpty()) {
+            Messages.emptyField(2);
+            return false;
+        }
+        if (locationTF.getText().isEmpty()) {
+            Messages.emptyField(3);
+            return false;
+        }
+        if (typeCB.getSelectionModel().isEmpty()) {
+            Messages.emptyField(4);
+            return false;
+        }
+        if (startDatePicker.getValue() == null) {
+            Messages.emptyField(5);
+            return false;
+        }
+        if (startTimeCB.getSelectionModel().isEmpty()) {
+            Messages.emptyField(6);
+            return false;
+        }
+        if (endDatePicker.getValue() == null) {
+            Messages.emptyField(7);
+            return false;
+        }
+        if (endTimeCB.getSelectionModel().isEmpty()) {
+            Messages.emptyField(8);
+            return false;
+        }
+        if(customerCB.getSelectionModel().isEmpty()) {
+            Messages.emptyField(9);
+            return false;
+        }
+        if (contactCB.getSelectionModel().isEmpty()) {
+            Messages.emptyField(10);
+            return false;
+        }
+
+        if (startDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
+                endDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
+                startTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now())) ||
+                endTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now()))) {
+            Messages.checkApptDates();
+            return false;
+        }
+
+        if (startTimeCB.getValue().isAfter(endTimeCB.getValue())) {
+            Messages.checkStartTime();
+            return false;
+        }
+
+        if (endTimeCB.getValue().isBefore(startTimeCB.getValue())) {
+            Messages.checkEndTime();
+            return false;
+        }
+
+        startDateTimeConversion = timestamp(startDatePicker.getValue(), startTimeCB.getSelectionModel().getSelectedItem()).compareTo(timeConversion());
+                timestamp(endDatePicker.getValue(), endTimeCB.getSelectionModel().getSelectedItem()));
+
+        return true;
+    }
+
+
 }

@@ -3,10 +3,13 @@ package DAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.Customer;
 import model.User;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -190,40 +193,37 @@ public class AppointmentDAO {
         }
     }
 
-    public static void addAppointment(Appointment appointment) {
-        List<Appointment> appointmentList = Appointment.appointmentsList;
+    public static boolean addAppointment(int apptId, String title, String description, String location, String type, Timestamp startDateTime,
+                                         Timestamp endDateTime, LocalDateTime createdDate, String createdBy, LocalDateTime lastUpdated,
+                                         String lastUpdatedBy, int customerId, int userId, int contactId) {
 
-        if(Appointment.appointmentsList.contains(appointment)) {
-            // TODO error alert appointment already scheduled
-        } else {
+
             try {
                PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);
-               addAppointments.setInt(INDEX_APPT_ID, appointment.getApptId());
-               addAppointments.setString(INDEX_APPT_TITLE, appointment.getApptTitle());
-               addAppointments.setString(INDEX_APPT_DESCRIPTION, appointment.getApptDescription());
-               addAppointments.setString(INDEX_APPT_LOCATION, appointment.getApptLocation());
-               addAppointments.setString(INDEX_APPT_TYPE, appointment.getApptType());
-               addAppointments.setTimestamp(INDEX_APPT_START, appointment.getStartDateTime());
-               addAppointments.setTimestamp(INDEX_APPT_END, appointment.getEndDateTime());
-               addAppointments.setTimestamp(INDEX_APPT_CREATED_DATE, Timestamp.valueOf(LocalDateTime.now()));
-               addAppointments.setString(INDEX_APPT_CREATED_BY, User.currentUser.getUserName());
-               addAppointments.setTimestamp(INDEX_APPT_LAST_UPDATE, Timestamp.valueOf(LocalDateTime.now()));
-               addAppointments.setString(INDEX_APPT_LAST_UPDATED_BY, User.currentUser.getUserName());
-               addAppointments.setInt(INDEX_APPT_CUSTOMER_ID, appointment.getCustomerId());
-               addAppointments.setInt(INDEX_APPT_USER_ID, appointment.getUserId());
-               addAppointments.setInt(INDEX_APPT_CONTACT_ID, appointment.getContactId());
+               addAppointments.setInt(INDEX_APPT_ID, apptId);
+               addAppointments.setString(INDEX_APPT_TITLE, title);
+               addAppointments.setString(INDEX_APPT_DESCRIPTION, description);
+               addAppointments.setString(INDEX_APPT_LOCATION, location);
+               addAppointments.setString(INDEX_APPT_TYPE, type);
+               addAppointments.setTimestamp(INDEX_APPT_START, startDateTime);
+               addAppointments.setTimestamp(INDEX_APPT_END, endDateTime);
+               addAppointments.setTimestamp(INDEX_APPT_CREATED_DATE, Timestamp.valueOf(createdDate));
+               addAppointments.setString(INDEX_APPT_CREATED_BY, createdBy);
+               addAppointments.setTimestamp(INDEX_APPT_LAST_UPDATE, Timestamp.valueOf(lastUpdated));
+               addAppointments.setString(INDEX_APPT_LAST_UPDATED_BY, lastUpdatedBy);
+               addAppointments.setInt(INDEX_APPT_CUSTOMER_ID, customerId);
+               addAppointments.setInt(INDEX_APPT_USER_ID, userId);
+               addAppointments.setInt(INDEX_APPT_CONTACT_ID, contactId);
 
                ResultSet result = addAppointments.executeQuery();
-               appointmentList.add(appointment);
-               Appointment.appointmentsList.add(appointment);
-
+               return true;
 
                // TODO: add report statement
 
             } catch (SQLException e) {
                 e.printStackTrace();
+                return false;
             }
-        }
     }
 
     public static void updateAppointment(Appointment appointment) {
