@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Appointment model class
@@ -23,7 +25,7 @@ public class Appointment {
     private int customerId;
     private int userId;
     private int contactId;
-    private static ObservableList<Appointment> allAppointmentsList = FXCollections.observableArrayList();
+    public static List<Appointment> appointmentsList = new ArrayList<>();
 
     /**
      * Appointment constructor
@@ -62,6 +64,9 @@ public class Appointment {
         this. contactId = contactId;
     }
 
+    public Appointment() {
+
+    }
 
 
     /**
@@ -290,28 +295,26 @@ public class Appointment {
 
 
 
-    public static ObservableList<Appointment> getAllAppointmentsList() {
-        return allAppointmentsList;
+    public static List<Appointment> getAppointmentList() {
+        return appointmentsList;
     }
 
-    public static void setAllAppointmentsList(ObservableList<Appointment> allAppointmentsList) {
-        Appointment.allAppointmentsList = allAppointmentsList;
-    }
+
 
     public static void addAppt(Appointment newAppointment) {
-        allAppointmentsList.add(newAppointment);
+        appointmentsList.add(newAppointment);
     }
 
     public static void updateAppt(int apptId, Appointment updatedAppt) {
-        for (int i = 0; i < allAppointmentsList.size(); ++i) {
-            if (allAppointmentsList.get(i).getApptId() == apptId) {
-                allAppointmentsList.set(i, updatedAppt);
+        for (int i = 0; i < appointmentsList.size(); ++i) {
+            if (appointmentsList.get(i).getApptId() == apptId) {
+                appointmentsList.set(i, updatedAppt);
             }
         }
     }
 
     public static boolean deleteAppt(Appointment selectedAppt) {
-        return allAppointmentsList.remove(selectedAppt);
+        return appointmentsList.remove(selectedAppt);
     }
 }
 

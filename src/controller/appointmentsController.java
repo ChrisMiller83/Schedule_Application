@@ -1,11 +1,10 @@
 package controller;
 
 import DAO.AppointmentDAO;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,20 +15,19 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
-import utilities.ChangeView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.IsoFields;
-import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
 public class appointmentsController implements Initializable {
-    ObservableList<Appointment> appointmentObservableList = FXCollections.observableList(Appointment.getAllAppointmentsList());
+
+    static ObservableList<Appointment> appointments;
 
     private static Appointment apptToUpdate;
     private static int selectedAppt;
@@ -38,8 +36,8 @@ public class appointmentsController implements Initializable {
     @FXML private Button scheduleApptBtn;
     @FXML private Button updateApptBtn;
     @FXML private Button deleteApptBtn;
-    @FXML private RadioButton allApptRBtn;
     @FXML private ToggleGroup selectedView;
+    @FXML private RadioButton allApptRBtn;
     @FXML private RadioButton monthlyApptBtn;
     @FXML private RadioButton weeklyApptRBtn;
     @FXML private TableView<Appointment> appointmentsTableView;
@@ -59,14 +57,23 @@ public class appointmentsController implements Initializable {
     @FXML private TableColumn<Appointment, String> contactCol;
     @FXML private Button mainMenuBtn;
 
-    private FilteredList<Appointment> allAppts;
-    private FilteredList<Appointment> weeklyApptList;
-    private FilteredList<Appointment> monthlyApptList;
 
-    private Predicate<Appointment> getAllAppts;
-
-    private Predicate<Appointment> getMonthlyAppts;
-
+    @FXML
+    void setSelectedView(ActionEvent event) throws SQLException {
+        if(allApptRBtn.isSelected()) {
+            appointments = (ObservableList<Appointment>) AppointmentDAO.getAllAppts();
+            appointmentsTableView.setItems(appointments);
+            appointmentsTableView.refresh();
+        } else if (selectedView.getSelectedToggle().equals(weeklyApptRBtn)) {
+            appointments = AppointmentDAO.getApptsThisWeek();
+            appointmentsTableView.setItems(appointments);
+            appointmentsTableView.refresh();
+        } else if (selectedView.getSelectedToggle().equals(monthlyApptBtn)) {
+            appointments = AppointmentDAO.getApptsThisMonth();
+            appointmentsTableView.setItems(appointments);
+            appointmentsTableView.refresh();
+        }
+    }
 
 
     public void toAddApptView(ActionEvent actionEvent) throws IOException {
@@ -84,7 +91,7 @@ public class appointmentsController implements Initializable {
             // TODO: add error message
             return;
         }
-        selectedAppt = appointmentObservableList.indexOf(apptToUpdate);
+        //selectedAppt = appointmentObservableList.indexOf(apptToUpdate);
         Parent root = FXMLLoader.load((getClass().getResource("/view/updateAppointmentView.fxml")));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -94,7 +101,10 @@ public class appointmentsController implements Initializable {
 
     public void deleteAppointment(ActionEvent actionEvent) throws IOException {
         Appointment deleteAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
-        Appointment.getAllAppointmentsList().remove(deleteAppt);
+        Appointment.deleteAppt(deleteAppt);
+        AppointmentDAO.deleteAppointment(deleteAppt);
+        appointmentsTableView.getItems().remove(deleteAppt);
+
         // TODO: add delete message and report
 
     }
@@ -109,60 +119,32 @@ public class appointmentsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        AppointmentDAO.loadAllAppointments();
-
-        apptTableView(appointmentObservableList);
-        // TODO: fix loading issues of duplication appt table view
-    }
-
-    private void apptTableView(ObservableList<Appointment> appointments) {
-        appointmentsTableView.setItems(appointments);
-        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
-        titleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitle"));
-        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescription"));
-        locationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocation"));
-        typeCol.setCellValueFactory(new PropertyValueFactory<>("apptType"));
-        startTimeCol.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-        endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-        createDateCol.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
-        createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
-        lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdated"));
-        lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
-
-    }
-
-    @FXML
-    void allApptSelected(ActionEvent actionEvent) {
-        apptTableView(appointmentObservableList);
-    }
-
-    @FXML
-    void weeklyApptSelected(ActionEvent actionEvent) {
-        ObservableList<Appointment> weeklyApptsTableView = FXCollections.observableArrayList();
-        for (Appointment appts : appointmentObservableList) {
-            if (appts.getStartDateTime().toLocalDateTime().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) == ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)) {
-                weeklyApptsTableView.add(appts);
-            }
+        allApptRBtn.setToggleGroup(selectedView);
+        weeklyApptRBtn.setToggleGroup(selectedView);
+        monthlyApptBtn.setToggleGroup(selectedView);
+        try {
+            appointments = AppointmentDAO.getAllAppts();
+            appointmentsTableView.setItems(appointments);
+            appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
+            titleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitle"));
+            descriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescription"));
+            locationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocation"));
+            typeCol.setCellValueFactory(new PropertyValueFactory<>("apptType"));
+            startTimeCol.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+            endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+            createDateCol.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
+            createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
+            lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>(" lastUpdated"));
+            lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
+            customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+            contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        apptTableView(weeklyApptsTableView);
     }
 
-    @FXML
-    void monthlyApptSelected(ActionEvent actionEvent) {
-        ObservableList<Appointment> monthlyApptsTableView = FXCollections.observableArrayList();
-        for (Appointment appts : appointmentObservableList) {
-            if (appts.getStartDateTime().toLocalDateTime().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) == ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)) {
-                monthlyApptsTableView.add(appts);
-            }
-        }
-        apptTableView(monthlyApptsTableView);
-    }
 
-    public ObservableList<Appointment> appointmentObservableList() {
-        return appointmentObservableList;
-    }
 }
+
+

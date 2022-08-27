@@ -73,7 +73,7 @@ public class addApptController implements Initializable {
 
     private void setApptID() {
         int max_id = 0;
-        for (Appointment appointment : Appointment.getAllAppointmentsList()) {
+        for (Appointment appointment : Appointment.appointmentsList) {
             if (appointment.getApptId() >= max_id) {
                 max_id = appointment.getApptId() + 1;
             }
@@ -132,6 +132,8 @@ public class addApptController implements Initializable {
             Appointment appointment = new Appointment(apptId, title, description, location, type, startDateTime, endDateTime,
                     createdDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
             AppointmentDAO.addAppointment(appointment);
+
+
 
         } catch (Exception e) {
             e.printStackTrace();

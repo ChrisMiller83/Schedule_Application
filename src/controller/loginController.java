@@ -79,7 +79,7 @@ public class loginController implements Initializable {
     public boolean checkUpcomingAppointments() {
         boolean hasAppt = false;
 
-        for (Appointment appointment : Appointment.getAllAppointmentsList()) {
+        for (Appointment appointment : Appointment.appointmentsList) {
             if (appointment.getStartDateTime().toLocalDateTime().toLocalDate().isBefore(ChronoLocalDate.from(LocalTime.now().plusMinutes(15))) &&
                     User.currentUser.getUserId() == appointment.getUserId()) {
                 hasAppt = true;

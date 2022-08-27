@@ -26,7 +26,7 @@
                 <Font size="14.0" />
             </font>
         </Button>
-        <RadioButton fx:id="allApptRBtn" layoutX="100.0" layoutY="150.0" mnemonicParsing="false" onAction="#allApptSelected" selected="true" text="View All Appointments">
+        <RadioButton fx:id="allApptRBtn" layoutX="100.0" layoutY="150.0" mnemonicParsing="false" onAction="#setSelectedView" selected="true" text="View All Appointments">
             <font>
                 <Font size="14.0" />
             </font>
@@ -34,12 +34,12 @@
                 <ToggleGroup fx:id="selectedView" />
             </toggleGroup>
         </RadioButton>
-        <RadioButton fx:id="weeklyApptRBtn" layoutX="400.0" layoutY="150.0" mnemonicParsing="false" onAction="#weeklyApptSelected" text="View Current Weekly Appointments" toggleGroup="$selectedView">
+        <RadioButton fx:id="weeklyApptRBtn" layoutX="400.0" layoutY="150.0" mnemonicParsing="false" onAction="#setSelectedView" text="View Current Weekly Appointments" toggleGroup="$selectedView">
             <font>
                 <Font size="14.0" />
             </font>
         </RadioButton>
-        <RadioButton fx:id="monthlyApptBtn" layoutX="700.0" layoutY="150.0" mnemonicParsing="false" onAction="#monthlyApptSelected" text="View Current Month Appointments" toggleGroup="$selectedView">
+        <RadioButton fx:id="monthlyApptBtn" layoutX="700.0" layoutY="150.0" mnemonicParsing="false" onAction="#setSelectedView" text="View Current Month Appointments" toggleGroup="$selectedView">
             <font>
                 <Font size="14.0" />
             </font>
