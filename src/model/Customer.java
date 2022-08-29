@@ -16,28 +16,17 @@ public class Customer {
     private int customerId;
     private String customerName;
     private String address;
-    private String zipCode;
+    private String postalCode;
     private String phoneNumber;
     private Timestamp createdDate;
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
     private int divisionID;
-    public static List<Customer> customerArrayList = new ArrayList<>();
 
 
-    /**
-     * Empty default Customer constructor.
-     * @param i
-     * @param text
-     * @param phoneNumTFText
-     * @param addressTFText
-     * @param cityTFText
-     * @param zipCodeTFText
-     * @param selectedItem
-     * @param item
-     */
-    public Customer(int i, String text, String phoneNumTFText, String addressTFText, String cityTFText, String zipCodeTFText, CountryDAO selectedItem, DivisionDAO item) {
+
+    public Customer() {
     }
 
     /**
@@ -46,7 +35,7 @@ public class Customer {
      * @param customerName customer name
      * @param address customers street address
      * @param phoneNumber customers phone number
-     * @param zipCode customers zip code
+     * @param postalCode customers zip code
      * @param createdDate date and time customer was created
      * @param createdBy user's name who created the customer
      * @param lastUpdated date and time customer info was updated or changed
@@ -54,13 +43,13 @@ public class Customer {
      * @param divisionID state id code
      */
     public Customer(int customerId, String customerName, String address,
-                    String phoneNumber, String zipCode, Timestamp createdDate,
+                    String phoneNumber, String postalCode, Timestamp createdDate,
                     String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int divisionID) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.zipCode = zipCode;
+        this.postalCode = postalCode;
         this.createdDate = createdDate;
         this.createdBy = createdBy;
         this.lastUpdated = lastUpdated;
@@ -100,12 +89,12 @@ public class Customer {
         return phoneNumber;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getPostalCode() {
+        return postalCode;
     }
 
     public void setCreatedDateTime(Timestamp createdDateTime) {
@@ -154,10 +143,6 @@ public class Customer {
 
     public int getDivisionID() {
         return divisionID;
-    }
-
-    public static List<Customer> getCustomers() {
-        return customerArrayList;
     }
 
 

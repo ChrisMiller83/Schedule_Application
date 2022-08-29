@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.addCustomerController">
+<AnchorPane prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.customerController">
     <children>
-        <Label layoutX="149.0" layoutY="34.0" text="New Customer Information" textFill="WHITE">
+        <Label fx:id="mainHeader" layoutX="149.0" layoutY="34.0" text="New Customer Information" textFill="WHITE">
             <font>
-                <Font name="Bold" size="18"/>
+                <Font name="System Bold" size="18.0" />
             </font>
         </Label>
         <Label layoutX="20.0" layoutY="100.0" text="Customer ID:" textAlignment="CENTER">

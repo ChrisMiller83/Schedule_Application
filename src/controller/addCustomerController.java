@@ -58,26 +58,17 @@ public class addCustomerController implements Initializable {
     }
 
     public void saveCustomer(ActionEvent event) throws IOException {
-        Customer customer = new Customer(
-            Integer.parseInt(customerIdTF.getText()),
-            customerNameTF.getText(),
-            phoneNumTF.getText(),
-            addressTF.getText(),
-            cityTF.getText(),
-            zipCodeTF.getText(),
-            countryComboBox.getSelectionModel().getSelectedItem(),
-            stateProvinceComboBox.getSelectionModel().getSelectedItem());
-        if (name.isEmpty() || phone.isEmpty() || address.isEmpty() || city.isEmpty() || zip.isEmpty() || selectedCountry == null || selectedDivision == null) {
-            emptyField();
-            return;
-        }
+//        Customer customer = new Customer(
+//            Integer.parseInt(customerIdTF.getText()),
+//            customerNameTF.getText(),
+//            phoneNumTF.getText(),
+//            addressTF.getText(),
+//            cityTF.getText(),
+//            zipCodeTF.getText(),
+//            countryComboBox.getSelectionModel().getSelectedItem(),
+//            stateProvinceComboBox.getSelectionModel().getSelectedItem());
 
-        if (zip.length() > 5) {
-            errorWindow(2);
-            return;
 
-        }
-//            ChangeView.changeView(event, "customersView.fxml");
         Parent root = FXMLLoader.load((getClass().getResource("/view/customersView.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

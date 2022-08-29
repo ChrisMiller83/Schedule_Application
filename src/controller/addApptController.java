@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.*;
-import java.time.chrono.ChronoLocalDate;
-import java.util.Date;
 import java.util.ResourceBundle;
+
+import static java.time.LocalTime.parse;
 
 public class addApptController implements Initializable {
     private ZonedDateTime startTimeConversion;
@@ -63,7 +63,7 @@ public class addApptController implements Initializable {
     }
 
     private void setCustomerCB() {
-        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList(Customer.getCustomers());
+        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList(CustomerDAO.loadAllCustomers());
         customerCB.setItems(customerObservableList);
     }
 
@@ -122,40 +122,43 @@ public class addApptController implements Initializable {
 
     @FXML
     void saveAppointment(ActionEvent actionEvent) throws IOException {
-        try {
-            AppointmentDAO.addAppointment(
-            Integer.parseInt(appointmentIdTF.getText()),
-            titleTF.getText(),
-            descriptionTA.getText(),
-            typeCB.getValue(),
-            locationTF.getText(),
-            timestamp(startDatePicker.getValue(), startTimeCB.getSelectionModel().getSelectedItem()),
-            timestamp(endDatePicker.getValue(), endTimeCB.getSelectionModel().getSelectedItem()),
-            LocalDateTime.now(),
-            userTF.getText(),
-            LocalDateTime.now(),
-            userTF.getText(),
-            customerCB.getValue().getCustomerId(),
-            User.currentUser.getUserId(),
-            contactCB.getValue().getContactId());
+        boolean validAppointment = apptIsValid(
+                titleTF.getText(),
+                descriptionTA.getText(),
+                typeCB.getValue(),
+                locationTF.getText(),
+                startDatePicker.getValue(),
+                startTimeCB.getSelectionModel().getSelectedItem(),
+                endDatePicker.getValue(),
+                endTimeCB.getSelectionModel().getSelectedItem(),
+                customerCB.getValue(),
+                contactCB.getValue(),
+                userTF.getText()
+        );
+        if (validAppointment) {
+            try {
+                AppointmentDAO.addAppointment(new Appointment(
+                        Integer.parseInt(appointmentIdTF.getText()),
+                        titleTF.getText(),
+                        descriptionTA.getText(),
+                        typeCB.getValue(),
+                        locationTF.getText(),
+                        timestamp(startDatePicker.getValue(), startTimeCB.getSelectionModel().getSelectedItem()),
+                        timestamp(endDatePicker.getValue(), endTimeCB.getSelectionModel().getSelectedItem()),
+                        Timestamp.valueOf(LocalDateTime.now()),
+                        userTF.getText(),
+                        Timestamp.valueOf(LocalDateTime.now()),
+                        userTF.getText(),
+                        customerCB.getValue().getCustomerId(),
+                        User.currentUser.getUserId(),
+                        contactCB.getValue().getContactId()));
 
-            //TODO add check for overlapping appointments
+                //TODO add check for overlapping appointments
 
-            if (!customerCB.hasProperties()) {
-                Messages.emptyField();
-                return;
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-//            AppointmentDAO.addAppointment(apptId,title, description, location, type, startDateTime, endDateTime, createdDate,
-//                    createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
-//            Appointment appointment = new Appointment(apptId, title, description, location, type, startDateTime, endDateTime,
-//                    createdDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
-//            AppointmentDAO.addAppointment(appointment);
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
 
@@ -167,7 +170,7 @@ public class addApptController implements Initializable {
         stage.show();
     }
 
-    private boolean apptIsValid() {
+    private boolean apptIsValid(String text, String descriptionTAText, String value, String locationTFText, LocalDate startDatePickerValue, LocalTime selectedItem, LocalDate endDatePickerValue, LocalTime item, Customer customerCBValue, Contact contactCBValue, String userTFText) {
         if (titleTF.getText().isEmpty()) {
             Messages.emptyField(1);
             return false;
@@ -227,8 +230,7 @@ public class addApptController implements Initializable {
             return false;
         }
 
-        startDateTimeConversion = timestamp(startDatePicker.getValue(), startTimeCB.getSelectionModel().getSelectedItem()).compareTo(timeConversion());
-                timestamp(endDatePicker.getValue(), endTimeCB.getSelectionModel().getSelectedItem()));
+
 
         return true;
     }

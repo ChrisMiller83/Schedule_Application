@@ -1,5 +1,7 @@
 package DAO;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Country;
 import model.Customer;
 
@@ -39,29 +41,33 @@ public class CustomerDAO {
     public static final String QUERY_ALL_CUSTOMER_NAMES = "SELECT " + TABLE_CUSTOMERS + '.' + COLUMN_CUSTOMER_NAME +
             " FROM " + TABLE_CUSTOMERS;
 
-    public static void loadAllCustomers() {
+    public static ObservableList<Customer> loadAllCustomers() {
+        ObservableList<Customer> customers = FXCollections.observableArrayList();
+
         try {
             PreparedStatement loadCustomers = DBConnection.getConnection().prepareStatement(QUERY_ALL_CUSTOMERS);
             ResultSet result = loadCustomers.executeQuery();
 
             while (result.next()) {
-                int customerId = result.getInt(COLUMN_CUSTOMER_ID);
-                String customerName = result.getString(COLUMN_CUSTOMER_NAME);
-                String address = result.getString(COLUMN_CUSTOMER_ADDRESS);
-                String zipCode = result.getString(COLUMN_CUSTOMER_POSTAL_CODE);
-                String phoneNumber = result.getString(COLUMN_CUSTOMER_PHONE);
-                Timestamp createdDate = result.getTimestamp(COLUMN_CUSTOMER_CREATED_DATE);
-                String createdBy = result.getString(COLUMN_CUSTOMER_CREATED_BY);
-                Timestamp lastUpdated = result.getTimestamp(COLUMN_CUSTOMER_LAST_UPDATE);
-                String lastUpdatedBy = result.getString(COLUMN_CUSTOMER_LAST_UPDATED_BY);
-                int divisionId = result.getInt(COLUMN_CUSTOMER_DIVISION_ID);
-                Customer customer = new Customer(customerId, customerName, address, zipCode, phoneNumber,
-                        createdDate, createdBy, lastUpdated, lastUpdatedBy, divisionId);
-                Customer.customerArrayList.add(customer);
+                Customer newCustomer = new Customer(
+                result.getInt(COLUMN_CUSTOMER_ID),
+                result.getString(COLUMN_CUSTOMER_NAME),
+                result.getString(COLUMN_CUSTOMER_ADDRESS),
+                result.getString(COLUMN_CUSTOMER_POSTAL_CODE),
+                result.getString(COLUMN_CUSTOMER_PHONE),
+                result.getTimestamp(COLUMN_CUSTOMER_CREATED_DATE),
+                result.getString(COLUMN_CUSTOMER_CREATED_BY),
+                result.getTimestamp(COLUMN_CUSTOMER_LAST_UPDATE),
+                result.getString(COLUMN_CUSTOMER_LAST_UPDATED_BY),
+                result.getInt(COLUMN_CUSTOMER_DIVISION_ID)
+                );
+                customers.add(newCustomer);
             }
+            return customers;
             // TODO: add customer report
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
