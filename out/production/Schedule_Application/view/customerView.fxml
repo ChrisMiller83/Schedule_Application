@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.CustomerView"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.customerController">
+   <top>
+      <Label text="Customers" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </Label>
+   </top>
+   <bottom>
+      <ButtonBar BorderPane.alignment="CENTER">
+        <buttons>
+          <Button fx:id="addCustomerBtn" mnemonicParsing="false" onAction="#toAddCustomer" text="ADD CUSTOMER" />
+            <Button fx:id="updateCustomerBtn" mnemonicParsing="false" onAction="#toUpdateCustomer" text="UPDATE CUSTOMER" />
+            <Button fx:id="deleteCustomerBtn" mnemonicParsing="false" onAction="#deleteCustomer" text="DELETE CUSTOMER" />
+            <Button fx:id="mainMenuBtn" mnemonicParsing="false" onAction="#toMainMenu" text="MAIN MENU" />
+        </buttons>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </ButtonBar>
+   </bottom>
+   <center>
+      <TableView fx:id="customersTable" style="-fx-border-color: BLUE;" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="Customer_ID" />
+          <TableColumn fx:id="customerNameCol" prefWidth="75.0" text="Customer_Name" />
+            <TableColumn fx:id="addressCol" prefWidth="75.0" text="Address" />
+            <TableColumn fx:id="postalCodeCol" prefWidth="75.0" text="Postal_Code" />
+            <TableColumn fx:id="phoneCol" prefWidth="75.0" text="Phone" />
+            <TableColumn fx:id="createDateCol" prefWidth="75.0" text="Create_Date" />
+            <TableColumn fx:id="createdByCol" prefWidth="75.0" text="Created_By" />
+            <TableColumn fx:id="lastUpdateCol" prefWidth="75.0" text="Last_Update" />
+            <TableColumn fx:id="lastUpdatedByCol" prefWidth="75.0" text="Last_Updated_By" />
+            <TableColumn fx:id="countryIdCol" prefWidth="75.0" text="Country_ID" />
+        </columns>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </TableView>
+   </center>
+</BorderPane>

@@ -7,20 +7,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Country;
-import model.FirstLevelDivision;
+import model.Division;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static utilities.Messages.*;
 
 public class addCustomerController implements Initializable {
 
@@ -32,7 +29,7 @@ public class addCustomerController implements Initializable {
     private String state;
     private String fullAddress;
     private Country selectedCountry;
-    private FirstLevelDivision selectedDivision;
+    private Division selectedDivision;
 
 
     @FXML private TextField customerIdTF;

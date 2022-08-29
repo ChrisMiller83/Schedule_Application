@@ -215,38 +215,40 @@ public class AppointmentDAO {
         }
     }
 
-//    public static boolean addAppointment(int apptId, String title, String description, String location, String type, Timestamp startDateTime,
-//                                         Timestamp endDateTime, LocalDateTime createdDate, String createdBy, LocalDateTime lastUpdated,
-//                                         String lastUpdatedBy, int customerId, int userId, int contactId) {
-//
-//            try {
-//               PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);
-//               addAppointments.setInt(INDEX_APPT_ID, apptId);
-//               addAppointments.setString(INDEX_APPT_TITLE, title);
-//               addAppointments.setString(INDEX_APPT_DESCRIPTION, description);
-//               addAppointments.setString(INDEX_APPT_LOCATION, location);
-//               addAppointments.setString(INDEX_APPT_TYPE, type);
-//               addAppointments.setTimestamp(INDEX_APPT_START, startDateTime);
-//               addAppointments.setTimestamp(INDEX_APPT_END, endDateTime);
-//               addAppointments.setTimestamp(INDEX_APPT_CREATED_DATE, Timestamp.valueOf(createdDate));
-//               addAppointments.setString(INDEX_APPT_CREATED_BY, createdBy);
-//               addAppointments.setTimestamp(INDEX_APPT_LAST_UPDATE, Timestamp.valueOf(lastUpdated));
-//               addAppointments.setString(INDEX_APPT_LAST_UPDATED_BY, lastUpdatedBy);
-//               addAppointments.setInt(INDEX_APPT_CUSTOMER_ID, customerId);
-//               addAppointments.setInt(INDEX_APPT_USER_ID, userId);
-//               addAppointments.setInt(INDEX_APPT_CONTACT_ID, contactId);
-//
-//               ResultSet result = addAppointments.executeQuery();
-//
-//               return true;
-//
-//               // TODO: add report statement
-//
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//                return false;
-//            }
-//    }
+    public static boolean addAppointment(int apptId, String title, String description, String location, String type, Timestamp startDateTime,
+                                         Timestamp endDateTime, LocalDateTime createdDate, String createdBy, LocalDateTime lastUpdated,
+                                         String lastUpdatedBy, int customerId, int userId, int contactId) {
+
+
+
+            try {
+               PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);
+               addAppointments.setInt(INDEX_APPT_ID, apptId);
+               addAppointments.setString(INDEX_APPT_TITLE, title);
+               addAppointments.setString(INDEX_APPT_DESCRIPTION, description);
+               addAppointments.setString(INDEX_APPT_LOCATION, location);
+               addAppointments.setString(INDEX_APPT_TYPE, type);
+               addAppointments.setTimestamp(INDEX_APPT_START, startDateTime);
+               addAppointments.setTimestamp(INDEX_APPT_END, endDateTime);
+               addAppointments.setTimestamp(INDEX_APPT_CREATED_DATE, Timestamp.valueOf(createdDate));
+               addAppointments.setString(INDEX_APPT_CREATED_BY, createdBy);
+               addAppointments.setTimestamp(INDEX_APPT_LAST_UPDATE, Timestamp.valueOf(lastUpdated));
+               addAppointments.setString(INDEX_APPT_LAST_UPDATED_BY, lastUpdatedBy);
+               addAppointments.setInt(INDEX_APPT_CUSTOMER_ID, customerId);
+               addAppointments.setInt(INDEX_APPT_USER_ID, userId);
+               addAppointments.setInt(INDEX_APPT_CONTACT_ID, contactId);
+
+               ResultSet result = addAppointments.executeQuery();
+
+               return true;
+
+               // TODO: add report statement
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+    }
 
     public static void updateAppointment(Appointment appointment) {
         try {

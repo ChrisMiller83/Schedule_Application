@@ -24,10 +24,11 @@ public class Customer {
     private String lastUpdatedBy;
     private int divisionID;
 
+    public static List<Customer> customerArrayList = new ArrayList<>();
 
 
-    public Customer() {
-    }
+
+
 
     /**
      * Customer constructor
@@ -55,6 +56,10 @@ public class Customer {
         this.lastUpdated = lastUpdated;
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionID = divisionID;
+    }
+
+    public Customer(String customerName) {
+        this.customerName = customerName;
     }
 
 
@@ -145,10 +150,14 @@ public class Customer {
         return divisionID;
     }
 
+    public static List<Customer> getCustomers() {
+        return customerArrayList;
+    }
+
 
 
     @Override
     public String toString() {
-        return customerId + ": " + customerName;
+        return this.getCustomerName();
     }
 }

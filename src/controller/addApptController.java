@@ -19,6 +19,7 @@ import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.ResourceBundle;
@@ -63,19 +64,20 @@ public class addApptController implements Initializable {
     }
 
     private void setCustomerCB() {
-        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList(CustomerDAO.loadAllCustomers());
+        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList(Customer.getCustomers());
         customerCB.setItems(customerObservableList);
-    }
-
-    private void setUserIdTF() {
-        userTF.setText(User.currentUser.getUserName());
-        userTF.setDisable(true);
     }
 
     private void setContactCB() {
         ObservableList<Contact> contactObservableList = FXCollections.observableArrayList(Contact.getContacts());
         contactCB.setItems(contactObservableList);
     }
+    private void setUserIdTF() {
+        userTF.setText(User.currentUser.getUserName());
+        userTF.setDisable(true);
+    }
+
+
 
 //    private void setApptID() {
 //        int max_id = 1;
@@ -131,8 +133,8 @@ public class addApptController implements Initializable {
                 startTimeCB.getSelectionModel().getSelectedItem(),
                 endDatePicker.getValue(),
                 endTimeCB.getSelectionModel().getSelectedItem(),
-                customerCB.getValue(),
-                contactCB.getValue(),
+                customerCB.getSelectionModel().getSelectedItem(),
+                contactCB.getSelectionModel().getSelectedItem(),
                 userTF.getText()
         );
         if (validAppointment) {
@@ -212,13 +214,14 @@ public class addApptController implements Initializable {
             return false;
         }
 
-        if (startDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
-                endDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
-                startTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now())) ||
-                endTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now()))) {
-            Messages.checkApptDates();
-            return false;
-        }
+        // TODO: fix: throws error even if date is in the future
+//        if (startDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
+//                endDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
+//                startTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now())) ||
+//                endTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now()))) {
+//            Messages.checkApptDates();
+//            return false;
+//        }
 
         if (startTimeCB.getValue().isAfter(endTimeCB.getValue())) {
             Messages.checkStartTime();

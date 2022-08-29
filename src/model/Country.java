@@ -140,7 +140,7 @@ public class Country {
     }
 
     public static int getCountryId(int index) {
-        for (FirstLevelDivision divisions : FirstLevelDivision.getDivisions()) {
+        for (Division divisions : Division.getDivisions()) {
             if (index == divisions.getDivisionId()) {
                 return divisions.getCountryId();
             }

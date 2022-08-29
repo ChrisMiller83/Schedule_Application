@@ -1,14 +1,13 @@
 package model;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * First Level Division Class
  */
-public class FirstLevelDivision {
+public class Division {
     private int divisionId;
     private String division;
     private Timestamp createdDate;
@@ -16,16 +15,16 @@ public class FirstLevelDivision {
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
     private int countryId;
-    public static List<FirstLevelDivision> divisionArrayList = new ArrayList<>();
+    public static List<Division> divisionArrayList = new ArrayList<>();
 
     /**
-     * Default Empty FirstLevelDivision Constructor
+     * Default Empty Division Constructor
      */
-    public FirstLevelDivision(){
+    public Division(){
     }
 
     /**
-     * FirstLevelDivision Constructor
+     * Division Constructor
      * @param divisionId division/state/province id number
      * @param division state/province name
      * @param createdDate date and time state/province was created
@@ -34,7 +33,7 @@ public class FirstLevelDivision {
      * @param lastUpdatedBy user's name who last updated/changed state/province info
      * @param countryId country id number of the state/province
      */
-    public FirstLevelDivision(int divisionId, String division, Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int countryId) {
+    public Division(int divisionId, String division, Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int countryId) {
         this.divisionId = divisionId;
         this.division = division;
         this.createdDate = createdDate;
@@ -100,7 +99,7 @@ public class FirstLevelDivision {
         return countryId;
     }
 
-    public static List<FirstLevelDivision> getDivisions() {
+    public static List<Division> getDivisions() {
         return divisionArrayList;
     }
 

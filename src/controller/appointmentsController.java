@@ -61,7 +61,7 @@ public class appointmentsController implements Initializable {
     @FXML
     void setSelectedView(ActionEvent event) throws SQLException {
         if(allApptRBtn.isSelected()) {
-            appointments = (ObservableList<Appointment>) AppointmentDAO.getAllAppts();
+            appointments = AppointmentDAO.getAllAppts();
             appointmentsTableView.setItems(appointments);
             appointmentsTableView.refresh();
         } else if (selectedView.getSelectedToggle().equals(weeklyApptRBtn)) {
