@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.customerController">
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.addCustomerController">
     <children>
-        <Label fx:id="mainHeader" layoutX="149.0" layoutY="34.0" text="New Customer Information" textFill="WHITE">
+        <Label fx:id="mainHeader" alignment="CENTER" layoutX="72.0" layoutY="30.0" text="New Customer Information" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
@@ -19,31 +17,31 @@
                 <Font size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="customerIdTF" editable="false" layoutX="125.0" layoutY="95.0" prefHeight="25.0" prefWidth="360.0" promptText="Auto-Generated" />
+        <TextField fx:id="customerIdTF" editable="false" layoutX="150.0" layoutY="95.0" prefHeight="25.0" prefWidth="150.0" promptText="Auto-Generated" />
         <Label layoutX="20.0" layoutY="150.0" text="Customer Name:" textAlignment="CENTER">
             <font>
                 <Font size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="customerNameTF" layoutX="125.0" layoutY="145.0" prefHeight="25.0" prefWidth="360.0" promptText="Name" />
+        <TextField fx:id="customerNameTF" layoutX="150.0" layoutY="145.0" prefHeight="25.0" prefWidth="150.0" promptText="Name" />
         <Label layoutX="20.0" layoutY="200.0" text="Phone Number:" textAlignment="CENTER">
             <font>
                 <Font size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="phoneNumTF" layoutX="125.0" layoutY="195.0" prefHeight="25.0" prefWidth="360.0" promptText="111-111-1111" />
+        <TextField fx:id="phoneNumTF" layoutX="150.0" layoutY="195.0" prefHeight="25.0" prefWidth="150.0" promptText="111-111-1111" />
         <Label layoutX="20.0" layoutY="250.0" text="Address:" textAlignment="CENTER">
             <font>
                 <Font size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="addressTF" layoutX="125.0" layoutY="245.0" prefHeight="25.0" prefWidth="360.0" promptText="123 ABC St." />
+        <TextField fx:id="addressTF" layoutX="150.0" layoutY="245.0" prefHeight="25.0" prefWidth="150.0" promptText="123 ABC St." />
         <Label layoutX="20.0" layoutY="300.0" text="City:">
             <font>
                 <Font size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="cityTF" layoutX="125.0" layoutY="295.0" prefHeight="28.0" prefWidth="360.0" promptText="City">
+        <TextField fx:id="cityTF" layoutX="150.0" layoutY="295.0" prefHeight="28.0" prefWidth="150.0" promptText="City">
             <font>
                 <Font size="14.0" />
             </font>
@@ -53,34 +51,31 @@
                 <Font size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="postalCodeTF" layoutX="125.0" layoutY="345.0" prefHeight="25.0" prefWidth="360.0" promptText="11111" />
-        <Label layoutX="20.0" layoutY="400.0" text="State:">
+        <TextField fx:id="postalCodeTF" layoutX="150.0" layoutY="345.0" prefHeight="25.0" prefWidth="150.0" promptText="11111" />
+        <Label layoutX="20.0" layoutY="400.0" text="Country" textAlignment="CENTER">
             <font>
                 <Font size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="stateTF" layoutX="125.0" layoutY="395.0" prefHeight="25.0" prefWidth="360.0" promptText="NY" />
-        <Label layoutX="20.0" layoutY="450.0" text="Country" textAlignment="CENTER">
+        <Label layoutX="20.0" layoutY="450.0" text="State /  Province" textAlignment="CENTER">
             <font>
                 <Font size="14.0" />
             </font>
         </Label>
-        <Label layoutX="20.0" layoutY="500.0" text="State /  Province" textAlignment="CENTER">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <Button fx:id="cancelBtn" layoutX="150.0" layoutY="550.0" mnemonicParsing="false" onAction="#cancelToCustomer" style="-fx-background-color: red;" text="Cancel" textFill="WHITE">
+        <Button fx:id="cancelBtn" layoutX="150.0" layoutY="490.0" mnemonicParsing="false" onAction="#cancelToCustomer" style="-fx-background-color: red;" text="Cancel" textFill="WHITE">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button fx:id="saveBtn" layoutX="300.0" layoutY="550.0" mnemonicParsing="false" onAction="#saveCustomer" style="-fx-background-color: Green;" text="Save" textFill="WHITE">
+        <Button fx:id="saveBtn" layoutX="250.0" layoutY="490.0" mnemonicParsing="false" onAction="#saveCustomer" style="-fx-background-color: Green;" text="Save" textFill="WHITE">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-        <ComboBox fx:id="countryComboBox" layoutX="125.0" layoutY="445.0" prefWidth="200.0" promptText="Select a Country" />
-        <ComboBox fx:id="stateProvinceComboBox" layoutX="125.0" layoutY="495.0" prefWidth="200.0" promptText="Select a State / Province" />
+        <ComboBox fx:id="countryComboBox" layoutX="150.0" layoutY="395.0" onAction="#selectDivision" prefWidth="150.0" promptText="Select a Country" />
+        <ComboBox fx:id="divisionComboBox" layoutX="150.0" layoutY="445.0" prefWidth="150.0" promptText="Select a State / Province" />
     </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </AnchorPane>

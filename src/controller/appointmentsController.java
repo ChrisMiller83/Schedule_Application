@@ -1,10 +1,7 @@
 package controller;
 
 import DAO.AppointmentDAO;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,10 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.ZonedDateTime;
-import java.time.temporal.IsoFields;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
 public class appointmentsController implements Initializable {
 
@@ -77,7 +71,7 @@ public class appointmentsController implements Initializable {
 
 
     public void toAddApptView(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load((getClass().getResource("/view/addApptView.fxml")));
+        Parent root = FXMLLoader.load((getClass().getResource("/view/createApptView.fxml")));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);

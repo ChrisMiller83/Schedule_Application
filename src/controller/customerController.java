@@ -14,15 +14,18 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
+import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class customerController implements Initializable {
 
+    private static Customer selectedCustomer;
 
     @FXML private Button addCustomerBtn;
     @FXML private Button updateCustomerBtn;
@@ -41,6 +44,7 @@ public class customerController implements Initializable {
     @FXML private TableColumn<Customer, Integer> countryIdCol;
 
     public void toUpdateCustomer(ActionEvent actionEvent) throws IOException {
+        selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
         Parent root = FXMLLoader.load((getClass().getResource("/view/updateCustomerView.fxml")));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -49,7 +53,7 @@ public class customerController implements Initializable {
     }
 
     public void toAddCustomer(ActionEvent actionEvent) throws IOException{
-        Parent root = FXMLLoader.load((getClass().getResource("/view/addCustomerView.fxml")));
+        Parent root = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/view/addCustomerView.fxml"))));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -58,6 +62,17 @@ public class customerController implements Initializable {
 
     public void deleteCustomer(ActionEvent actionEvent) {
 
+        selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+        if(selectedCustomer == null) {
+            Messages.selectACustomerToDelete();
+            return;
+        } else {
+            boolean deleteConfirm = Messages.deleteConfirmation(selectedCustomer.getCustomerName());
+            if(deleteConfirm) {
+                CustomerDAO.deleteCustomer(selectedCustomer.getCustomerId());
+                Customer.deleteCustomer(selectedCustomer);
+            }
+        }
     }
 
     public void toMainMenu(ActionEvent actionEvent) throws IOException{
@@ -71,8 +86,9 @@ public class customerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            ObservableList<Customer> customers = CustomerDAO.loadAllCustomers();
-            customersTable.setItems(customers);
+            //ObservableList<Customer> customers = CustomerDAO.loadAllCustomers();
+
+            customersTable.setItems(Customer.getAllCustomers());
             customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
             addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
@@ -88,5 +104,8 @@ public class customerController implements Initializable {
         }
 
 
+    }
+
+    public void cancelToCustomer(ActionEvent event) {
     }
 }

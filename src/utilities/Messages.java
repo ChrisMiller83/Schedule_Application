@@ -1,9 +1,12 @@
 package utilities;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import model.Appointment;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class Messages {
 
@@ -99,7 +102,7 @@ public class Messages {
 
     public static void checkStartTime() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("!! ERROR CHECK YOUR STARt TIME");
+        alert.setTitle("!! ERROR CHECK YOUR START TIME");
         alert.setContentText("You start time can not be after your end time.");
         alert.showAndWait();
     }
@@ -109,6 +112,28 @@ public class Messages {
         alert.setTitle("!! ERROR CHECK YOUR STARt TIME");
         alert.setContentText("You end time can not be before your start time.");
         alert.showAndWait();
+    }
+
+    public static void selectACustomerToUpdate() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("!! Missing Customer TO Update");
+        alert.setContentText("Please select a customer to update first.");
+        alert.showAndWait();
+    }
+
+    public static void selectACustomerToDelete() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("!! Missing Customer TO Delete");
+        alert.setContentText("Please select a customer to delete first.");
+        alert.showAndWait();
+    }
+
+    public static boolean deleteConfirmation(String itemToDelete) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("!! DELETE CONFORMATION !!");
+        alert.setContentText("Delete: " + itemToDelete);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
     }
 
     public static void errorWindow (int number) {

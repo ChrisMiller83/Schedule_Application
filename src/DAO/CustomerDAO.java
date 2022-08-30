@@ -4,12 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
 import model.Division;
-import model.User;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -28,6 +24,7 @@ public class CustomerDAO {
     public static final String COLUMN_CUSTOMER_LAST_UPDATE = "Last_Update";
     public static final String COLUMN_CUSTOMER_LAST_UPDATED_BY = "Last_Updated_By";
     public static final String COLUMN_CUSTOMER_DIVISION_ID = "Division_ID";
+    public static final String COLUMN_CUSTOMER_COUNTRY_ID = "Country_ID";
     public static final int INDEX_CUSTOMER_ID = 1;
     public static final int INDEX_CUSTOMER_NAME = 2;
     public static final int INDEX_CUSTOMER_ADDRESS = 3;
@@ -44,11 +41,7 @@ public class CustomerDAO {
     public static final String COUNTRY_TABLE = "countries";
 
 
-    public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS +
-            " AS customer INNER JOIN " + FLD_TABLE + " AS divisions ON " + CONTACT_TABLE +
-            "." + COLUMN_CUSTOMER_DIVISION_ID +
-            " INNER JOIN " + CONTACT_TABLE + " AS country ON " + COUNTRY_TABLE + ".Country_ID = " +
-            FLD_TABLE + ".DIVISION_ID";
+    public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS;
 
     public static final String CREATE_CUSTOMER = "INSERT INTO " + TABLE_CUSTOMERS + "( " +
             COLUMN_CUSTOMER_ID + ", " + COLUMN_CUSTOMER_NAME + ", " + COLUMN_CUSTOMER_ADDRESS +
@@ -67,33 +60,36 @@ public class CustomerDAO {
             " WHERE " + COLUMN_CUSTOMER_ID + " = ?";
 
 
-    public static ObservableList<Customer> loadAllCustomers() {
-        ObservableList<Customer> customers = FXCollections.observableArrayList();
+    public static void loadAllCustomers() {
+//        ObservableList<Customer> customers = FXCollections.observableArrayList();
+//        Customer.getAllCustomers();
 
         try {
             PreparedStatement loadCustomers = DBConnection.getConnection().prepareStatement(QUERY_ALL_CUSTOMERS);
             ResultSet result = loadCustomers.executeQuery();
 
             while (result.next()) {
-                Customer newCustomer = new Customer(
-                result.getInt(COLUMN_CUSTOMER_ID),
-                result.getString(COLUMN_CUSTOMER_NAME),
-                result.getString(COLUMN_CUSTOMER_ADDRESS),
-                result.getString(COLUMN_CUSTOMER_POSTAL_CODE),
-                result.getString(COLUMN_CUSTOMER_PHONE),
-                result.getTimestamp(COLUMN_CUSTOMER_CREATED_DATE),
-                result.getString(COLUMN_CUSTOMER_CREATED_BY),
-                result.getTimestamp(COLUMN_CUSTOMER_LAST_UPDATE),
-                result.getString(COLUMN_CUSTOMER_LAST_UPDATED_BY),
-                result.getInt(COLUMN_CUSTOMER_DIVISION_ID)
-                );
-                customers.add(newCustomer);
+                int customerId = result.getInt(COLUMN_CUSTOMER_ID);
+                String customerName = result.getString(COLUMN_CUSTOMER_NAME);
+                String address = result.getString(COLUMN_CUSTOMER_ADDRESS);
+                String postalCode = result.getString(COLUMN_CUSTOMER_POSTAL_CODE);
+                String phoneNumber = result.getString(COLUMN_CUSTOMER_PHONE);
+                Timestamp createDate = result.getTimestamp(COLUMN_CUSTOMER_CREATED_DATE);
+                String createdBy = result.getString(COLUMN_CUSTOMER_CREATED_BY);
+                Timestamp lastUpdate = result.getTimestamp(COLUMN_CUSTOMER_LAST_UPDATE);
+                String lastUpdatedBy = result.getString(COLUMN_CUSTOMER_LAST_UPDATED_BY);
+                int divisionId = result.getInt(COLUMN_CUSTOMER_DIVISION_ID);
+                int customerCountry = result.getInt(COLUMN_CUSTOMER_COUNTRY_ID);
+                Customer customer = new Customer(customerId, customerName, address, postalCode, phoneNumber,
+                        createDate, createdBy, lastUpdate, lastUpdatedBy, divisionId, customerCountry);
+
+                Customer.addCustomer(customer);
+
             }
-            return customers;
             // TODO: add customer report
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            //return null;
         }
     }
 
@@ -187,7 +183,7 @@ public class CustomerDAO {
                 addCustomers.setInt(INDEX_CUSTOMER_DIVISION_ID, Integer.parseInt(COLUMN_CUSTOMER_DIVISION_ID));
 
                 customerObservableList.add((Customer) addCustomers);
-                Customer.customerArrayList = customerObservableList;
+                //Customer.customerArrayList = customerObservableList;
             }
 
         } catch (SQLException e) {

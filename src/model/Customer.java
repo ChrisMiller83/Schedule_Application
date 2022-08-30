@@ -2,17 +2,21 @@ package model;
 
 import DAO.CountryDAO;
 import DAO.DivisionDAO;
+import com.mysql.cj.protocol.WatchableStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.swing.plaf.IconUIResource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Customer model class.
  */
 public class Customer {
+    private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
     private int customerId;
     private String customerName;
     private String address;
@@ -23,10 +27,7 @@ public class Customer {
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
     private int divisionID;
-
-    public static List<Customer> customerArrayList = new ArrayList<>();
-
-
+    private int customerCountry;
 
 
 
@@ -42,10 +43,12 @@ public class Customer {
      * @param lastUpdated date and time customer info was updated or changed
      * @param lastUpdatedBy user's name that last updated the customer info
      * @param divisionID state id code
+     * @param customerCountry countryID
      */
     public Customer(int customerId, String customerName, String address,
                     String phoneNumber, String postalCode, Timestamp createdDate,
-                    String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int divisionID) {
+                    String createdBy, Timestamp lastUpdated, String lastUpdatedBy,
+                    int divisionID, int customerCountry) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
@@ -56,12 +59,14 @@ public class Customer {
         this.lastUpdated = lastUpdated;
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionID = divisionID;
+        this.customerCountry = customerCountry;
     }
 
-    public Customer(int i, String customerNameTFText, String addressTFText, String postalCodeTFText, String text, String customerName, int divisionId, int countryId) {
-        this.customerName = customerName;
+    public Customer(int i, String text, String addressTFText, String postalCodeTFText, String phoneNumTFText, int countryId, int countryDivision) {
     }
 
+
+    public static AtomicInteger getUniqueCustomerId = new AtomicInteger(allCustomers.size() + 1);
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
@@ -150,8 +155,35 @@ public class Customer {
         return divisionID;
     }
 
-    public static List<Customer> getCustomers() {
-        return customerArrayList;
+    public int getCustomerCountry() {
+        return customerCountry;
+    }
+
+    public void setCustomerCountry(int customerCountry) {
+        this.customerCountry = customerCountry;
+    }
+
+    public static ObservableList<Customer> getAllCustomers() {
+        return allCustomers;
+    }
+
+    public static void addCustomer(Customer newCustomer) {
+        allCustomers.add(newCustomer);
+    }
+
+    public static void updateCustomer(int customerId, Customer newCustomer) {
+        for (int i = 0; i < allCustomers.size(); ++i) {
+            if (allCustomers.get(i).getCustomerId() == customerId) {
+                allCustomers.set(i, newCustomer);
+            }
+        }
+    }
+
+
+
+    public static boolean deleteCustomer(Customer selectedCustomer) {
+        allCustomers.remove(selectedCustomer);
+        return true;
     }
 
 

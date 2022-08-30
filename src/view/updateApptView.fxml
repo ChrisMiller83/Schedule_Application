@@ -8,80 +8,86 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="600.0" style="-fx-background-color: teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.updateAppointmentController">
-    <children>
-        <Label layoutX="203.0" layoutY="27.0" text="Update Appointment">
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<BorderPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.updateAppointmentController">
+    <top>
+        <Label text="Update Appointment" textAlignment="CENTER" BorderPane.alignment="CENTER">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="25.0" layoutY="75.0" text="Appointment ID">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <TextField fx:id="appointIdTF" editable="false" layoutX="150.0" layoutY="70.0" prefHeight="25.0" prefWidth="402.0" promptText="Auto-Generated" />
-        <Label layoutX="25.0" layoutY="125.0" text="Customer ID">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <ChoiceBox fx:id="customerIdChoiceBox" layoutX="150.0" layoutY="120.0" prefWidth="150.0" />
-        <Label layoutX="25.0" layoutY="175.0" text="User">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <ChoiceBox fx:id="userChoiceBox" layoutX="150.0" layoutY="170.0" prefWidth="150.0" />
-        <Label layoutX="25.0" layoutY="225.0" text="Title">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <TextField fx:id="titleTF" layoutX="150.0" layoutY="220.0" prefHeight="25.0" prefWidth="402.0" promptText="Enter Title" />
-        <Label layoutX="25.0" layoutY="275.0" text="Description">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <TextField fx:id="descriptionTF" layoutX="150.0" layoutY="270.0" prefHeight="25.0" prefWidth="402.0" promptText="Enter Description" />
-        <Label layoutX="25.0" layoutY="325.0" text="Location">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <TextField fx:id="locationTF" layoutX="150.0" layoutY="320.0" prefHeight="25.0" prefWidth="402.0" promptText="Enter Location" />
-        <Label layoutX="25.0" layoutY="375.0" text="Contact">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <ChoiceBox fx:id="contactChoiceBox" layoutX="150.0" layoutY="370.0" prefWidth="150.0" />
-        <Label layoutX="25.0" layoutY="425.0" text="Type">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <ChoiceBox fx:id="typeChoiceBox" layoutX="150.0" layoutY="422.0" prefWidth="150.0" />
-        <Label layoutX="25.0" layoutY="475.0" text="Date">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <DatePicker fx:id="datePicker" layoutX="150.0" layoutY="470.0" promptText="Select a date" />
-        <Label layoutX="25.0" layoutY="525.0" text="Start Time">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <ChoiceBox fx:id="startTimeChoiceBox" layoutX="150.0" layoutY="520.0" prefWidth="150.0" />
-        <Label layoutX="22.0" layoutY="575.0" text="End Time">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <ChoiceBox fx:id="endTimeChoiceBox" layoutX="150.0" layoutY="570.0" prefWidth="150.0" />
-        <Button fx:id="cancelBtn" layoutX="200.0" layoutY="625.0" mnemonicParsing="false" onAction="#cancelToAppointments" text="Cancel" />
-        <Button fx:id="saveBtn" layoutX="300.0" layoutY="625.0" mnemonicParsing="false" onAction="#updateAppointment" text="Save" />
-    </children>
-</AnchorPane>
+    </top>
+    <center>
+        <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <Label text="Appointment Id" />
+            <TextField fx:id="appointmentIdTF" editable="false" promptText="Auto Generated" GridPane.columnIndex="1" />
+            <Label text="Customer" GridPane.rowIndex="2" />
+            <ChoiceBox fx:id="customerCB" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Title" GridPane.rowIndex="3" />
+            <TextField fx:id="titleTF" promptText="Appointment Title" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Location" GridPane.rowIndex="4" />
+            <TextField fx:id="locationTF" promptText="Location of Meeting" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Type" GridPane.rowIndex="5" />
+            <ChoiceBox fx:id="typeCB" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label GridPane.columnIndex="2" />
+            <Label text="Contact" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ChoiceBox fx:id="contactCB" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label text="Start Date" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <DatePicker fx:id="startDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Label text="Start Time" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <ChoiceBox fx:id="startTimeCB" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Label text="End Date" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <DatePicker fx:id="endDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Label text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <ChoiceBox fx:id="endTimeCB" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Label text="Description" GridPane.rowIndex="6" />
+            <TextArea fx:id="descriptionTA" prefHeight="48.0" prefWidth="108.0" promptText="Brief Description of Appointment" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
+            <Label text="User" GridPane.rowIndex="1" />
+            <TextField fx:id="userTF" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER" spacing="50.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelToAppointments" style="-fx-background-color: RED; -fx-text-fill: WHITE; -fx-font-weight: BOLD;" text="Cancel">
+                <HBox.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </HBox.margin>
+            </Button>
+            <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#updateAppointment" style="-fx-background-color: GREEN; -fx-text-fill: WHITE; -fx-font-weight: BOLD;" text="Save">
+                <HBox.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </HBox.margin>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane>

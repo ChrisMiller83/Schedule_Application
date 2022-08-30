@@ -1,5 +1,9 @@
 package model;
 
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +19,7 @@ public class Division {
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
     private int countryId;
-    public static List<Division> divisionArrayList = new ArrayList<>();
+    private static ObservableList<Division> allDivisions = FXCollections.observableArrayList();
 
     /**
      * Default Empty Division Constructor
@@ -99,9 +103,20 @@ public class Division {
         return countryId;
     }
 
-    public static List<Division> getDivisions() {
-        return divisionArrayList;
+    public static List<Division> getDivisions () {
+        return allDivisions;
     }
+
+    public static int findCountryDivision(int index) {
+        for (Division division : allDivisions) {
+            if (index == division.getDivisionId()) {
+                return division.getCountryId();
+            }
+        }
+        return 0;
+    }
+
+
 
     @Override
     public String toString() {

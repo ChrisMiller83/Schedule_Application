@@ -55,7 +55,7 @@ public class DivisionDAO {
                         result.getString(COLUMN_DIVISION_LAST_UPDATED_BY),
                         result.getInt(COLUMN_DIVISION_COUNTRY_ID)
                 );
-                Division.divisionArrayList.add(newDivision);
+                divisions.add(newDivision);
             }
             return divisions;
             } catch (SQLException e) {
