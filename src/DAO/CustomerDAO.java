@@ -4,11 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
 import model.Division;
+import model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class CustomerDAO {
 
@@ -97,7 +100,8 @@ public class CustomerDAO {
     public static boolean addCustomer(int customerId, String name, String address, String postalCode,
                                       String phone, Timestamp createDate, String createdBy, Timestamp lastUpdate,
                                       String lastUpdatedBy, int divisionId) throws SQLException{
-        Division newDivision = DivisionDAO.getDivisionId(division);
+
+        Division newDivision = new Division();
 
         try {
             PreparedStatement addCustomers = DBConnection.getConnection().prepareStatement(CREATE_CUSTOMER);
@@ -109,9 +113,9 @@ public class CustomerDAO {
                 addCustomers.setString(INDEX_CUSTOMER_ADDRESS, COLUMN_CUSTOMER_ADDRESS);
                 addCustomers.setString(INDEX_CUSTOMER_POSTAL_CODE, COLUMN_CUSTOMER_POSTAL_CODE);
                 addCustomers.setString(INDEX_CUSTOMER_PHONE, COLUMN_CUSTOMER_PHONE);
-                addCustomers.setTimestamp(INDEX_CUSTOMER_CREATED_DATE, Timestamp.valueOf(COLUMN_CUSTOMER_CREATED_DATE));
+                addCustomers.setTimestamp(INDEX_CUSTOMER_CREATED_DATE, Timestamp.valueOf(LocalDateTime.now(ZoneId.of(COLUMN_CUSTOMER_CREATED_DATE))));
                 addCustomers.setString(INDEX_CUSTOMER_CREATED_BY, COLUMN_CUSTOMER_CREATED_BY);
-                addCustomers.setTimestamp(INDEX_CUSTOMER_LAST_UPDATE, Timestamp.valueOf(COLUMN_CUSTOMER_LAST_UPDATE));
+                addCustomers.setTimestamp(INDEX_CUSTOMER_LAST_UPDATE, Timestamp.valueOf(LocalDateTime.now(ZoneId.of(COLUMN_CUSTOMER_LAST_UPDATE))));
                 addCustomers.setString(INDEX_CUSTOMER_LAST_UPDATED_BY, COLUMN_CUSTOMER_LAST_UPDATED_BY);
                 addCustomers.setInt(INDEX_CUSTOMER_DIVISION_ID, Integer.parseInt(COLUMN_CUSTOMER_DIVISION_ID));
             }
@@ -125,7 +129,7 @@ public class CustomerDAO {
     public static boolean updateCustomer(int customerId, String name, String address, String postalCode,
                                       String phone, Timestamp lastUpdate,
                                       String lastUpdatedBy, int divisionId) throws SQLException{
-        Division newDivision = DivisionDAO.getDivsionId(division);
+        Division newDivision = new Division();
 
         try {
             PreparedStatement addCustomers = DBConnection.getConnection().prepareStatement(UPDATE_CUSTOMER);
@@ -163,12 +167,33 @@ public class CustomerDAO {
     }
 
 
+    public static void addCustomer(Customer customer) {
+        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList();
+        try {
+            PreparedStatement addCustomers = DBConnection.getConnection().prepareStatement(CREATE_CUSTOMER);
+            ResultSet result = addCustomers.executeQuery();
 
+            while (result.next()) {
 
+                addCustomers.setInt(INDEX_CUSTOMER_ID, Integer.parseInt(COLUMN_CUSTOMER_ID));
+                addCustomers.setString(INDEX_CUSTOMER_NAME, COLUMN_CUSTOMER_NAME);
+                addCustomers.setString(INDEX_CUSTOMER_ADDRESS, COLUMN_CUSTOMER_ADDRESS);
+                addCustomers.setString(INDEX_CUSTOMER_POSTAL_CODE, COLUMN_CUSTOMER_POSTAL_CODE);
+                addCustomers.setString(INDEX_CUSTOMER_PHONE, COLUMN_CUSTOMER_PHONE);
+                addCustomers.setTimestamp(INDEX_CUSTOMER_CREATED_DATE, Timestamp.valueOf(LocalDateTime.now(ZoneId.of(COLUMN_CUSTOMER_CREATED_DATE))));
+                addCustomers.setString(INDEX_CUSTOMER_CREATED_BY, COLUMN_CUSTOMER_CREATED_BY);
+                addCustomers.setTimestamp(INDEX_CUSTOMER_LAST_UPDATE, Timestamp.valueOf(LocalDateTime.now(ZoneId.of(COLUMN_CUSTOMER_LAST_UPDATE))));
+                addCustomers.setString(INDEX_CUSTOMER_LAST_UPDATED_BY, COLUMN_CUSTOMER_LAST_UPDATED_BY);
+                addCustomers.setInt(INDEX_CUSTOMER_DIVISION_ID, Integer.parseInt(COLUMN_CUSTOMER_DIVISION_ID));
 
+                customerObservableList.add((Customer) addCustomers);
+                Customer.customerArrayList = customerObservableList;
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
 
-
-
+        }
+    }
 
 }

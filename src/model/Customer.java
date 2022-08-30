@@ -58,7 +58,7 @@ public class Customer {
         this.divisionID = divisionID;
     }
 
-    public Customer(String customerName) {
+    public Customer(int i, String customerNameTFText, String addressTFText, String postalCodeTFText, String text, String customerName, int divisionId, int countryId) {
         this.customerName = customerName;
     }
 

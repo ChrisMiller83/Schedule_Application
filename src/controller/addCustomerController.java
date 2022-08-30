@@ -1,12 +1,14 @@
 package controller;
 
-import DAO.CountryDAO;
-import DAO.DivisionDAO;
+import DAO.CustomerDAO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Country;
+import model.Customer;
 import model.Division;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,10 +39,10 @@ public class addCustomerController implements Initializable {
     @FXML private TextField phoneNumTF;
     @FXML private TextField addressTF;
     @FXML private TextField cityTF;
-    @FXML private TextField zipCodeTF;
+    @FXML private TextField postalCodeTF;
     @FXML private TextField stateTF;
-    @FXML private ComboBox<CountryDAO> countryComboBox;
-    @FXML private ComboBox<DivisionDAO> stateProvinceComboBox;
+    @FXML private ComboBox<Division> countryComboBox;
+    @FXML private ComboBox<Country> stateProvinceComboBox;
     @FXML private Button cancelBtn;
     @FXML private Button saveBtn;
 
@@ -55,15 +57,18 @@ public class addCustomerController implements Initializable {
     }
 
     public void saveCustomer(ActionEvent event) throws IOException {
-//        Customer customer = new Customer(
-//            Integer.parseInt(customerIdTF.getText()),
-//            customerNameTF.getText(),
-//            phoneNumTF.getText(),
-//            addressTF.getText(),
-//            cityTF.getText(),
-//            zipCodeTF.getText(),
-//            countryComboBox.getSelectionModel().getSelectedItem(),
-//            stateProvinceComboBox.getSelectionModel().getSelectedItem());
+        Customer customer = new Customer(
+            Integer.parseInt(customerIdTF.getText()),
+            customerNameTF.getText(),
+            addressTF.getText(),
+            postalCodeTF.getText(),
+            phoneNumTF.getText(),
+            cityTF.getText(),
+            countryComboBox.getValue().getDivisionId(),
+            stateProvinceComboBox.getValue().getCountryId()
+        );
+
+        CustomerDAO.addCustomer(customer);
 
 
         Parent root = FXMLLoader.load((getClass().getResource("/view/customersView.fxml")));
@@ -76,10 +81,28 @@ public class addCustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        countryComboBox.setPromptText("Select a country");
-        countryComboBox.setItems(countryComboBox.getItems());
-        stateProvinceComboBox.setPromptText("Select a country first");
-        stateProvinceComboBox.setItems(null);
+        setCountryComboBox();
+        setStateProvinceComboBox();
+    }
+
+    private void setCountryComboBox() {
+        ObservableList<Division> divisionObservableList = FXCollections.observableArrayList(Division.divisionArrayList);
+        countryComboBox.setItems(divisionObservableList);
+    }
+
+    private void setStateProvinceComboBox() {
+        ObservableList<Country> countryObservableList = FXCollections.observableArrayList(Country.countryArrayList);
+        stateProvinceComboBox.setItems(countryObservableList);
+    }
+
+    private void selectDivision(ActionEvent event) {
+        ObservableList<Division> countryPicked = FXCollections.observableArrayList();
+        for (Division division : Division.getDivisions()) {
+            if(countryComboBox.getValue().getCountryId() == division.getCountryId()) {
+                countryPicked.add(division);
+            }
+        }
+        countryComboBox.setItems(countryPicked);
     }
 
 

@@ -1,6 +1,6 @@
 package DAO;
 
-import com.sun.org.apache.xpath.internal.operations.Div;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Country;
@@ -15,13 +15,13 @@ public class DivisionDAO {
     public DivisionDAO() {}
 
     public static final String TABLE_DIVISIONS = "first_level_divisions";
-    public static final Integer COLUMN_DIVISION_ID = "Division_ID";
+    public static final String COLUMN_DIVISION_ID = "Division_ID";
     public static final String COLUMN_DIVISION_NAME = "Division";
     public static final String COLUMN_DIVISION_CREATED_DATE = "Create_Date";
     public static final String COLUMN_DIVISION_CREATED_BY = "Created_By";
     public static final String COLUMN_DIVISION_LAST_UPDATED = "Last_Update";
     public static final String COLUMN_DIVISION_LAST_UPDATED_BY = "Last_Updated_By";
-    public static final Integer COLUMN_DIVISION_COUNTRY_ID = "Country_ID";
+    public static final String COLUMN_DIVISION_COUNTRY_ID = "Country_ID";
     public static final int INDEX_DIVISION_ID = 1;
     public static final int INDEX_DIVISION_NAME = 2;
     public static final int INDEX_DIVISION_CREATED_DATE = 3;
@@ -39,7 +39,7 @@ public class DivisionDAO {
             " WHERE " + COLUMN_DIVISION_COUNTRY_ID + " = ?";
 
     public static ObservableList<Division> loadAllDivisions() {
-        ObservableList<Division> divisions = FXCollections.checkedObservableList();
+        ObservableList<Division> divisions = FXCollections.observableArrayList();
 
         try {
             PreparedStatement loadDivisions = DBConnection.getConnection().prepareStatement(QUERY_ALL_DIVISIONS);
@@ -55,7 +55,7 @@ public class DivisionDAO {
                         result.getString(COLUMN_DIVISION_LAST_UPDATED_BY),
                         result.getInt(COLUMN_DIVISION_COUNTRY_ID)
                 );
-                divisions.add(newDivision);
+                Division.divisionArrayList.add(newDivision);
             }
             return divisions;
             } catch (SQLException e) {
@@ -89,12 +89,12 @@ public class DivisionDAO {
     }
 
     public static ObservableList<Division> getDivisionsByCountry(int country) {
-        int newCountry = Country.getCountryId(COLUMN_DIVISION_COUNTRY_ID);
+        int newCountry = Country.getCountryId(country);
         ObservableList<Division> divisions = FXCollections.observableArrayList();
 
         try {
             PreparedStatement getDivision = DBConnection.getConnection().prepareStatement(QUERY_DIVISION_BY_COUNTRY);
-            getDivision.setInt(INDEX_DIVISION_COUNTRY_ID, COLUMN_DIVISION_COUNTRY_ID);
+            getDivision.setInt(INDEX_DIVISION_COUNTRY_ID, Integer.parseInt(COLUMN_DIVISION_COUNTRY_ID));
             ResultSet result = getDivision.executeQuery();
 
             while (result.next()) {

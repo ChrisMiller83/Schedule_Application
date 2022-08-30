@@ -1,7 +1,5 @@
 package model;
 
-import DAO.UserDAO;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +85,8 @@ public class User {
     public static List<User> getUserArrayList() {
         return userArrayList;
     }
+
+    public static User getCurrentUser(String userName) {return currentUser;}
 
 
     @Override
