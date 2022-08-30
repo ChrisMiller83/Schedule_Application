@@ -5,7 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,7 +58,7 @@ public class Division {
         this.division = division;
     }
 
-    public  String getDivision() {
+    public String getDivision() {
         return division;
     }
 

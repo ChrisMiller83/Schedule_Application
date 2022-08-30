@@ -64,7 +64,7 @@ public class addApptController implements Initializable {
     }
 
     private void setCustomerCB() {
-        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList(Customer.getAllCustomers());
+        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList(Customer.getCustomers());
         customerCB.setItems(customerObservableList);
     }
 

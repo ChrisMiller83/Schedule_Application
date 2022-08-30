@@ -1,12 +1,5 @@
 package model;
 
-import DAO.CountryDAO;
-import DAO.DivisionDAO;
-import com.mysql.cj.protocol.WatchableStream;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import javax.swing.plaf.IconUIResource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Customer model class.
  */
 public class Customer {
-    private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
+    public static List<Customer> customers = new ArrayList<>();
+
     private int customerId;
     private String customerName;
     private String address;
@@ -34,21 +28,14 @@ public class Customer {
     /**
      * Customer constructor
      * @param customerId customer Id
+     * @param name
      * @param customerName customer name
      * @param address customers street address
      * @param phoneNumber customers phone number
      * @param postalCode customers zip code
-     * @param createdDate date and time customer was created
-     * @param createdBy user's name who created the customer
-     * @param lastUpdated date and time customer info was updated or changed
-     * @param lastUpdatedBy user's name that last updated the customer info
-     * @param divisionID state id code
-     * @param customerCountry countryID
      */
-    public Customer(int customerId, String customerName, String address,
-                    String phoneNumber, String postalCode, Timestamp createdDate,
-                    String createdBy, Timestamp lastUpdated, String lastUpdatedBy,
-                    int divisionID, int customerCountry) {
+    public Customer(int customerId, String name, String customerName, String address,
+                    String phoneNumber, String postalCode) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
@@ -66,7 +53,7 @@ public class Customer {
     }
 
 
-    public static AtomicInteger getUniqueCustomerId = new AtomicInteger(allCustomers.size() + 1);
+    public static AtomicInteger getUniqueCustomerId = new AtomicInteger(customers.size() + 1);
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
@@ -163,18 +150,18 @@ public class Customer {
         this.customerCountry = customerCountry;
     }
 
-    public static ObservableList<Customer> getAllCustomers() {
-        return allCustomers;
+    public static List<Customer> getCustomers() {
+        return customers;
     }
 
     public static void addCustomer(Customer newCustomer) {
-        allCustomers.add(newCustomer);
+        customers.add(newCustomer);
     }
 
     public static void updateCustomer(int customerId, Customer newCustomer) {
-        for (int i = 0; i < allCustomers.size(); ++i) {
-            if (allCustomers.get(i).getCustomerId() == customerId) {
-                allCustomers.set(i, newCustomer);
+        for (int i = 0; i < customers.size(); ++i) {
+            if (customers.get(i).getCustomerId() == customerId) {
+                customers.set(i, newCustomer);
             }
         }
     }
@@ -182,7 +169,7 @@ public class Customer {
 
 
     public static boolean deleteCustomer(Customer selectedCustomer) {
-        allCustomers.remove(selectedCustomer);
+        customers.remove(selectedCustomer);
         return true;
     }
 

@@ -1,6 +1,8 @@
 package controller;
 
+import DAO.CountryDAO;
 import DAO.CustomerDAO;
+import DAO.DivisionDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +21,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
@@ -41,8 +44,8 @@ public class addCustomerController implements Initializable {
     @FXML private TextField addressTF;
     @FXML private TextField cityTF;
     @FXML private TextField postalCodeTF;
-    @FXML private ComboBox<Country> countryComboBox;
-    @FXML private ComboBox<Division> divisionComboBox;
+    @FXML private ComboBox<String> countryComboBox;
+    @FXML private ComboBox<String> divisionComboBox;
     @FXML private Button cancelBtn;
     @FXML private Button saveBtn;
 
@@ -63,8 +66,7 @@ public class addCustomerController implements Initializable {
             addressTF.getText(),
             postalCodeTF.getText(),
             phoneNumTF.getText(),
-            countryComboBox.getValue().getCountryId(),
-            Division.findCountryDivision(divisionComboBox.getValue().getDivisionId())
+            divisionComboBox.getSelectionModel().getSelectedItem()
         );
 
         CustomerDAO.addCustomer(customer);
@@ -85,24 +87,38 @@ public class addCustomerController implements Initializable {
     }
 
     private void setCountryComboBox() {
-        ObservableList<Country> countryObservableList = FXCollections.observableArrayList(Country.getCountries());
-        countryComboBox.setItems(countryObservableList);
+        ObservableList<String> countryList = FXCollections.observableArrayList();
+        ObservableList<Country> countries = CountryDAO.loadAllCountries();
+        if (countries != null) {
+            for (Country country : countries) {
+                countryList.add(country.getCountry());
+            }
+        }
+        countryComboBox.setItems(countryList);
     }
 
     private void setDivisionComboBox() {
-        ObservableList<Division> divisionObservableList = FXCollections.observableArrayList(Division.getDivisions());
-        divisionComboBox.setItems(divisionObservableList);
+        ObservableList<String> divisionList = FXCollections.observableArrayList();
+        ObservableList<Division> divisions = DivisionDAO.loadAllDivisions();
+        if (divisions != null) {
+             for (Division division : divisions) {
+                 divisionList.add(division.getDivision());
+             }
+        }
+        divisionComboBox.setItems(divisionList);
     }
 
     @FXML
-    private void selectDivision(ActionEvent event) {
-        ObservableList<Division> countryPicked = FXCollections.observableArrayList();
-        for (Division division : Division.getDivisions()) {
-            if(countryComboBox.getValue().getCountryId() == division.getCountryId()) {
-                countryPicked.add(division);
+    void selectDivision(ActionEvent event) {
+        ObservableList<String> divisionList = FXCollections.observableArrayList();
+        ObservableList<Division> divisions = DivisionDAO.getDivisionsByCountry(countryComboBox.getSelectionModel().getSelectedItem());
+        if(divisions != null) {
+            for (Division division : divisions) {
+                divisionList.add(division.getDivision());
             }
         }
-        divisionComboBox.setItems(countryPicked);
+        divisionComboBox.setItems(divisionList);
+
     }
 
 

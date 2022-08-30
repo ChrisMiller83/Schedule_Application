@@ -61,9 +61,6 @@ public class CustomerDAO {
 
 
     public static void loadAllCustomers() {
-//        ObservableList<Customer> customers = FXCollections.observableArrayList();
-//        Customer.getAllCustomers();
-
         try {
             PreparedStatement loadCustomers = DBConnection.getConnection().prepareStatement(QUERY_ALL_CUSTOMERS);
             ResultSet result = loadCustomers.executeQuery();
@@ -78,10 +75,10 @@ public class CustomerDAO {
                 String createdBy = result.getString(COLUMN_CUSTOMER_CREATED_BY);
                 Timestamp lastUpdate = result.getTimestamp(COLUMN_CUSTOMER_LAST_UPDATE);
                 String lastUpdatedBy = result.getString(COLUMN_CUSTOMER_LAST_UPDATED_BY);
-                int divisionId = result.getInt(COLUMN_CUSTOMER_DIVISION_ID);
-                int customerCountry = result.getInt(COLUMN_CUSTOMER_COUNTRY_ID);
+                String divisionId = result.getString(COLUMN_CUSTOMER_DIVISION_ID);
+
                 Customer customer = new Customer(customerId, customerName, address, postalCode, phoneNumber,
-                        createDate, createdBy, lastUpdate, lastUpdatedBy, divisionId, customerCountry);
+                         divisionId);
 
                 Customer.addCustomer(customer);
 

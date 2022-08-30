@@ -88,8 +88,8 @@ public class DivisionDAO {
         return null;
     }
 
-    public static ObservableList<Division> getDivisionsByCountry(int country) {
-        int newCountry = Country.getCountryId(country);
+    public static ObservableList<Division> getDivisionsByCountry(String country) {
+//        int newCountry = Country.getCountryId(country);
         ObservableList<Division> divisions = FXCollections.observableArrayList();
 
         try {

@@ -1,6 +1,7 @@
 package controller;
 
 import DAO.CustomerDAO;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +27,9 @@ import java.util.ResourceBundle;
 public class customerController implements Initializable {
 
     private static Customer selectedCustomer;
+
+    static ObservableList<Customer> customers;
+
 
     @FXML private Button addCustomerBtn;
     @FXML private Button updateCustomerBtn;
@@ -85,27 +89,29 @@ public class customerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            //ObservableList<Customer> customers = CustomerDAO.loadAllCustomers();
+        setCustomersTable();
 
-            customersTable.setItems(Customer.getAllCustomers());
-            customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-            customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-            addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
-            postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-            phoneCol.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-            createDateCol.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
-            createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
-            lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdated"));
-            lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
-            countryIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
     }
 
-    public void cancelToCustomer(ActionEvent event) {
+
+
+
+    public void setCustomersTable() {
+        CustomerDAO.loadAllCustomers();
+        customersTable.setItems(customers);
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        createDateCol.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
+        createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
+        lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdated"));
+        lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
+        countryIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
     }
+
+
 }
