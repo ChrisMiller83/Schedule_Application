@@ -56,10 +56,10 @@ public class CountryDAO {
         }
     }
 
-    public static Country getCountryId(String country) {
+    public static Country getCountryId(Country country) {
         try {
             PreparedStatement countryId = DBConnection.getConnection().prepareStatement(QUERY_COUNTRY_NAME_FOR_ID);
-            countryId.setString(INDEX_COUNTRY_NAME, COLUMN_COUNTRY_NAME);
+            countryId.setString(1, COLUMN_COUNTRY_NAME);
             ResultSet result = countryId.executeQuery();
 
             while (result.next()) {

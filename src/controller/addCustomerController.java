@@ -79,7 +79,7 @@ public class addCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setCountryComboBox();
-        setDivisionComboBox();
+        divisionComboBox.setDisable(true);
     }
 
     private void setCountryComboBox() {
@@ -87,30 +87,13 @@ public class addCustomerController implements Initializable {
         countryComboBox.setItems(countryObservableList);
     }
 
-    private void setDivisionComboBox() {
-        ObservableList<Division> divisionObservableList = FXCollections.observableList(DivisionDAO.loadAllDivisions());
-        divisionComboBox.setItems(divisionObservableList);
-    }
-
 
     @FXML
     public void selectDivision(ActionEvent event) {
-//        ObservableList<String> divisionList = FXCollections.observableArrayList();
-//        ObservableList<Division> divisions = DivisionDAO.getDivisionsByCountry(countryComboBox.getSelectionModel().getSelectedItem());
-//        if(divisions != null) {
-//            for (Division division : divisions) {
-//                divisionList.add(division.getDivision());
-//            }
-//        }
-//        divisionComboBox.setItems(divisionList);
-
-        ObservableList<Division> divisions = FXCollections.observableArrayList(DivisionDAO.loadAllDivisions());
-        for (Division division : divisions) {
-            if(countryComboBox.getValue().getCountryId() == division.getCountryId()) {
-                divisions.add(division);
-            }
-        }
-        divisionComboBox.setItems(divisions);
+        Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
+        int country_ID = selectedCountry.getCountryId();
+        divisionComboBox.setDisable(false);
+        divisionComboBox.setItems(DivisionDAO.getDivisionsByCountry(country_ID));
     }
 
 

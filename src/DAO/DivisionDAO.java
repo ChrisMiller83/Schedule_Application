@@ -60,7 +60,7 @@ public class DivisionDAO {
         }
     }
 
-    public static Division getDivisionName(String division) {
+    public static Division getDivisionName() {
         try {
             PreparedStatement getId = DBConnection.getConnection().prepareStatement(QUERY_DIVISION_ID);
             getId.setString(INDEX_DIVISION_NAME, COLUMN_DIVISION_NAME);
@@ -80,13 +80,13 @@ public class DivisionDAO {
         return null;
     }
 
-    public static ObservableList<Division> getDivisionsByCountry(String country) {
-        Country newCountry = CountryDAO.getCountryId(country);
+    public static ObservableList<Division> getDivisionsByCountry(int country_ID) {
+
         ObservableList<Division> divisions = FXCollections.observableArrayList();
 
         try {
             PreparedStatement getDivision = DBConnection.getConnection().prepareStatement(QUERY_DIVISION_BY_COUNTRY);
-            getDivision.setInt(INDEX_DIVISION_COUNTRY_ID, newCountry.getCountryId());
+            getDivision.setInt(1, country_ID);
             ResultSet result = getDivision.executeQuery();
 
             while (result.next()) {
