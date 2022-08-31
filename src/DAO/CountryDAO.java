@@ -1,5 +1,6 @@
 package DAO;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Country;
 
@@ -29,22 +30,45 @@ public class CountryDAO {
 
     public static final String QUERY_ALL_COUNTRIES = "SELECT * FROM " + TABLE_COUNTRIES;
 
+    public static final String QUERY_COUNTRY_NAME_FOR_ID = "SELECT * FROM " + TABLE_COUNTRIES +
+            " WHERE " + COLUMN_COUNTRY_NAME + " = ?";
+
 
     public static ObservableList<Country> loadAllCountries() {
+        ObservableList<Country> countries = FXCollections.observableArrayList();
         try {
             PreparedStatement loadCountries = DBConnection.getConnection().prepareStatement(QUERY_ALL_COUNTRIES);
             ResultSet result = loadCountries.executeQuery();
 
             while (result.next()) {
-                int countryId = result.getInt(COLUMN_COUNTRY_ID);
-                String country = result.getString(COLUMN_COUNTRY_NAME);
-
-
-                Country countries = new Country(countryId, country);
-                Country.countryList.add(countries);
+                Country newCountry = new Country(
+                    result.getInt(COLUMN_COUNTRY_ID),
+                    result.getString(COLUMN_COUNTRY_NAME)
+                );
+                countries.add(newCountry);
             }
-
+            return countries;
             // TODO: add countries report
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        return null;
+        }
+    }
+
+    public static Country getCountryId(String country) {
+        try {
+            PreparedStatement countryId = DBConnection.getConnection().prepareStatement(QUERY_COUNTRY_NAME_FOR_ID);
+            countryId.setString(INDEX_COUNTRY_NAME, COLUMN_COUNTRY_NAME);
+            ResultSet result = countryId.executeQuery();
+
+            while (result.next()) {
+                Country newCountry = new Country(
+                        result.getInt(COLUMN_COUNTRY_ID),
+                        result.getString(COLUMN_COUNTRY_NAME)
+                );
+                return newCountry;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,3 +76,4 @@ public class CountryDAO {
         return null;
     }
 }
+

@@ -49,10 +49,6 @@ public class DivisionDAO {
                 Division newDivision = new Division(
                         result.getInt(COLUMN_DIVISION_ID),
                         result.getString(COLUMN_DIVISION_NAME),
-                        result.getTimestamp(COLUMN_DIVISION_CREATED_DATE),
-                        result.getString(COLUMN_DIVISION_CREATED_BY),
-                        result.getTimestamp(COLUMN_DIVISION_LAST_UPDATED),
-                        result.getString(COLUMN_DIVISION_LAST_UPDATED_BY),
                         result.getInt(COLUMN_DIVISION_COUNTRY_ID)
                 );
                 divisions.add(newDivision);
@@ -64,7 +60,7 @@ public class DivisionDAO {
         }
     }
 
-    public static Division getDivisionId(String division) {
+    public static Division getDivisionName(String division) {
         try {
             PreparedStatement getId = DBConnection.getConnection().prepareStatement(QUERY_DIVISION_ID);
             getId.setString(INDEX_DIVISION_NAME, COLUMN_DIVISION_NAME);
@@ -74,10 +70,6 @@ public class DivisionDAO {
                 Division newDivision = new Division(
                         result.getInt(COLUMN_DIVISION_ID),
                         result.getString(COLUMN_DIVISION_NAME),
-                        result.getTimestamp(COLUMN_DIVISION_CREATED_DATE),
-                        result.getString(COLUMN_DIVISION_CREATED_BY),
-                        result.getTimestamp(COLUMN_DIVISION_LAST_UPDATED),
-                        result.getString(COLUMN_DIVISION_LAST_UPDATED_BY),
                         result.getInt(COLUMN_DIVISION_COUNTRY_ID)
                 );
                 return newDivision;
@@ -89,22 +81,18 @@ public class DivisionDAO {
     }
 
     public static ObservableList<Division> getDivisionsByCountry(String country) {
-//        int newCountry = Country.getCountryId(country);
+        Country newCountry = CountryDAO.getCountryId(country);
         ObservableList<Division> divisions = FXCollections.observableArrayList();
 
         try {
             PreparedStatement getDivision = DBConnection.getConnection().prepareStatement(QUERY_DIVISION_BY_COUNTRY);
-            getDivision.setInt(INDEX_DIVISION_COUNTRY_ID, Integer.parseInt(COLUMN_DIVISION_COUNTRY_ID));
+            getDivision.setInt(INDEX_DIVISION_COUNTRY_ID, newCountry.getCountryId());
             ResultSet result = getDivision.executeQuery();
 
             while (result.next()) {
                 Division newDivision = new Division(
                         result.getInt(COLUMN_DIVISION_ID),
                         result.getString(COLUMN_DIVISION_NAME),
-                        result.getTimestamp(COLUMN_DIVISION_CREATED_DATE),
-                        result.getString(COLUMN_DIVISION_CREATED_BY),
-                        result.getTimestamp(COLUMN_DIVISION_LAST_UPDATED),
-                        result.getString(COLUMN_DIVISION_LAST_UPDATED_BY),
                         result.getInt(COLUMN_DIVISION_COUNTRY_ID)
                 );
                 divisions.add(newDivision);

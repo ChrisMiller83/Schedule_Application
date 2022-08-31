@@ -13,10 +13,10 @@ import java.util.List;
 public class Division {
     private int divisionId;
     private String division;
-    private Timestamp createdDate;
-    private String createdBy;
-    private Timestamp lastUpdated;
-    private String lastUpdatedBy;
+//    private Timestamp createdDate;
+//    private String createdBy;
+//    private Timestamp lastUpdated;
+//    private String lastUpdatedBy;
     private int countryId;
     private static ObservableList<Division> allDivisions = FXCollections.observableArrayList();
 
@@ -36,13 +36,13 @@ public class Division {
      * @param lastUpdatedBy user's name who last updated/changed state/province info
      * @param countryId country id number of the state/province
      */
-    public Division(int divisionId, String division, Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int countryId) {
+    public Division(int divisionId, String division, int countryId) {
         this.divisionId = divisionId;
         this.division = division;
-        this.createdDate = createdDate;
-        this.createdBy = createdBy;
-        this.lastUpdated = lastUpdated;
-        this.lastUpdatedBy = lastUpdatedBy;
+//        this.createdDate = createdDate;
+//        this.createdBy = createdBy;
+//        this.lastUpdated = lastUpdated;
+//        this.lastUpdatedBy = lastUpdatedBy;
         this.countryId = countryId;
     }
 
@@ -60,38 +60,6 @@ public class Division {
 
     public String getDivision() {
         return division;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setLastUpdated(Timestamp lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
-    public Timestamp getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
     }
 
     public void setCountryId(int countryId) {
