@@ -24,6 +24,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class addCustomerController implements Initializable {
@@ -52,7 +53,7 @@ public class addCustomerController implements Initializable {
 
     @FXML void cancelToCustomer(ActionEvent event) throws IOException {
 //        ChangeView.changeView(event, "customersView.fxml");
-        Parent root = FXMLLoader.load((getClass().getResource("/view/customersView.fxml")));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -72,7 +73,7 @@ public class addCustomerController implements Initializable {
 //        CustomerDAO.addCustomer(customer);
 
 
-        Parent root = FXMLLoader.load((getClass().getResource("/view/customersView.fxml")));
+        Parent root = FXMLLoader.load((getClass().getResource("/view/customerView.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
