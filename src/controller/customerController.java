@@ -106,9 +106,9 @@ public class customerController implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        createDateCol.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
+        createDateCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
         createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
-        lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdated"));
+        lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
         lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
         countryIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
     }

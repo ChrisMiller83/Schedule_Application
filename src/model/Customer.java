@@ -16,9 +16,9 @@ public class Customer {
     private String address;
     private String postalCode;
     private String phoneNumber;
-    private Timestamp createdDate;
+    private Timestamp createDate;
     private String createdBy;
-    private Timestamp lastUpdated;
+    private Timestamp lastUpdate;
     private String lastUpdatedBy;
     private int divisionID;
     private int customerCountry;
@@ -32,22 +32,22 @@ public class Customer {
      * @param address customer address
      * @param phoneNumber customer phone number
      * @param postalCode zip code
-     * @param createdDate date customer record was created
+     * @param createDate date customer record was created
      * @param createdBy who created the customer record
-     * @param lastUpdated date customer record was last updated
+     * @param lastUpdate date customer record was last updated
      * @param lastUpdatedBy who last updated the customer record
      * @param divisionID state/province id
      */
-    public Customer(int customerId, String customerName, String address, String phoneNumber, String postalCode, Timestamp createdDate, String createdBy,
-                    Timestamp lastUpdated, String lastUpdatedBy, int divisionID) {
+    public Customer(int customerId, String customerName, String address, String phoneNumber, String postalCode, Timestamp createDate, String createdBy,
+                    Timestamp lastUpdate, String lastUpdatedBy, int divisionID) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.postalCode = postalCode;
-        this.createdDate = createdDate;
+        this.createDate = createDate;
         this.createdBy = createdBy;
-        this.lastUpdated = lastUpdated;
+        this.lastUpdate = lastUpdate;
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionID = divisionID;
 //        this.customerCountry = customerCountry;
@@ -100,16 +100,16 @@ public class Customer {
         return postalCode;
     }
 
-    public void setCreatedDateTime(Timestamp createdDateTime) {
-        this.createdDate = createdDate;
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
     }
 
-    public Timestamp getCreatedDateTime() {
-        return createdDate;
+    public Timestamp getCreateDate() {
+        return createDate;
     }
 
-    public Timestamp getFormattedCreatedDate() {
-        return getCreatedDateTime();
+    public Timestamp getFormattedCreateDate() {
+        return getCreateDate();
     }
 
     public void setCreatedBy(String createdBy) {
@@ -120,16 +120,16 @@ public class Customer {
         return createdBy;
     }
 
-    public void setLastUpdated(Timestamp lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
-    public Timestamp getFormattedLastUpdated() {
-        return getLastUpdated();
+    public Timestamp getFormattedLastUpdate() {
+        return getLastUpdate();
     }
 
-    public Timestamp getLastUpdated() {
-        return  lastUpdated;
+    public Timestamp getLastUpdate() {
+        return  lastUpdate;
     }
 
     public void setLastUpdatedBy(String lastUpdatedBy) {

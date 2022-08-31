@@ -53,7 +53,7 @@
                 <TableColumn fx:id="typeCol" minWidth="100.0" prefWidth="100.0" text="Type" />
                 <TableColumn fx:id="startTimeCol" minWidth="75.0" prefWidth="75.0" text="Start Time" />
                 <TableColumn fx:id="endTimeCol" minWidth="75.0" prefWidth="75.0" text="End Time" />
-                <TableColumn fx:id="createDateCol" minWidth="100.0" prefWidth="100.0" text="Created Date" />
+                <TableColumn fx:id="createDateCol" minWidth="100.0" prefWidth="100.0" text="Create Date" />
                 <TableColumn fx:id="createdByCol" minWidth="100.0" prefWidth="100.0" text="Created By" />
                 <TableColumn fx:id="lastUpdateCol" minWidth="100.0" prefWidth="100.0" text="Last Update" />
                 <TableColumn fx:id="lastUpdatedByCol" minWidth="100.0" prefWidth="100.0" text="Last Updated By" />

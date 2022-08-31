@@ -18,9 +18,9 @@ public class Appointment {
     private String apptType;
     private Timestamp startDateTime;
     private Timestamp endDateTime;
-    private Timestamp createdDate;
+    private Timestamp createDate;
     private String createdBy;
-    private Timestamp lastUpdated;
+    private Timestamp lastUpdate;
     private String lastUpdatedBy;
     private int customerId;
     private int userId;
@@ -36,9 +36,9 @@ public class Appointment {
      * @param apptType  type of appointment
      * @param startDateTime start time and date of the appointment
      * @param endDateTime  end time and date of the appointment
-     * @param createdDate  day the appointment was made
+     * @param createDate  day the appointment was made
      * @param createdBy  who created the appointment
-     * @param lastUpdated  if and when the appointment was changed
+     * @param lastUpdate  if and when the appointment was changed
      * @param lastUpdatedBy  who changed the appointment
      * @param customerId  customer id the appointment is with
      * @param userId  user id
@@ -46,7 +46,7 @@ public class Appointment {
      */
     public Appointment(int apptId, String apptTitle, String apptDescription, String apptLocation,
                        String apptType, Timestamp startDateTime, Timestamp endDateTime,
-                       Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy,
+                       Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy,
                        int customerId, int userId, int contactId) {
         this.apptId = apptId;
         this.apptTitle = apptTitle;
@@ -55,9 +55,9 @@ public class Appointment {
         this.apptType = apptType;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.createdDate = createdDate;
+        this.createDate = createDate;
         this.createdBy = createdBy;
-        this.lastUpdated = lastUpdated;
+        this.lastUpdate = lastUpdate;
         this.lastUpdatedBy = lastUpdatedBy;
         this.customerId = customerId;
         this.userId = userId;
@@ -183,16 +183,16 @@ public class Appointment {
      * setCreatedDate
      * @param createdDate sets the date and time the appointment was created
      */
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
+    public void setCreateDate(Timestamp createdDate) {
+        this.createDate = createdDate;
     }
 
     /**
      * getCreatedDate
      * @return returns the date and time the appointment was created
      */
-    public Timestamp getCreatedDate(){
-        return createdDate;
+    public Timestamp getCreateDate(){
+        return createDate;
     }
 
     /**
@@ -215,16 +215,16 @@ public class Appointment {
      * setLastUpdated
      * @param lastUpdated sets the time the appointment was last updated.
      */
-    public void setLastUpdated(Timestamp lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setLastUpdate(Timestamp lastUpdated) {
+        this.lastUpdate = lastUpdated;
     }
 
     /**
      * getLastUpdated
      * @return returns the time the appointment was last updated
      */
-    public Timestamp getLastUpdated() {
-        return lastUpdated;
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
     }
 
     /**

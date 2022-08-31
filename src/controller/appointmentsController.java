@@ -126,9 +126,9 @@ public class appointmentsController implements Initializable {
             typeCol.setCellValueFactory(new PropertyValueFactory<>("apptType"));
             startTimeCol.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
             endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-            createDateCol.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
+            createDateCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
             createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
-            lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>(" lastUpdated"));
+            lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
             lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
             customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
