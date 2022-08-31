@@ -28,7 +28,7 @@ public class customerController implements Initializable {
 
     private static Customer selectedCustomer;
 
-    static ObservableList<Customer> customers;
+    static ObservableList<Customer> customersList;
 
 
     @FXML private Button addCustomerBtn;
@@ -99,8 +99,8 @@ public class customerController implements Initializable {
 
 
     public void setCustomersTable() {
-        CustomerDAO.loadAllCustomers();
-        customersTable.setItems(customers);
+        customersList = CustomerDAO.loadAllCustomers();
+        customersTable.setItems(customersList);
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));

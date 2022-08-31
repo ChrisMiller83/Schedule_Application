@@ -24,7 +24,7 @@ public class CustomerDAO {
     public static final String COLUMN_CUSTOMER_LAST_UPDATE = "Last_Update";
     public static final String COLUMN_CUSTOMER_LAST_UPDATED_BY = "Last_Updated_By";
     public static final String COLUMN_CUSTOMER_DIVISION_ID = "Division_ID";
-    public static final String COLUMN_CUSTOMER_COUNTRY_ID = "Country_ID";
+
     public static final int INDEX_CUSTOMER_ID = 1;
     public static final int INDEX_CUSTOMER_NAME = 2;
     public static final int INDEX_CUSTOMER_ADDRESS = 3;
@@ -54,16 +54,18 @@ public class CustomerDAO {
             COLUMN_CUSTOMER_NAME + " = ?," + COLUMN_CUSTOMER_ADDRESS + " = ?," +
             COLUMN_CUSTOMER_POSTAL_CODE + " = ?," + COLUMN_CUSTOMER_PHONE + " = ?," +
             COLUMN_CUSTOMER_LAST_UPDATE + " = ?," + COLUMN_CUSTOMER_LAST_UPDATED_BY + " = ?," +
-            COLUMN_CUSTOMER_DIVISION_ID + " = ? WHERE " + COLUMN_CUSTOMER_ID + " + ?";
+            COLUMN_CUSTOMER_DIVISION_ID + " = ? WHERE " + COLUMN_CUSTOMER_ID + " = ?";
 
     public static final String DELETE_CUSTOMER = "DELETE FROM " + TABLE_CUSTOMERS +
             " WHERE " + COLUMN_CUSTOMER_ID + " = ?";
 
 
-    public static void loadAllCustomers() {
+    public static ObservableList<Customer> loadAllCustomers() {
+        ObservableList<Customer> customersList = FXCollections.observableArrayList();
         try {
             PreparedStatement loadCustomers = DBConnection.getConnection().prepareStatement(QUERY_ALL_CUSTOMERS);
             ResultSet result = loadCustomers.executeQuery();
+
 
             while (result.next()) {
                 int customerId = result.getInt(COLUMN_CUSTOMER_ID);
@@ -75,18 +77,19 @@ public class CustomerDAO {
                 String createdBy = result.getString(COLUMN_CUSTOMER_CREATED_BY);
                 Timestamp lastUpdate = result.getTimestamp(COLUMN_CUSTOMER_LAST_UPDATE);
                 String lastUpdatedBy = result.getString(COLUMN_CUSTOMER_LAST_UPDATED_BY);
-                String divisionId = result.getString(COLUMN_CUSTOMER_DIVISION_ID);
+                int divisionId = result.getInt(COLUMN_CUSTOMER_DIVISION_ID);
 
                 Customer customer = new Customer(customerId, customerName, address, postalCode, phoneNumber,
-                         divisionId);
+                         createDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
 
-                Customer.addCustomer(customer);
+                customersList.add(customer);
 
             }
+            return customersList;
             // TODO: add customer report
         } catch (SQLException e) {
             e.printStackTrace();
-            //return null;
+            return null;
         }
     }
 

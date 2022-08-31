@@ -28,14 +28,18 @@ public class Customer {
     /**
      * Customer constructor
      * @param customerId customer Id
-     * @param name
      * @param customerName customer name
-     * @param address customers street address
-     * @param phoneNumber customers phone number
-     * @param postalCode customers zip code
+     * @param address customer address
+     * @param phoneNumber customer phone number
+     * @param postalCode zip code
+     * @param createdDate date customer record was created
+     * @param createdBy who created the customer record
+     * @param lastUpdated date customer record was last updated
+     * @param lastUpdatedBy who last updated the customer record
+     * @param divisionID state/province id
      */
-    public Customer(int customerId, String name, String customerName, String address,
-                    String phoneNumber, String postalCode) {
+    public Customer(int customerId, String customerName, String address, String phoneNumber, String postalCode, Timestamp createdDate, String createdBy,
+                    Timestamp lastUpdated, String lastUpdatedBy, int divisionID) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
@@ -46,7 +50,7 @@ public class Customer {
         this.lastUpdated = lastUpdated;
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionID = divisionID;
-        this.customerCountry = customerCountry;
+//        this.customerCountry = customerCountry;
     }
 
     public Customer(int i, String text, String addressTFText, String postalCodeTFText, String phoneNumTFText, int countryId, int countryDivision) {
@@ -54,6 +58,8 @@ public class Customer {
 
 
     public static AtomicInteger getUniqueCustomerId = new AtomicInteger(customers.size() + 1);
+
+
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;

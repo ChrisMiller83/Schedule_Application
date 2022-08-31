@@ -60,16 +60,16 @@ public class addCustomerController implements Initializable {
     }
 
     public void saveCustomer(ActionEvent event) throws IOException {
-        Customer customer = new Customer(
-            Integer.parseInt(customerIdTF.getText()),
-            customerNameTF.getText(),
-            addressTF.getText(),
-            postalCodeTF.getText(),
-            phoneNumTF.getText(),
-            divisionComboBox.getSelectionModel().getSelectedItem()
-        );
+//        Customer customer = new Customer(
+//            Integer.parseInt(customerIdTF.getText()),
+//            customerNameTF.getText(),
+//            addressTF.getText(),
+//            postalCodeTF.getText(),
+//            phoneNumTF.getText(),
+//            divisionComboBox.getSelectionModel().getSelectedItem()
+//        );
 
-        CustomerDAO.addCustomer(customer);
+//        CustomerDAO.addCustomer(customer);
 
 
         Parent root = FXMLLoader.load((getClass().getResource("/view/customersView.fxml")));
