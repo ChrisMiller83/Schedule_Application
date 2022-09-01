@@ -172,45 +172,45 @@ public class addApptController implements Initializable {
         stage.show();
     }
 
-    private boolean apptIsValid(String text, String descriptionTAText, String value, String locationTFText, LocalDate startDatePickerValue, LocalTime selectedItem, LocalDate endDatePickerValue, LocalTime item, Customer customerCBValue, Contact contactCBValue, String userTFText) {
+    private boolean apptIsValid(String title, String description, String value, String locationTFText, LocalDate startDatePickerValue, LocalTime selectedItem, LocalDate endDatePickerValue, LocalTime item, Customer customerCBValue, Contact contactCBValue, String userTFText) {
         if (titleTF.getText().isEmpty()) {
-            Messages.emptyField(1);
+            Messages.apptEmptyField(1);
             return false;
         }
         if (descriptionTA.getText().isEmpty()) {
-            Messages.emptyField(2);
+            Messages.apptEmptyField(2);
             return false;
         }
         if (locationTF.getText().isEmpty()) {
-            Messages.emptyField(3);
+            Messages.apptEmptyField(3);
             return false;
         }
         if (typeCB.getSelectionModel().isEmpty()) {
-            Messages.emptyField(4);
+            Messages.apptEmptyField(4);
             return false;
         }
         if (startDatePicker.getValue() == null) {
-            Messages.emptyField(5);
+            Messages.apptEmptyField(5);
             return false;
         }
         if (startTimeCB.getSelectionModel().isEmpty()) {
-            Messages.emptyField(6);
+            Messages.apptEmptyField(6);
             return false;
         }
         if (endDatePicker.getValue() == null) {
-            Messages.emptyField(7);
+            Messages.apptEmptyField(7);
             return false;
         }
         if (endTimeCB.getSelectionModel().isEmpty()) {
-            Messages.emptyField(8);
+            Messages.apptEmptyField(8);
             return false;
         }
         if(customerCB.getSelectionModel().isEmpty()) {
-            Messages.emptyField(9);
+            Messages.apptEmptyField(9);
             return false;
         }
         if (contactCB.getSelectionModel().isEmpty()) {
-            Messages.emptyField(10);
+            Messages.apptEmptyField(10);
             return false;
         }
 
