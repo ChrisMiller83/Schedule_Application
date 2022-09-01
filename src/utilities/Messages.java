@@ -179,6 +179,8 @@ public class Messages {
         alert.showAndWait();
     }
 
+
+
     public static void selectACustomerToDelete() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("!! Missing Customer TO Delete");

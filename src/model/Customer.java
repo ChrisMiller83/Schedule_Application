@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,10 +15,6 @@ public class Customer {
     private String address;
     private String postalCode;
     private String phoneNumber;
-    private Timestamp createDate;
-    private String createdBy;
-    private Timestamp lastUpdate;
-    private String lastUpdatedBy;
     private int divisionID;
     private int customerCountry;
 
@@ -32,28 +27,18 @@ public class Customer {
      * @param address customer address
      * @param phoneNumber customer phone number
      * @param postalCode zip code
-     * @param createDate date customer record was created
-     * @param createdBy who created the customer record
-     * @param lastUpdate date customer record was last updated
-     * @param lastUpdatedBy who last updated the customer record
      * @param divisionID state/province id
      */
-    public Customer(int customerId, String customerName, String address, String phoneNumber, String postalCode, Timestamp createDate, String createdBy,
-                    Timestamp lastUpdate, String lastUpdatedBy, int divisionID) {
+    public Customer(int customerId, String customerName, String address, String postalCode, String phoneNumber, int divisionID) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
-        this.phoneNumber = phoneNumber;
         this.postalCode = postalCode;
-        this.createDate = createDate;
-        this.createdBy = createdBy;
-        this.lastUpdate = lastUpdate;
-        this.lastUpdatedBy = lastUpdatedBy;
+        this.phoneNumber = phoneNumber;
         this.divisionID = divisionID;
-//        this.customerCountry = customerCountry;
     }
 
-    public Customer(int i, String text, String addressTFText, String postalCodeTFText, String phoneNumTFText, int countryId, int countryDivision) {
+    public Customer() {
     }
 
 
@@ -100,46 +85,6 @@ public class Customer {
         return postalCode;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
-    }
-
-    public Timestamp getCreateDate() {
-        return createDate;
-    }
-
-    public Timestamp getFormattedCreateDate() {
-        return getCreateDate();
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public Timestamp getFormattedLastUpdate() {
-        return getLastUpdate();
-    }
-
-    public Timestamp getLastUpdate() {
-        return  lastUpdate;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
     public void setDivisionID(int divisionID) {
         this.divisionID = divisionID;
     }
@@ -178,6 +123,7 @@ public class Customer {
         customers.remove(selectedCustomer);
         return true;
     }
+
 
 
 

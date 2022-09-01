@@ -1,33 +1,34 @@
 package controller;
 
-import DAO.*;
-
+import DAO.CountryDAO;
+import DAO.CustomerDAO;
+import DAO.DivisionDAO;
+import DAO.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Country;
 import model.Customer;
 import model.Division;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import model.User;
 import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-public class addCustomerController implements Initializable {
+public class updateCustomerController implements Initializable {
+    private static Customer selectedCustomer;
 
     private int customerId;
     private String customerName;
@@ -41,54 +42,45 @@ public class addCustomerController implements Initializable {
 
     @FXML private TextField customerIdTF;
     @FXML private TextField customerNameTF;
-    @FXML private TextField phoneNumTF;
     @FXML private TextField addressTF;
     @FXML private TextField postalCodeTF;
+    @FXML private TextField phoneNumTF;
     @FXML private ComboBox<Country> countryComboBox;
     @FXML private ComboBox<Division> divisionComboBox;
     @FXML private Button cancelBtn;
     @FXML private Button saveBtn;
 
-
-    @FXML void cancelToCustomer(ActionEvent event) throws IOException {
-//        ChangeView.changeView(event, "customersView.fxml");
-        Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void saveCustomer(ActionEvent event) throws IOException, SQLException {
-        if(validateCustomer()) {
-            //customerId = Customer.getUniqueCustomerId.getAndIncrement();
-            customerName = customerNameTF.getText();
-            address = addressTF.getText();
-            postalCode = postalCodeTF.getText();
-            phone = phoneNumTF.getText();
-            divisionId = divisionComboBox.getValue().getDivisionId();
-
-            CustomerDAO.addCustomer(customerName, address, postalCode, phone, divisionId);
-//            Customer.addCustomer(new Customer(customerId, customerName, address, postalCode, phone,
-//                    divisionId));
-
-
-            Messages.addConfirmation(customerName);
-
-
-        }
-        Parent root = FXMLLoader.load((getClass().getResource("/view/customerView.fxml")));
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        customerIdTF.setText(Integer.toString(selectedCustomer.getCustomerId()));
+        customerNameTF.setText(selectedCustomer.getCustomerName());
+        addressTF.setText(selectedCustomer.getAddress());
+        postalCodeTF.setText(selectedCustomer.getPostalCode());
+        phoneNumTF.setText(selectedCustomer.getPhoneNumber());
+        countryComboBox.getSelectionModel().select(selectedCountry);
+        divisionComboBox.getSelectionModel().select(selectedDivision);
+
         setCountryComboBox();
         divisionComboBox.setDisable(true);
         UserDAO.loadAllUsers();
+
+    }
+
+
+    public void cancelToCustomers(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/customersView.fxml"));
+        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void updateCustomer(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/customersView.fxml"));
+        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void setCountryComboBox() {
@@ -144,6 +136,4 @@ public class addCustomerController implements Initializable {
 
         return true;
     }
-
-
 }

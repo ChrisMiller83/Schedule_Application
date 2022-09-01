@@ -26,7 +26,8 @@ import java.util.ResourceBundle;
 
 public class customerController implements Initializable {
 
-    private static Customer selectedCustomer;
+    private static Customer customerToUpdate;
+    private static int selectedCustomer;
 
     static ObservableList<Customer> customersList;
 
@@ -41,14 +42,16 @@ public class customerController implements Initializable {
     @FXML private TableColumn<Customer, String> addressCol;
     @FXML private TableColumn<Customer, String> postalCodeCol;
     @FXML private TableColumn<Customer, String> phoneCol;
-    @FXML private TableColumn<Customer, Timestamp> createDateCol;
-    @FXML private TableColumn<Customer, String> createdByCol;
-    @FXML private TableColumn<Customer, Timestamp> lastUpdateCol;
-    @FXML private TableColumn<Customer, String> lastUpdatedByCol;
     @FXML private TableColumn<Customer, Integer> countryIdCol;
 
     public void toUpdateCustomer(ActionEvent actionEvent) throws IOException {
-        selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+
+        customerToUpdate = customersTable.getSelectionModel().getSelectedItem();
+        if (customerToUpdate == null) {
+            Messages.selectACustomerToUpdate();
+            return;
+        }
+        selectedCustomer  = customersList.indexOf(customerToUpdate);
         Parent root = FXMLLoader.load((getClass().getResource("/view/updateCustomerView.fxml")));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -65,16 +68,19 @@ public class customerController implements Initializable {
     }
 
     public void deleteCustomer(ActionEvent actionEvent) {
-
-        selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
         if(selectedCustomer == null) {
             Messages.selectACustomerToDelete();
             return;
         } else {
+            // TODO: check if customer has any appointments
+
+            int customerId = selectedCustomer.getCustomerId();
             boolean deleteConfirm = Messages.deleteConfirmation(selectedCustomer.getCustomerName());
             if(deleteConfirm) {
-                CustomerDAO.deleteCustomer(selectedCustomer.getCustomerId());
-                Customer.deleteCustomer(selectedCustomer);
+                CustomerDAO.deleteCustomer(customerId);
+                customersTable.setItems(CustomerDAO.loadAllCustomers());
+                customersTable.refresh();
             }
         }
     }
@@ -106,10 +112,6 @@ public class customerController implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        createDateCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
-        createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
-        lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
-        lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
         countryIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
     }
 

@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.addCustomerController">
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: teal;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.updateCustomerController">
     <children>
-        <Label alignment="CENTER" layoutX="72.0" layoutY="30.0" text="New Customer Information" textAlignment="CENTER" textFill="WHITE">
+        <Label alignment="CENTER" layoutX="72.0" layoutY="30.0" text="Update Customer Information" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
@@ -68,7 +68,7 @@
         <ComboBox fx:id="countryComboBox" layoutX="150.0" layoutY="345.0" onAction="#selectDivision" prefWidth="150.0" promptText="Select a Country" />
         <ComboBox fx:id="divisionComboBox" layoutX="150.0" layoutY="395.0" prefWidth="150.0" promptText="Select a State / Province" />
     </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
 </AnchorPane>

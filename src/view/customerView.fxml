@@ -37,10 +37,6 @@
             <TableColumn fx:id="addressCol" prefWidth="75.0" text="Address" />
             <TableColumn fx:id="postalCodeCol" prefWidth="75.0" text="Postal_Code" />
             <TableColumn fx:id="phoneCol" prefWidth="75.0" text="Phone" />
-            <TableColumn fx:id="createDateCol" prefWidth="75.0" text="Create_Date" />
-            <TableColumn fx:id="createdByCol" prefWidth="75.0" text="Created_By" />
-            <TableColumn fx:id="lastUpdateCol" prefWidth="75.0" text="Last_Update" />
-            <TableColumn fx:id="lastUpdatedByCol" prefWidth="75.0" text="Last_Updated_By" />
             <TableColumn fx:id="countryIdCol" prefWidth="75.0" text="Country_ID" />
         </columns>
          <BorderPane.margin>
