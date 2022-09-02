@@ -135,17 +135,14 @@ public class updateCustomerController implements Initializable {
     public void updateCustomer(ActionEvent actionEvent) throws IOException {
         if(validateCustomer()) {
 
-            Customer customer = new Customer(
-                    Integer.parseInt(customerIdTF.getText()),
-                    customerNameTF.getText(),
-                    addressTF.getText(),
-                    postalCodeTF.getText(),
-                    phoneNumTF.getText(),
-                    countryComboBox.getValue().getCountryId(),
-                    divisionComboBox.getValue().getDivisionId()
-            );
+            customerName = customerNameTF.getText();
+            address = addressTF.getText();
+            postalCode = postalCodeTF.getText();
+            phone = phoneNumTF.getText();
+            divisionId = divisionComboBox.getValue().getDivisionId();
+            customerId = Integer.parseInt(customerIdTF.getText());
 
-            CustomerDAO.updateCustomer(customer);
+            CustomerDAO.updateCustomer(customerName, address, postalCode, phone, divisionId, customerId);
             Messages.updateConfirmation(customerNameTF.getText());
         }
         Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
@@ -168,10 +165,6 @@ public class updateCustomerController implements Initializable {
         divisionComboBox.setDisable(false);
         divisionComboBox.setItems(DivisionDAO.getDivisionsByCountry(country_ID));
     }
-
-
-
-
 
 }
 

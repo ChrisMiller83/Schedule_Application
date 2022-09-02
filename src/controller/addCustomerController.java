@@ -51,7 +51,6 @@ public class addCustomerController implements Initializable {
 
 
     @FXML void cancelToCustomer(ActionEvent event) throws IOException {
-//        ChangeView.changeView(event, "customersView.fxml");
         Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -77,12 +76,8 @@ public class addCustomerController implements Initializable {
         stage.show();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setCountryComboBox();
-        divisionComboBox.setDisable(true);
-        UserDAO.loadAllUsers();
-    }
+
+
 
     private void setCountryComboBox() {
         ObservableList<Country> countryObservableList = FXCollections.observableList(CountryDAO.loadAllCountries());
@@ -136,6 +131,15 @@ public class addCustomerController implements Initializable {
         }
 
         return true;
+    }
+
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setCountryComboBox();
+        divisionComboBox.setDisable(true);
+        UserDAO.loadAllUsers();
     }
 
 

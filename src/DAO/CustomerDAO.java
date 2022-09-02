@@ -8,6 +8,7 @@ import model.Division;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 public class CustomerDAO {
 
@@ -94,16 +95,16 @@ public class CustomerDAO {
 
 
 
-    public static void updateCustomer (Customer customer) {
+    public static void updateCustomer (String customerName, String address, String postalCode, String phoneNumber, int divisionId, int customerId) {
         try {
-            String updateCustomerData = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
-            PreparedStatement updateCustomer = DBConnection.getConnection().prepareStatement(updateCustomerData);
-            updateCustomer.setString(1, customer.getCustomerName());
-            updateCustomer.setString(2, customer.getAddress());
-            updateCustomer.setString(3, customer.getPostalCode());
-            updateCustomer.setString(4, customer.getPhoneNumber());
-            updateCustomer.setInt(5, customer.getDivisionId());
-            updateCustomer.setInt(6, customer.getCustomerId());
+            //String updateCustomerData = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
+            PreparedStatement updateCustomer = DBConnection.getConnection().prepareStatement(UPDATE_CUSTOMER);
+            updateCustomer.setString(1, customerName);
+            updateCustomer.setString(2, address);
+            updateCustomer.setString(3, postalCode);
+            updateCustomer.setString(4, phoneNumber);
+            updateCustomer.setInt(5, divisionId);
+            updateCustomer.setInt(6, customerId);
             updateCustomer.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

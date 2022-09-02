@@ -96,9 +96,6 @@ public class customerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setCustomersTable();
-
-
-
     }
 
 
@@ -124,12 +121,13 @@ public class customerController implements Initializable {
             return;
         } else {
             updateCustomerController.getSelectedCustomer(customersTable.getSelectionModel().getSelectedItem());
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/updateCustomerView.fxml")));
+            Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/updateCustomerView.fxml")));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+
     }
 }
