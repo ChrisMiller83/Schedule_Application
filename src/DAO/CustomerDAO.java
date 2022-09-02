@@ -20,10 +20,19 @@ public class CustomerDAO {
     public static final String COLUMN_CUSTOMER_POSTAL_CODE = "Postal_Code";
     public static final String COLUMN_CUSTOMER_PHONE = "Phone";
     public static final String COLUMN_CUSTOMER_DIVISION_ID = "Division_ID";
+    public static final String TABLE_DIVISIONS = "first_level_divisions";
+    public static final String COLUMN_DIVISION_ID = "Division_ID";
+    public static final String TABLE_COUNTRIES = "countries";
+    public static final String COLUMN_COUNTRY_ID = "Country_ID";
 
 
 
-    public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS;
+    public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS +
+            ", " + TABLE_DIVISIONS + ", " + TABLE_COUNTRIES + " WHERE " +
+            TABLE_CUSTOMERS + "." + COLUMN_CUSTOMER_DIVISION_ID + " = " +
+            TABLE_DIVISIONS + "." + COLUMN_DIVISION_ID + " AND " +
+            TABLE_DIVISIONS + "." + COLUMN_COUNTRY_ID + " = " +
+            TABLE_COUNTRIES + "." + COLUMN_COUNTRY_ID;
 
     public static final String CREATE_CUSTOMER = "INSERT INTO " + TABLE_CUSTOMERS + "( " +
             COLUMN_CUSTOMER_NAME + ", " + COLUMN_CUSTOMER_ADDRESS +
@@ -31,8 +40,8 @@ public class CustomerDAO {
             COLUMN_CUSTOMER_DIVISION_ID + " ) VALUES (?, ?, ?, ?, ?)";
 
     public static final String UPDATE_CUSTOMER = "UPDATE " + TABLE_CUSTOMERS + " SET " +
-            COLUMN_CUSTOMER_NAME + " = ?," + COLUMN_CUSTOMER_ADDRESS + " = ?," +
-            COLUMN_CUSTOMER_POSTAL_CODE + " = ?," + COLUMN_CUSTOMER_PHONE + " = ?," +
+            COLUMN_CUSTOMER_NAME + " = ?,  " + COLUMN_CUSTOMER_ADDRESS + " = ?, " +
+            COLUMN_CUSTOMER_POSTAL_CODE + " = ?, " + COLUMN_CUSTOMER_PHONE + " = ?, " +
             COLUMN_CUSTOMER_DIVISION_ID + " = ? WHERE " + COLUMN_CUSTOMER_ID + " = ?";
 
     public static final String DELETE_CUSTOMER = "DELETE FROM " + TABLE_CUSTOMERS +
@@ -53,8 +62,9 @@ public class CustomerDAO {
                 String postalCode = result.getString(COLUMN_CUSTOMER_POSTAL_CODE);
                 String phoneNumber = result.getString(COLUMN_CUSTOMER_PHONE);
                 int divisionId = result.getInt(COLUMN_CUSTOMER_DIVISION_ID);
+                int countryId = result.getInt(COLUMN_COUNTRY_ID);
 
-                Customer customer = new Customer(customerId, customerName, address, postalCode, phoneNumber, divisionId);
+                Customer customer = new Customer(customerId, customerName, address, postalCode, phoneNumber, divisionId, countryId);
 
                 customersList.add(customer);
 

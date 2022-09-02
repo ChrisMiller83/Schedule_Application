@@ -61,7 +61,6 @@ public class addCustomerController implements Initializable {
 
     public void saveCustomer(ActionEvent event) throws IOException, SQLException {
         if(validateCustomer()) {
-            //customerId = Customer.getUniqueCustomerId.getAndIncrement();
             customerName = customerNameTF.getText();
             address = addressTF.getText();
             postalCode = postalCodeTF.getText();
@@ -69,13 +68,7 @@ public class addCustomerController implements Initializable {
             divisionId = divisionComboBox.getValue().getDivisionId();
 
             CustomerDAO.addCustomer(customerName, address, postalCode, phone, divisionId);
-//            Customer.addCustomer(new Customer(customerId, customerName, address, postalCode, phone,
-//                    divisionId));
-
-
             Messages.addConfirmation(customerName);
-
-
         }
         Parent root = FXMLLoader.load((getClass().getResource("/view/customerView.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();

@@ -58,7 +58,6 @@ public class addApptController implements Initializable {
         setCustomerCB();
         setUserIdTF();
         setContactCB();
-//        setApptID();
         setTimeCB();
         setTypeCB();
     }
@@ -76,18 +75,6 @@ public class addApptController implements Initializable {
         userTF.setText(User.currentUser.getUserName());
         userTF.setDisable(true);
     }
-
-
-
-//    private void setApptID() {
-//        int max_id = 1;
-//        for (Appointment appointment : Appointment.appointmentsList) {
-//            if (appointment.getApptId() >= max_id) {
-//                max_id = appointment.getApptId() + 1;
-//            }
-//        }
-//        appointmentIdTF.setText(String.valueOf(max_id));
-//    }
 
     private void setTypeCB() {
         ObservableList<String> typeList = FXCollections.observableArrayList();

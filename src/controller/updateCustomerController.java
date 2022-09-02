@@ -35,7 +35,9 @@ public class updateCustomerController implements Initializable {
     private String address;
     private String postalCode;
     private String phone;
+    private int countryId;
     private int divisionId;
+
     private Country selectedCountry;
     private Division selectedDivision;
 
@@ -50,25 +52,80 @@ public class updateCustomerController implements Initializable {
     @FXML private Button cancelBtn;
     @FXML private Button saveBtn;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void setSelectedCustomer(Customer selectedCustomer) {
+
         customerIdTF.setText(Integer.toString(selectedCustomer.getCustomerId()));
         customerNameTF.setText(selectedCustomer.getCustomerName());
         addressTF.setText(selectedCustomer.getAddress());
         postalCodeTF.setText(selectedCustomer.getPostalCode());
         phoneNumTF.setText(selectedCustomer.getPhoneNumber());
-        countryComboBox.getSelectionModel().select(selectedCountry);
-        divisionComboBox.getSelectionModel().select(selectedDivision);
+        ObservableList<Country> countryObservableList = CountryDAO.loadAllCountries();
+        countryComboBox.setItems(countryObservableList);
 
+        for (Country country : countryObservableList) {
+            if (country.getCountryId() == selectedCustomer.getCountryId()) {
+                countryComboBox.setValue(country);
+                break;
+            }
+        }
+
+        ObservableList<Division> selectedDivisions = DivisionDAO.getDivisionsByCountry(selectedCustomer.getCountryId());
+        divisionComboBox.setItems(selectedDivisions);
+        for (Division division : selectedDivisions) {
+            if (division.getDivisionId() == selectedCustomer.getDivisionId()) {
+                divisionComboBox.setValue(division);
+                break;
+            }
+        }
+    }
+
+    public static void getSelectedCustomer(Customer customer) {
+        selectedCustomer = customer;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setSelectedCustomer(selectedCustomer);
         setCountryComboBox();
         divisionComboBox.setDisable(true);
-        UserDAO.loadAllUsers();
 
+    }
+
+    private boolean validateCustomer() {
+        if (customerNameTF.getText().isEmpty()) {
+            Messages.validateCustomerError(1);
+            return false;
+        }
+        if(addressTF.getText().isEmpty()) {
+            Messages.validateCustomerError(2);
+            return false;
+        }
+        if(postalCodeTF.getText().isEmpty()) {
+            Messages.validateCustomerError(3);
+            return false;
+        }
+        if (phoneNumTF.getText().isEmpty()) {
+            Messages.validateCustomerError(4);
+            return false;
+        }
+        if(countryComboBox.getSelectionModel().isEmpty()) {
+            Messages.validateCustomerError(5);
+            return false;
+        }
+        if (divisionComboBox.getSelectionModel().isEmpty()) {
+            Messages.validateCustomerError(6);
+            return false;
+        }
+        if (postalCodeTF.getText().length() != 5) {
+            Messages.validateCustomerError(7);
+            return false;
+        }
+        return true;
     }
 
 
     public void cancelToCustomers(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/customersView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -76,7 +133,17 @@ public class updateCustomerController implements Initializable {
     }
 
     public void updateCustomer(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/customersView.fxml"));
+        if(validateCustomer()) {
+            customerName = customerNameTF.getText();
+            address = addressTF.getText();
+            postalCode = postalCodeTF.getText();
+            phone = phoneNumTF.getText();
+            divisionId = divisionComboBox.getValue().getDivisionId();
+
+            CustomerDAO.updateCustomer(customerName, address, postalCode, phone, divisionId, customerId);
+            Messages.updateConfirmation(customerName);
+        }
+        Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -97,43 +164,10 @@ public class updateCustomerController implements Initializable {
         divisionComboBox.setItems(DivisionDAO.getDivisionsByCountry(country_ID));
     }
 
-    private boolean validateCustomer() {
 
-        if (customerNameTF.getText().isEmpty()) {
-            Messages.validateCustomerError(1);
-            return false;
-        }
 
-        if(addressTF.getText().isEmpty()) {
-            Messages.validateCustomerError(2);
-            return false;
-        }
 
-        if(postalCodeTF.getText().isEmpty()) {
-            Messages.validateCustomerError(3);
-            return false;
-        }
 
-        if (phoneNumTF.getText().isEmpty()) {
-            Messages.validateCustomerError(4);
-            return false;
-        }
-
-        if(countryComboBox.getSelectionModel().isEmpty()) {
-            Messages.validateCustomerError(5);
-            return false;
-        }
-
-        if (divisionComboBox.getSelectionModel().isEmpty()) {
-            Messages.validateCustomerError(6);
-            return false;
-        }
-
-        if (postalCodeTF.getText().length() != 5) {
-            Messages.validateCustomerError(7);
-            return false;
-        }
-
-        return true;
-    }
 }
+
+

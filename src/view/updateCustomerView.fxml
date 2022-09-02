@@ -55,12 +55,12 @@
                 <Font size="14.0" />
             </font>
         </Label>
-        <Button fx:id="cancelBtn" layoutX="150.0" layoutY="445.0" mnemonicParsing="false" onAction="#cancelToCustomer" style="-fx-background-color: red;" text="Cancel" textFill="WHITE">
+        <Button fx:id="cancelBtn" layoutX="150.0" layoutY="445.0" mnemonicParsing="false" onAction="#cancelToCustomers" style="-fx-background-color: red;" text="Cancel" textFill="WHITE">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button fx:id="saveBtn" layoutX="250.0" layoutY="445.0" mnemonicParsing="false" onAction="#saveCustomer" style="-fx-background-color: Green;" text="Save" textFill="WHITE">
+        <Button fx:id="saveBtn" layoutX="250.0" layoutY="445.0" mnemonicParsing="false" onAction="#updateCustomer" style="-fx-background-color: Green;" text="Save" textFill="WHITE">
             <font>
                 <Font size="14.0" />
             </font>

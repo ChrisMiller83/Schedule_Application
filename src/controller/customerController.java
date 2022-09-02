@@ -1,7 +1,6 @@
 package controller;
 
 import DAO.CustomerDAO;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,14 +18,12 @@ import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class customerController implements Initializable {
 
-    private static Customer customerToUpdate;
+    private static Customer customerToBeUpdated;
     private static int selectedCustomer;
 
     static ObservableList<Customer> customersList;
@@ -43,24 +40,27 @@ public class customerController implements Initializable {
     @FXML private TableColumn<Customer, String> postalCodeCol;
     @FXML private TableColumn<Customer, String> phoneCol;
     @FXML private TableColumn<Customer, Integer> countryIdCol;
+//
+//    @FXML
+//    public void toUpdateCustomer(ActionEvent actionEvent) throws IOException {
+//
+////        customerToBeUpdated = customersTable.getSelectionModel().getSelectedItem();
+////        if (customerToBeUpdated == null) {
+////            Messages.selectACustomerToUpdate();
+////            return;
+////        }
+////        selectedCustomer  = customersList.indexOf(customerToBeUpdated);
+//
+//        Parent root = FXMLLoader.load(getClass().getResource("/view/updateCustomerView.fxml"));
+//        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+//        Scene scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.show();
+//    }
 
-    public void toUpdateCustomer(ActionEvent actionEvent) throws IOException {
-
-        customerToUpdate = customersTable.getSelectionModel().getSelectedItem();
-        if (customerToUpdate == null) {
-            Messages.selectACustomerToUpdate();
-            return;
-        }
-        selectedCustomer  = customersList.indexOf(customerToUpdate);
-        Parent root = FXMLLoader.load((getClass().getResource("/view/updateCustomerView.fxml")));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
+    @FXML
     public void toAddCustomer(ActionEvent actionEvent) throws IOException{
-        Parent root = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/view/addCustomerView.fxml"))));
+        Parent root = FXMLLoader.load((getClass().getResource("/view/addCustomerView.fxml")));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -112,8 +112,24 @@ public class customerController implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        countryIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
+        countryIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
     }
 
 
+    @FXML
+    public void toUpdateCustomer(ActionEvent actionEvent) throws IOException {
+        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            Messages.selectACustomerToUpdate();
+            return;
+        } else {
+            updateCustomerController.getSelectedCustomer(customersTable.getSelectionModel().getSelectedItem());
+        }
+
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/updateCustomerView.fxml")));
+        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }

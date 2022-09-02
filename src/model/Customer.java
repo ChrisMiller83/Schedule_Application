@@ -8,17 +8,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Customer model class.
  */
 public class Customer {
-    public static List<Customer> customers = new ArrayList<>();
-
     private int customerId;
     private String customerName;
     private String address;
     private String postalCode;
     private String phoneNumber;
-    private int divisionID;
-    private int customerCountry;
+    private String division;
+    private int countryId;
+    private int divisionId;
 
-
+    public static List<Customer> customers = new ArrayList<>();
 
     /**
      * Customer constructor
@@ -27,24 +26,22 @@ public class Customer {
      * @param address customer address
      * @param phoneNumber customer phone number
      * @param postalCode zip code
-     * @param divisionID state/province id
+     * @param countryId customer's country id
+     * @param divisionId state/province id
      */
-    public Customer(int customerId, String customerName, String address, String postalCode, String phoneNumber, int divisionID) {
+    public Customer(int customerId, String customerName, String address, String postalCode, String phoneNumber,
+                    int countryId, int divisionId) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
-        this.divisionID = divisionID;
+        this.countryId = countryId;
+        this.divisionId = divisionId;
     }
 
     public Customer() {
     }
-
-
-    public static AtomicInteger getUniqueCustomerId = new AtomicInteger(customers.size() + 1);
-
-
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
@@ -85,44 +82,29 @@ public class Customer {
         return postalCode;
     }
 
-    public void setDivisionID(int divisionID) {
-        this.divisionID = divisionID;
+    public int getCountryId() {
+        return countryId;
     }
 
-    public int getDivisionID() {
-        return divisionID;
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 
-    public int getCustomerCountry() {
-        return customerCountry;
+
+    public int getDivisionId() {
+        return divisionId;
     }
 
-    public void setCustomerCountry(int customerCountry) {
-        this.customerCountry = customerCountry;
+    public void setDivisionId(int divisionId) {
+        this.divisionId = divisionId;
     }
 
     public static List<Customer> getCustomers() {
         return customers;
     }
 
-    public static void addCustomer(Customer newCustomer) {
-        customers.add(newCustomer);
-    }
-
-    public static void updateCustomer(int customerId, Customer newCustomer) {
-        for (int i = 0; i < customers.size(); ++i) {
-            if (customers.get(i).getCustomerId() == customerId) {
-                customers.set(i, newCustomer);
-            }
-        }
-    }
 
 
-
-    public static boolean deleteCustomer(Customer selectedCustomer) {
-        customers.remove(selectedCustomer);
-        return true;
-    }
 
 
 

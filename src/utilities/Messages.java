@@ -204,6 +204,14 @@ public class Messages {
         return result.get() == ButtonType.OK;
     }
 
+    public static boolean updateConfirmation(String itemToUpdate) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("!! UPDATE CONFORMATION !!");
+        alert.setContentText("Update: " + itemToUpdate);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
+    }
+
     public static void errorWindow (int number) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("!! ERROR ALERT !!");
