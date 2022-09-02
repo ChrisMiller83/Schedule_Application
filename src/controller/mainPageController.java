@@ -12,18 +12,13 @@ import java.io.IOException;
 
 public class mainPageController {
 
-
-
-    @FXML public Label timeZoneLabel;
-
     public Button appointmentsBtn;
     @FXML public Button customersBtn;
     public Button viewReportsBtn;
     public Button logOutBtn;
     @FXML public Button quitBtn;
-
-
-
+    public Button contactsBtn;
+    public Button usersBtn;
 
 
     public void toAppointmentsView(ActionEvent actionEvent) throws IOException {
@@ -51,6 +46,22 @@ public class mainPageController {
         stage.show();
     }
 
+    public void toContactsView(ActionEvent actionEvent) throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource("/view/contactView.fxml"));
+        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void toUsersView(ActionEvent actionEvent) throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource("/view/usersView.fxml"));
+        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
 
     public void logOutUserToLoginPage(ActionEvent actionEvent) throws IOException{
         Parent root = FXMLLoader.load((getClass().getResource("/view/loginView.fxml")));
@@ -63,6 +74,7 @@ public class mainPageController {
     public void quitApp(ActionEvent actionEvent) throws IOException{
         System.exit(0);
     }
+
 
 
 }

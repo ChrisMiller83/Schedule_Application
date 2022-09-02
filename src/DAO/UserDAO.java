@@ -17,13 +17,7 @@ public class UserDAO {
     public static final String COLUMN_USERS_CREATED_BY = "Created_By";
     public static final String COLUMN_USERS_LAST_UPDATED = "Last_Update";
     public static final String COLUMN_USERS_LAST_UPDATED_BY = "Last_Updated_By";
-    public static final int INDEX_USERS_ID = 1;
-    public static final int INDEX_USERS_NAME = 2;
-    public static final int INDEX_USERS_PASSWORD= 3;
-    public static final int INDEX_USERS_CREATED_DATE = 4;
-    public static final int INDEX_USERS_CREATED_BY = 5;
-    public static final int INDEX_USERS_LAST_UPDATED = 6;
-    public static final int INDEX_USERS_LAST_UPDATED_BY = 7;
+
 
     public static final String QUERY_ALL_USERS = "SELECT * FROM " + TABLE_USERS;
 
@@ -57,15 +51,6 @@ public class UserDAO {
 
     }
 
-    public boolean createViewForUsersList() {
-        try (PreparedStatement createUserListView = DBConnection.getConnection().prepareStatement(CREATE_ARTIST_LIST_VIEW)) {
-            ResultSet result = createUserListView.executeQuery();
-            return true;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
 }
