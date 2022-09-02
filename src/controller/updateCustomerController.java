@@ -134,14 +134,19 @@ public class updateCustomerController implements Initializable {
 
     public void updateCustomer(ActionEvent actionEvent) throws IOException {
         if(validateCustomer()) {
-            customerName = customerNameTF.getText();
-            address = addressTF.getText();
-            postalCode = postalCodeTF.getText();
-            phone = phoneNumTF.getText();
-            divisionId = divisionComboBox.getValue().getDivisionId();
 
-            CustomerDAO.updateCustomer(customerName, address, postalCode, phone, divisionId, customerId);
-            Messages.updateConfirmation(customerName);
+            Customer customer = new Customer(
+                    Integer.parseInt(customerIdTF.getText()),
+                    customerNameTF.getText(),
+                    addressTF.getText(),
+                    postalCodeTF.getText(),
+                    phoneNumTF.getText(),
+                    countryComboBox.getValue().getCountryId(),
+                    divisionComboBox.getValue().getDivisionId()
+            );
+
+            CustomerDAO.updateCustomer(customer);
+            Messages.updateConfirmation(customerNameTF.getText());
         }
         Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();

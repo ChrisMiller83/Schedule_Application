@@ -94,19 +94,17 @@ public class CustomerDAO {
 
 
 
-    public static void updateCustomer(String customerName, String address, String postalCode, String phoneNumber, int divisionId, int customerId) {
-
+    public static void updateCustomer (Customer customer) {
         try {
-            PreparedStatement updateCustomers = DBConnection.getConnection().prepareStatement(UPDATE_CUSTOMER);
-
-            updateCustomers.setString(1, customerName);
-            updateCustomers.setString(2, address);
-            updateCustomers.setString(3, postalCode);
-            updateCustomers.setString(4, phoneNumber);
-            updateCustomers.setInt(5, divisionId);
-            updateCustomers.setInt(6, customerId);
-            updateCustomers.executeUpdate();
-
+            String updateCustomerData = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
+            PreparedStatement updateCustomer = DBConnection.getConnection().prepareStatement(updateCustomerData);
+            updateCustomer.setString(1, customer.getCustomerName());
+            updateCustomer.setString(2, customer.getAddress());
+            updateCustomer.setString(3, customer.getPostalCode());
+            updateCustomer.setString(4, customer.getPhoneNumber());
+            updateCustomer.setInt(5, customer.getDivisionId());
+            updateCustomer.setInt(6, customer.getCustomerId());
+            updateCustomer.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
