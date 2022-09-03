@@ -33,7 +33,8 @@ public class CustomerDAO {
             TABLE_CUSTOMERS + "." + COLUMN_CUSTOMER_DIVISION_ID + " = " +
             TABLE_DIVISIONS + "." + COLUMN_DIVISION_ID + " AND " +
             TABLE_DIVISIONS + "." + COLUMN_COUNTRY_ID + " = " +
-            TABLE_COUNTRIES + "." + COLUMN_COUNTRY_ID;
+            TABLE_COUNTRIES + "." + COLUMN_COUNTRY_ID +
+            " ORDER BY " + COLUMN_CUSTOMER_ID;
 
     public static final String CREATE_CUSTOMER = "INSERT INTO " + TABLE_CUSTOMERS + "( " +
             COLUMN_CUSTOMER_NAME + ", " + COLUMN_CUSTOMER_ADDRESS +

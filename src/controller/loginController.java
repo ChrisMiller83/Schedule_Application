@@ -29,6 +29,10 @@ import java.util.ResourceBundle;
 
 public class loginController implements Initializable {
 
+    @FXML private Label titleLabel;
+    @FXML private Label zoneIdLabel;
+    @FXML private Label userNameLabel;
+    @FXML private Label passwordLabel;
     @FXML private Label zoneID;
     @FXML private TextField userNameTF;
     @FXML private TextField passwordTF;
