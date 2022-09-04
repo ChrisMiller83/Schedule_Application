@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,25 +54,29 @@ public class appointmentsController implements Initializable {
 
 
     @FXML
-    void setSelectedView(ActionEvent event) throws SQLException {
-        if(allApptRBtn.isSelected()) {
-            appointments = AppointmentDAO.getAllAppts();
-            appointmentsTableView.setItems(appointments);
-            appointmentsTableView.refresh();
-        } else if (selectedView.getSelectedToggle().equals(weeklyApptRBtn)) {
-            appointments = AppointmentDAO.getApptsThisWeek();
-            appointmentsTableView.setItems(appointments);
-            appointmentsTableView.refresh();
-        } else if (selectedView.getSelectedToggle().equals(monthlyApptBtn)) {
-            appointments = AppointmentDAO.getApptsThisMonth();
-            appointmentsTableView.setItems(appointments);
-            appointmentsTableView.refresh();
+    void setSelectedView(ActionEvent event)  {
+        try {
+            if (allApptRBtn.isSelected()) {
+                appointments = AppointmentDAO.loadAllAppts();
+                appointmentsTableView.setItems(appointments);
+                appointmentsTableView.refresh();
+            } else if (selectedView.getSelectedToggle().equals(weeklyApptRBtn)) {
+                appointments = AppointmentDAO.getApptsThisWeek();
+                appointmentsTableView.setItems(appointments);
+                appointmentsTableView.refresh();
+            } else if (selectedView.getSelectedToggle().equals(monthlyApptBtn)) {
+                appointments = AppointmentDAO.getApptsThisMonth();
+                appointmentsTableView.setItems(appointments);
+                appointmentsTableView.refresh();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
 
     public void toAddApptView(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load((getClass().getResource("/view/createApptView.fxml")));
+        Parent root = FXMLLoader.load((getClass().getResource("/view/addApptView.fxml")));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -94,12 +99,19 @@ public class appointmentsController implements Initializable {
     }
 
     public void deleteAppointment(ActionEvent actionEvent) throws IOException {
-        Appointment deleteAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
-        Appointment.deleteAppt(deleteAppt);
-        AppointmentDAO.deleteAppointment(deleteAppt);
-        appointmentsTableView.getItems().remove(deleteAppt);
-
-        // TODO: add delete message and report
+        Appointment selectedAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
+        if(selectedAppt == null) {
+            Messages.selectionNeeded();
+            return;
+        } else {
+            int apptId = selectedAppt.getApptId();
+            boolean deleteConfirm = Messages.deleteConfirmation(selectedAppt.getApptTitle());
+            if(deleteConfirm) {
+                AppointmentDAO.deleteAppointment(apptId);
+                appointmentsTableView.setItems(AppointmentDAO.loadAllAppts());
+                appointmentsTableView.refresh();
+            }
+        }
 
     }
 
@@ -111,34 +123,47 @@ public class appointmentsController implements Initializable {
         stage.show();
     }
 
+    public void setAppointmentsTableView(ObservableList<Appointment> appointments) {
+        //appointments = AppointmentDAO.loadAllAppts();
+        appointmentsTableView.setItems(appointments);
+        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitle"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescription"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocation"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("apptType"));
+        startTimeCol.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        createDateCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
+        createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
+        lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
+        lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allApptRBtn.setToggleGroup(selectedView);
         weeklyApptRBtn.setToggleGroup(selectedView);
         monthlyApptBtn.setToggleGroup(selectedView);
-        try {
-            appointments = AppointmentDAO.getAllAppts();
-            appointmentsTableView.setItems(appointments);
-            appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
-            titleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitle"));
-            descriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescription"));
-            locationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocation"));
-            typeCol.setCellValueFactory(new PropertyValueFactory<>("apptType"));
-            startTimeCol.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-            endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-            createDateCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
-            createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
-            lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
-            lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
-            customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-            userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
-            contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        setAppointmentsTableView(AppointmentDAO.loadAllAppts());
+
+
     }
 
 
+    public void getAllAppts(ActionEvent actionEvent) throws SQLException{
+        setAppointmentsTableView(AppointmentDAO.getApptsThisMonth());
+    }
+
+    public void getWeeksAppts(ActionEvent actionEvent) throws SQLException {
+        setAppointmentsTableView(AppointmentDAO.getApptsThisWeek());
+    }
+
+    public void getMonthsAppts(ActionEvent actionEvent) throws SQLException{
+        setAppointmentsTableView((AppointmentDAO.loadAllAppts()));
+    }
 }
 
 

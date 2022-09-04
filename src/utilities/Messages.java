@@ -181,10 +181,10 @@ public class Messages {
 
 
 
-    public static void selectACustomerToDelete() {
+    public static void selectionNeeded() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("!! Missing Customer TO Delete");
-        alert.setContentText("Please select a customer to delete first.");
+        alert.setTitle("!! Nothing TO Delete");
+        alert.setContentText("Please make a selection first.");
         alert.showAndWait();
     }
 

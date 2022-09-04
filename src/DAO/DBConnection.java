@@ -16,7 +16,7 @@ public class DBConnection {
      private static String password = "Passw0rd!"; // Password
      private static Connection connection = null;  // Connection Interface
      private static PreparedStatement preparedStatement;
-     public static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm:ss");
+     public static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
      public static void makeConnection() {
 

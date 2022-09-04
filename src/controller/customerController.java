@@ -70,7 +70,7 @@ public class customerController implements Initializable {
     public void deleteCustomer(ActionEvent actionEvent) {
         Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
         if(selectedCustomer == null) {
-            Messages.selectACustomerToDelete();
+            Messages.selectionNeeded();
             return;
         } else {
             // TODO: check if customer has any appointments

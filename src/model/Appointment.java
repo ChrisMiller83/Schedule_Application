@@ -1,7 +1,6 @@
 package model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import DAO.AppointmentDAO;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class Appointment {
     private Timestamp createDate;
     private String createdBy;
     private Timestamp lastUpdate;
-    private String lastUpdatedBy;
+    private String lastUpdateBy;
     private int customerId;
     private int userId;
     private int contactId;
@@ -36,17 +35,13 @@ public class Appointment {
      * @param apptType  type of appointment
      * @param startDateTime start time and date of the appointment
      * @param endDateTime  end time and date of the appointment
-     * @param createDate  day the appointment was made
-     * @param createdBy  who created the appointment
-     * @param lastUpdate  if and when the appointment was changed
-     * @param lastUpdatedBy  who changed the appointment
      * @param customerId  customer id the appointment is with
      * @param userId  user id
      * @param contactId  contact id
      */
     public Appointment(int apptId, String apptTitle, String apptDescription, String apptLocation,
                        String apptType, Timestamp startDateTime, Timestamp endDateTime,
-                       Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy,
+                       Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdateBy,
                        int customerId, int userId, int contactId) {
         this.apptId = apptId;
         this.apptTitle = apptTitle;
@@ -58,7 +53,7 @@ public class Appointment {
         this.createDate = createDate;
         this.createdBy = createdBy;
         this.lastUpdate = lastUpdate;
-        this.lastUpdatedBy = lastUpdatedBy;
+        this.lastUpdateBy = lastUpdateBy;
         this.customerId = customerId;
         this.userId = userId;
         this. contactId = contactId;
@@ -179,68 +174,36 @@ public class Appointment {
         return endDateTime;
     }
 
-    /**
-     * setCreatedDate
-     * @param createdDate sets the date and time the appointment was created
-     */
-    public void setCreateDate(Timestamp createdDate) {
-        this.createDate = createdDate;
-    }
-
-    /**
-     * getCreatedDate
-     * @return returns the date and time the appointment was created
-     */
-    public Timestamp getCreateDate(){
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    /**
-     * setCreatedBy
-     * @param createdBy sets the name of the user who created the appointment.
-     */
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
     }
 
-    /**
-     * getCreatedBy
-     * @return returns the user's name who created the appointment
-     */
     public String getCreatedBy() {
         return createdBy;
     }
 
-    /**
-     * setLastUpdated
-     * @param lastUpdated sets the time the appointment was last updated.
-     */
-    public void setLastUpdate(Timestamp lastUpdated) {
-        this.lastUpdate = lastUpdated;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    /**
-     * getLastUpdated
-     * @return returns the time the appointment was last updated
-     */
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    /**
-     * setLastUpdatedBy
-     * @param lastUpdatedBy set the user who last updated the appointment
-     */
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
-    /**
-     * getLastUpdatedBy
-     * @return returns the user's name who last updated the appointment
-     */
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
+    public String getLastUpdateBy() {
+        return lastUpdateBy;
+    }
+
+    public void setLastUpdateBy(String lastUpdateBy) {
+        this.lastUpdateBy = lastUpdateBy;
     }
 
     /**
@@ -301,21 +264,7 @@ public class Appointment {
 
 
 
-    public static void addAppt(Appointment newAppointment) {
-        appointmentsList.add(newAppointment);
-    }
 
-    public static void updateAppt(int apptId, Appointment updatedAppt) {
-        for (int i = 0; i < appointmentsList.size(); ++i) {
-            if (appointmentsList.get(i).getApptId() == apptId) {
-                appointmentsList.set(i, updatedAppt);
-            }
-        }
-    }
-
-    public static boolean deleteAppt(Appointment selectedAppt) {
-        return appointmentsList.remove(selectedAppt);
-    }
 }
 
 
