@@ -7,7 +7,6 @@ import model.Country;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 public class CountryDAO {
 
@@ -58,17 +57,32 @@ public class CountryDAO {
 
     public static Country getCountryId(Country country) {
         try {
-            PreparedStatement countryId = DBConnection.getConnection().prepareStatement(QUERY_COUNTRY_NAME_FOR_ID);
-            countryId.setString(1, COLUMN_COUNTRY_NAME);
-            ResultSet result = countryId.executeQuery();
-
+            PreparedStatement getId = DBConnection.getConnection().prepareStatement(QUERY_COUNTRY_NAME_FOR_ID);
+            getId.setString(1, String.valueOf(country));
+            ResultSet result = getId.executeQuery();
             while (result.next()) {
-                Country newCountry = new Country(
+                Country countrySet = new Country(
                         result.getInt(COLUMN_COUNTRY_ID),
                         result.getString(COLUMN_COUNTRY_NAME)
                 );
-                return newCountry;
+                return countrySet;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getCountryName(int countryId) {
+        try {
+            String sql = "SELECT Country FROM countries WHERE Country_ID = ?";
+            PreparedStatement getName = DBConnection.getConnection().prepareStatement(sql);
+            getName.setInt(1, countryId);
+            ResultSet result = getName.executeQuery();
+
+            String countryName = result.getString("Country");
+
+            return countryName;
 
         } catch (SQLException e) {
             e.printStackTrace();

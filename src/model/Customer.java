@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,7 +14,10 @@ public class Customer {
     private String address;
     private String postalCode;
     private String phoneNumber;
-    private String division;
+    private Timestamp createDate;
+    private String createdBy;
+    private Timestamp lastUpdate;
+    private String lastUpdatedBy;
     private int countryId;
     private int divisionId;
 
@@ -26,17 +30,23 @@ public class Customer {
      * @param address customer address
      * @param phoneNumber customer phone number
      * @param postalCode zip code
-     * @param countryId customer's country id
+     * @param createDate Date and time customer entry was created
+     * @param createdBy Name of user who created the entry
+     * @param lastUpdate Date and time customer entry was last updated
+     * @param lastUpdatedBy Name of user who made the latest update to customer data
      * @param divisionId state/province id
      */
     public Customer(int customerId, String customerName, String address, String postalCode, String phoneNumber,
-                    int countryId, int divisionId) {
+                    Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int divisionId) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
-        this.countryId = countryId;
+        this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.lastUpdate = lastUpdate;
+        this.lastUpdatedBy = lastUpdatedBy;
         this.divisionId = divisionId;
     }
 
@@ -82,14 +92,46 @@ public class Customer {
         return postalCode;
     }
 
-    public int getCountryId() {
-        return countryId;
+//    public int getCountryId() {
+//        return countryId;
+//    }
+//
+//    public void setCountryId(int countryId) {
+//        this.countryId = countryId;
+//    }
+
+
+    public Timestamp getCreateDate() {
+        return createDate;
     }
 
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
 
     public int getDivisionId() {
         return divisionId;
@@ -98,6 +140,10 @@ public class Customer {
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
     }
+
+
+
+
 
     public static List<Customer> getCustomers() {
         return customers;

@@ -84,13 +84,13 @@ public class appointmentsController implements Initializable {
     }
 
     public void toUpdateAppointmentView(ActionEvent actionEvent) throws IOException {
-        apptToUpdate = appointmentsTableView.getSelectionModel().getSelectedItem();
+        Appointment apptToUpdate = appointmentsTableView.getSelectionModel().getSelectedItem();
 
         if (apptToUpdate == null) {
-            // TODO: add error message
+            Messages.selectAnItemToUpdate("Appointment");
             return;
         }
-        //selectedAppt = appointmentObservableList.indexOf(apptToUpdate);
+        updateAppointmentController.getSelectedAppt(apptToUpdate);
         Parent root = FXMLLoader.load((getClass().getResource("/view/updateAppointmentView.fxml")));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

@@ -20,6 +20,10 @@ public class CustomerDAO {
     public static final String COLUMN_CUSTOMER_ADDRESS = "Address";
     public static final String COLUMN_CUSTOMER_POSTAL_CODE = "Postal_Code";
     public static final String COLUMN_CUSTOMER_PHONE = "Phone";
+    public static final String COLUMN_CUSTOMER_CREATE_DATE = "Create_Date";
+    public static final String COLUMN_CUSTOMER_CREATED_BY = "Created_By";
+    public static final String COLUMN_CUSTOMER_LAST_UPDATE = "Last_Update";
+    public static final String COLUMN_CUSTOMER_LAST_UPDATED_BY = "Last_Updated_By";
     public static final String COLUMN_CUSTOMER_DIVISION_ID = "Division_ID";
     public static final String TABLE_DIVISIONS = "first_level_divisions";
     public static final String COLUMN_DIVISION_ID = "Division_ID";
@@ -28,22 +32,28 @@ public class CustomerDAO {
 
 
 
+//    public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS +
+//            ", " + TABLE_DIVISIONS + ", " + TABLE_COUNTRIES + " WHERE " +
+//            TABLE_CUSTOMERS + "." + COLUMN_CUSTOMER_DIVISION_ID + " = " +
+//            TABLE_DIVISIONS + "." + COLUMN_DIVISION_ID + " AND " +
+//            TABLE_DIVISIONS + "." + COLUMN_COUNTRY_ID + " = " +
+//            TABLE_COUNTRIES + "." + COLUMN_COUNTRY_ID +
+//            " ORDER BY " + COLUMN_CUSTOMER_ID;
+
     public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS +
-            ", " + TABLE_DIVISIONS + ", " + TABLE_COUNTRIES + " WHERE " +
-            TABLE_CUSTOMERS + "." + COLUMN_CUSTOMER_DIVISION_ID + " = " +
-            TABLE_DIVISIONS + "." + COLUMN_DIVISION_ID + " AND " +
-            TABLE_DIVISIONS + "." + COLUMN_COUNTRY_ID + " = " +
-            TABLE_COUNTRIES + "." + COLUMN_COUNTRY_ID +
             " ORDER BY " + COLUMN_CUSTOMER_ID;
 
     public static final String CREATE_CUSTOMER = "INSERT INTO " + TABLE_CUSTOMERS + "( " +
             COLUMN_CUSTOMER_NAME + ", " + COLUMN_CUSTOMER_ADDRESS +
             ", " + COLUMN_CUSTOMER_POSTAL_CODE + ", " + COLUMN_CUSTOMER_PHONE + ", " +
-            COLUMN_CUSTOMER_DIVISION_ID + " ) VALUES (?, ?, ?, ?, ?)";
+            COLUMN_CUSTOMER_CREATE_DATE + ", " + COLUMN_CUSTOMER_CREATED_BY + ", " +
+            COLUMN_CUSTOMER_LAST_UPDATE + ", " + COLUMN_CUSTOMER_LAST_UPDATED_BY + ", " +
+            COLUMN_CUSTOMER_DIVISION_ID + " ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static final String UPDATE_CUSTOMER = "UPDATE " + TABLE_CUSTOMERS + " SET " +
             COLUMN_CUSTOMER_NAME + " = ?,  " + COLUMN_CUSTOMER_ADDRESS + " = ?, " +
             COLUMN_CUSTOMER_POSTAL_CODE + " = ?, " + COLUMN_CUSTOMER_PHONE + " = ?, " +
+            COLUMN_CUSTOMER_LAST_UPDATE + " = ?, " + COLUMN_CUSTOMER_LAST_UPDATED_BY + " = ?, " +
             COLUMN_CUSTOMER_DIVISION_ID + " = ? WHERE " + COLUMN_CUSTOMER_ID + " = ?";
 
     public static final String DELETE_CUSTOMER = "DELETE FROM " + TABLE_CUSTOMERS +
@@ -63,30 +73,39 @@ public class CustomerDAO {
                 String address = result.getString(COLUMN_CUSTOMER_ADDRESS);
                 String postalCode = result.getString(COLUMN_CUSTOMER_POSTAL_CODE);
                 String phoneNumber = result.getString(COLUMN_CUSTOMER_PHONE);
+                Timestamp createDate = result.getTimestamp(COLUMN_CUSTOMER_CREATE_DATE);
+                String createdBy = result.getString(COLUMN_CUSTOMER_CREATED_BY);
+                Timestamp lastUpdate = result.getTimestamp(COLUMN_CUSTOMER_LAST_UPDATE);
+                String lastUpdateBy = result.getString(COLUMN_CUSTOMER_LAST_UPDATED_BY);
                 int divisionId = result.getInt(COLUMN_CUSTOMER_DIVISION_ID);
-                int countryId = result.getInt(COLUMN_COUNTRY_ID);
 
-                Customer customer = new Customer(customerId, customerName, address, postalCode, phoneNumber, divisionId, countryId);
+                Customer customer = new Customer(customerId, customerName, address, postalCode, phoneNumber,
+                        createDate, createdBy, lastUpdate, lastUpdateBy, divisionId);
 
                 customersList.add(customer);
 
             }
-            return customersList;
             // TODO: add customer report
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return customersList;
     }
 
-    public static void addCustomer(String customerName, String address, String postalCode, String phoneNumber, int divisionId) {
+    public static void addCustomer(String customerName, String address, String postalCode, String phoneNumber,
+                                   Timestamp createDate, String createdBy, Timestamp lastUpdate,
+                                   String lastUpdatedBy, int divisionId) {
         try {
             PreparedStatement addCustomers = DBConnection.getConnection().prepareStatement(CREATE_CUSTOMER);
             addCustomers.setString(1, customerName);
             addCustomers.setString(2, address);
             addCustomers.setString(3, postalCode);
             addCustomers.setString(4, phoneNumber);
-            addCustomers.setInt(5, divisionId);
+            addCustomers.setTimestamp(5, createDate);
+            addCustomers.setString(6, createdBy);
+            addCustomers.setTimestamp(7, lastUpdate);
+            addCustomers.setString(8, lastUpdatedBy);
+            addCustomers.setInt(9, divisionId);
             addCustomers.executeUpdate();
 
         } catch (SQLException e) {
@@ -96,16 +115,20 @@ public class CustomerDAO {
 
 
 
-    public static void updateCustomer (String customerName, String address, String postalCode, String phoneNumber, int divisionId, int customerId) {
+    public static void updateCustomer (String customerName, String address, String postalCode, String phoneNumber,
+                                       Timestamp lastUpdate, String lastUpdatedBy,  int divisionId, int customerId) {
         try {
-            //String updateCustomerData = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
+            //String updateCustomerData = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?,
+            //                  Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
             PreparedStatement updateCustomer = DBConnection.getConnection().prepareStatement(UPDATE_CUSTOMER);
             updateCustomer.setString(1, customerName);
             updateCustomer.setString(2, address);
             updateCustomer.setString(3, postalCode);
             updateCustomer.setString(4, phoneNumber);
-            updateCustomer.setInt(5, divisionId);
-            updateCustomer.setInt(6, customerId);
+            updateCustomer.setTimestamp(5, lastUpdate);
+            updateCustomer.setString(6, lastUpdatedBy);
+            updateCustomer.setInt(7, divisionId);
+            updateCustomer.setInt(8, customerId);
             updateCustomer.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

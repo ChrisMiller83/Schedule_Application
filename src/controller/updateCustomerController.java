@@ -17,14 +17,13 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.Country;
-import model.Customer;
-import model.Division;
+import model.*;
 import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class updateCustomerController implements Initializable {
@@ -35,6 +34,8 @@ public class updateCustomerController implements Initializable {
     private String address;
     private String postalCode;
     private String phone;
+    private Timestamp lastUpdate;
+    private String lastUpdatedBy;
     private int countryId;
     private int divisionId;
 
@@ -52,6 +53,8 @@ public class updateCustomerController implements Initializable {
     @FXML private Button cancelBtn;
     @FXML private Button saveBtn;
 
+
+
     public void setSelectedCustomer(Customer selectedCustomer) {
 
         customerIdTF.setText(Integer.toString(selectedCustomer.getCustomerId()));
@@ -59,24 +62,12 @@ public class updateCustomerController implements Initializable {
         addressTF.setText(selectedCustomer.getAddress());
         postalCodeTF.setText(selectedCustomer.getPostalCode());
         phoneNumTF.setText(selectedCustomer.getPhoneNumber());
-        ObservableList<Country> countryObservableList = CountryDAO.loadAllCountries();
-        countryComboBox.setItems(countryObservableList);
 
-        for (Country country : countryObservableList) {
-            if (country.getCountryId() == selectedCustomer.getCountryId()) {
-                countryComboBox.setValue(country);
-                break;
-            }
-        }
 
-        ObservableList<Division> selectedDivisions = DivisionDAO.getDivisionsByCountry(selectedCustomer.getCountryId());
-        divisionComboBox.setItems(selectedDivisions);
-        for (Division division : selectedDivisions) {
-            if (division.getDivisionId() == selectedCustomer.getDivisionId()) {
-                divisionComboBox.setValue(division);
-                break;
-            }
-        }
+        countryComboBox.getSelectionModel().select(selectedCustomer.getCustomerId());
+        divisionComboBox.getSelectionModel().select(selectedCustomer.getDivisionId());
+
+
     }
 
     public static void getSelectedCustomer(Customer customer) {
@@ -139,11 +130,17 @@ public class updateCustomerController implements Initializable {
             address = addressTF.getText();
             postalCode = postalCodeTF.getText();
             phone = phoneNumTF.getText();
+            lastUpdate = Timestamp.valueOf(LocalDateTime.now());
+            lastUpdatedBy = User.currentUser.getUserName();
             divisionId = divisionComboBox.getValue().getDivisionId();
             customerId = Integer.parseInt(customerIdTF.getText());
 
-            CustomerDAO.updateCustomer(customerName, address, postalCode, phone, divisionId, customerId);
-            Messages.updateConfirmation(customerNameTF.getText());
+            boolean updateConfirm = Messages.updateConfirmation(customerNameTF.getText());
+            if (updateConfirm) {
+                CustomerDAO.updateCustomer(customerName, address, postalCode, phone, lastUpdate, lastUpdatedBy, divisionId, customerId);
+            }
+
+
         }
         Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();

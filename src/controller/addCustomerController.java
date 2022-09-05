@@ -35,6 +35,10 @@ public class addCustomerController implements Initializable {
     private String postalCode;
     private String phone;
     private int divisionId;
+    private Timestamp createDate;
+    private String createdBy;
+    private Timestamp lastUpdate;
+    private String lastUpdatedBy;
     private Country selectedCountry;
     private Division selectedDivision;
 
@@ -64,9 +68,13 @@ public class addCustomerController implements Initializable {
             address = addressTF.getText();
             postalCode = postalCodeTF.getText();
             phone = phoneNumTF.getText();
+            createDate = Timestamp.valueOf(LocalDateTime.now());
+            createdBy = User.currentUser.getUserName();
+            lastUpdate = Timestamp.valueOf(LocalDateTime.now());
+            lastUpdatedBy = User.currentUser.getUserName();
             divisionId = divisionComboBox.getValue().getDivisionId();
 
-            CustomerDAO.addCustomer(customerName, address, postalCode, phone, divisionId);
+            CustomerDAO.addCustomer(customerName, address, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
             Messages.addConfirmation(customerName);
         }
         Parent root = FXMLLoader.load((getClass().getResource("/view/customerView.fxml")));
@@ -86,11 +94,10 @@ public class addCustomerController implements Initializable {
 
 
     @FXML
-    public void selectDivision(ActionEvent event) {
+    public void setDivisionComboBox(ActionEvent event) {
         Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
-        int country_ID = selectedCountry.getCountryId();
         divisionComboBox.setDisable(false);
-        divisionComboBox.setItems(DivisionDAO.getDivisionsByCountry(country_ID));
+        divisionComboBox.setItems(DivisionDAO.getDivisions(selectedCountry));
     }
 
     private boolean validateCustomer() {

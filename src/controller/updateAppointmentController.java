@@ -10,12 +10,15 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Appointment;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class updateAppointmentController implements Initializable {
+
+    private static Appointment selectedAppt;
     public TextField appointIdTF;
     public ChoiceBox customerIdChoiceBox;
     public ChoiceBox userChoiceBox;
@@ -33,6 +36,10 @@ public class updateAppointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+
+    public static void getSelectedAppt(Appointment appointment) {
+        selectedAppt = appointment;
     }
 
     public void cancelToAppointments(ActionEvent actionEvent) throws IOException {

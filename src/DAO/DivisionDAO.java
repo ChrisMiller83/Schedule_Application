@@ -35,8 +35,11 @@ public class DivisionDAO {
     public static final String QUERY_DIVISION_ID = "SELECT * FROM " + TABLE_DIVISIONS +
             " WHERE " + COLUMN_DIVISION_NAME + " = ?";
 
-    public static final String QUERY_DIVISION_BY_COUNTRY = "SELECT * FROM " + TABLE_DIVISIONS +
+    public static final String QUERY_ALL_DIVISION_WITH_COUNTRY_ID = "SELECT * FROM " + TABLE_DIVISIONS +
             " WHERE " + COLUMN_DIVISION_COUNTRY_ID + " = ?";
+
+    public static final String QUERY_DIVISION_ID_FOR_COUNTRY_ID = "SELECT " + COLUMN_DIVISION_COUNTRY_ID +
+            " FROM " + TABLE_DIVISIONS + " WHERE " + COLUMN_DIVISION_ID + " = ?";
 
     public static ObservableList<Division> loadAllDivisions() {
         ObservableList<Division> divisions = FXCollections.observableArrayList();
@@ -60,50 +63,64 @@ public class DivisionDAO {
         }
     }
 
-    public static Division getDivisionName() {
+    public static ObservableList<Division> getDivisions(Country selectedCountry) {
+        Country country = CountryDAO.getCountryId(selectedCountry);
+
+        ObservableList<Division> divisions = FXCollections.observableArrayList();
         try {
-            PreparedStatement getId = DBConnection.getConnection().prepareStatement(QUERY_DIVISION_ID);
-            getId.setString(INDEX_DIVISION_NAME, COLUMN_DIVISION_NAME);
-            ResultSet result = getId.executeQuery();
+            PreparedStatement getDivisions = DBConnection.getConnection().prepareStatement(QUERY_ALL_DIVISION_WITH_COUNTRY_ID);
+            getDivisions.setInt(1, country.getCountryId());
+            ResultSet result = getDivisions.executeQuery();
 
             while (result.next()) {
-                Division newDivision = new Division(
+                Division divisionSet = new Division(
                         result.getInt(COLUMN_DIVISION_ID),
                         result.getString(COLUMN_DIVISION_NAME),
                         result.getInt(COLUMN_DIVISION_COUNTRY_ID)
                 );
-                return newDivision;
+                divisions.add(divisionSet);
             }
+            return divisions;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static ObservableList<Division> getDivisionsByCountry(int country_ID) {
-
-        ObservableList<Division> divisions = FXCollections.observableArrayList();
-
+    public static int getDivisionId(String divisionName) {
         try {
-            PreparedStatement getDivision = DBConnection.getConnection().prepareStatement(QUERY_DIVISION_BY_COUNTRY);
-            getDivision.setInt(1, country_ID);
-            ResultSet result = getDivision.executeQuery();
+            PreparedStatement getId = DBConnection.getConnection().prepareStatement(QUERY_DIVISION_ID);
+            getId.setString(1, divisionName);
+            ResultSet result = getId.executeQuery();
 
-            while (result.next()) {
-                Division newDivision = new Division(
-                        result.getInt(COLUMN_DIVISION_ID),
-                        result.getString(COLUMN_DIVISION_NAME),
-                        result.getInt(COLUMN_DIVISION_COUNTRY_ID)
-                );
-                divisions.add(newDivision);
-            }
-            return divisions;
+            int divisionId = result.getInt("Division_ID");
+
+            return divisionId;
+
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return 0;
     }
 
+
+
+    public static Integer getCountryIds(int divisionID) {
+        try {
+            PreparedStatement getCountryId = DBConnection.getConnection().prepareStatement(QUERY_DIVISION_ID_FOR_COUNTRY_ID);
+            getCountryId.setInt(1, divisionID);
+            ResultSet result = getCountryId.executeQuery();
+
+            int countryId = result.getInt("Country_ID");
+            return countryId;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 

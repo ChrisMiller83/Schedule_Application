@@ -10,13 +10,6 @@ import java.util.Optional;
 
 public class Messages {
 
-    public static void SQLException(SQLException e) {
-        Alert alert = new Alert((Alert.AlertType.ERROR));
-        alert.setTitle("ERROR");
-        alert.setContentText("There was an error: " + e.getMessage());
-        alert.showAndWait();
-    }
-
     public static void upcomingAppointment (Appointment appointment) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("You have an upcoming appointment:");
@@ -172,10 +165,10 @@ public class Messages {
         alert.showAndWait();
     }
 
-    public static void selectACustomerToUpdate() {
+    public static void selectAnItemToUpdate(String s) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("!! Missing Customer TO Update");
-        alert.setContentText("Please select a customer to update first.");
+        alert.setTitle("!! Missing " + s + " To Update");
+        alert.setContentText("Please select a " + s.toLowerCase() + " to update first.");
         alert.showAndWait();
     }
 
@@ -183,7 +176,7 @@ public class Messages {
 
     public static void selectionNeeded() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("!! Nothing TO Delete");
+        alert.setTitle("!! Nothing To Delete");
         alert.setContentText("Please make a selection first.");
         alert.showAndWait();
     }

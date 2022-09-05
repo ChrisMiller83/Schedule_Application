@@ -18,6 +18,7 @@ import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -39,24 +40,12 @@ public class customerController implements Initializable {
     @FXML private TableColumn<Customer, String> addressCol;
     @FXML private TableColumn<Customer, String> postalCodeCol;
     @FXML private TableColumn<Customer, String> phoneCol;
-    @FXML private TableColumn<Customer, Integer> countryIdCol;
-//
-//    @FXML
-//    public void toUpdateCustomer(ActionEvent actionEvent) throws IOException {
-//
-////        customerToBeUpdated = customersTable.getSelectionModel().getSelectedItem();
-////        if (customerToBeUpdated == null) {
-////            Messages.selectACustomerToUpdate();
-////            return;
-////        }
-////        selectedCustomer  = customersList.indexOf(customerToBeUpdated);
-//
-//        Parent root = FXMLLoader.load(getClass().getResource("/view/updateCustomerView.fxml"));
-//        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-//        Scene scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
+    @FXML private TableColumn<Customer, Timestamp> createDateCol;
+    @FXML private TableColumn<Customer, String > createdByCol;
+    @FXML private TableColumn<Customer, Timestamp> lastUpdateCol;
+    @FXML private TableColumn<Customer, String > lastUpdatedByCol;
+    @FXML private TableColumn<Customer, Integer> divisionIdCol;
+
 
     @FXML
     public void toAddCustomer(ActionEvent actionEvent) throws IOException{
@@ -65,6 +54,22 @@ public class customerController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    public void toUpdateCustomer(ActionEvent actionEvent) throws IOException {
+        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            Messages.selectAnItemToUpdate("Customer");
+            return;
+        } else {
+            updateCustomerController.getSelectedCustomer(selectedCustomer);
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/updateCustomerView.fxml")));
+            Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     public void deleteCustomer(ActionEvent actionEvent) {
@@ -109,25 +114,13 @@ public class customerController implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        countryIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+        createDateCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
+        createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
+        lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
+        lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
+        divisionIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
     }
 
 
-    @FXML
-    public void toUpdateCustomer(ActionEvent actionEvent) throws IOException {
-        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
-        if (selectedCustomer == null) {
-            Messages.selectACustomerToUpdate();
-            return;
-        } else {
-            updateCustomerController.getSelectedCustomer(customersTable.getSelectionModel().getSelectedItem());
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/updateCustomerView.fxml")));
-            Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
 
-
-    }
 }
