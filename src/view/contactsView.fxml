@@ -27,7 +27,7 @@
       <HBox alignment="CENTER" layoutX="50.0" layoutY="50.0" prefHeight="40.0" prefWidth="500.0" spacing="20.0">
          <children>
           <Button fx:id="addContactBtn" mnemonicParsing="false" onAction="#toAddContacts" text="Add Contact" />
-            <Button fx:id="updateContactBtn" mnemonicParsing="false" text="Update Contact" />
+            <Button fx:id="updateContactBtn" mnemonicParsing="false" onAction="#toUpdateContacts" text="Update Contact" />
             <Button fx:id="deleteContactBtn" mnemonicParsing="false" onAction="#deleteContact" text="Delete Contact" />
          </children>
          <padding>

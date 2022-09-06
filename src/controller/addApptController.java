@@ -15,6 +15,7 @@ import model.Appointment;
 import model.Contact;
 import model.Customer;
 import model.User;
+import utilities.ChangeView;
 import utilities.Messages;
 
 import java.io.IOException;
@@ -144,29 +145,21 @@ public class addApptController implements Initializable {
                 userId = User.currentUser.getUserId();
                 contactId = contactCB.getValue().getContactId();
 
+                System.out.println(contactId);
                 boolean confirmAdd = Messages.addConfirmation(title);
 
                 if(confirmAdd) {
                     AppointmentDAO.addAppointment(title, description, location, type, start, end, createDate, createdBy,
-                            lastUpdate, lastUpdatedBy, customerId, userId, customerId);
+                            lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+                } else {
+                    return;
                 }
-
-
                 //TODO add check for overlapping appointments
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-
-
-        Parent root = FXMLLoader.load(getClass().getResource("/view/appointmentsView.fxml"));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "appointmentsView.fxml");
     }
 
     private boolean validateAppt() {

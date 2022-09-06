@@ -18,6 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.*;
+import utilities.ChangeView;
 import utilities.Messages;
 
 import java.io.IOException;
@@ -63,11 +64,8 @@ public class updateCustomerController implements Initializable {
         postalCodeTF.setText(selectedCustomer.getPostalCode());
         phoneNumTF.setText(selectedCustomer.getPhoneNumber());
 
-
         countryComboBox.getSelectionModel().select(selectedCustomer.getCustomerId());
         divisionComboBox.getSelectionModel().select(selectedCustomer.getDivisionId());
-
-
     }
 
     public static void getSelectedCustomer(Customer customer) {
@@ -116,11 +114,7 @@ public class updateCustomerController implements Initializable {
 
 
     public void cancelToCustomers(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "customerView.fxml");
     }
 
     public void updateCustomer(ActionEvent actionEvent) throws IOException {
@@ -137,16 +131,15 @@ public class updateCustomerController implements Initializable {
 
             boolean updateConfirm = Messages.updateConfirmation(customerNameTF.getText());
             if (updateConfirm) {
+                System.out.println(customerName + " updated");
                 CustomerDAO.updateCustomer(customerName, address, postalCode, phone, lastUpdate, lastUpdatedBy, divisionId, customerId);
+            } else {
+                return;
             }
 
 
         }
-        Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "customerView.fxml");
     }
 
     private void setCountryComboBox() {
@@ -156,11 +149,10 @@ public class updateCustomerController implements Initializable {
 
 
     @FXML
-    public void selectDivision(ActionEvent event) {
+    public void setDivisionComboBox(ActionEvent event) {
         Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
-        int country_ID = selectedCountry.getCountryId();
         divisionComboBox.setDisable(false);
-        divisionComboBox.setItems(DivisionDAO.getDivisionsByCountry(country_ID));
+        divisionComboBox.setItems(DivisionDAO.getDivisions(selectedCountry));
     }
 
 }

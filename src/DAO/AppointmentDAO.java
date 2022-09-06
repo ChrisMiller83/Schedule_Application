@@ -56,7 +56,7 @@ public class AppointmentDAO {
             " ORDER BY " + COLUMN_APPT_ID;
 
     public static final String QUERY_APPOINTMENTS_BY_WEEK_OR_MONTH = "SELECT * FROM " + TABLE_APPOINTMENTS +
-            " WHERE " + COLUMN_APPT_START + " > ? AND " + COLUMN_APPT_START + " < ? ";
+            " WHERE " + COLUMN_APPT_START + " > ? AND " + COLUMN_APPT_START + " < ? ;";
 
     public static final String ADD_NEW_APPOINTMENT = "INSERT INTO " + TABLE_APPOINTMENTS + " (" +
             COLUMN_APPT_TITLE + ", " + COLUMN_APPT_DESCRIPTION + ", " + COLUMN_APPT_LOCATION + ", " +
@@ -64,7 +64,7 @@ public class AppointmentDAO {
             COLUMN_APPT_CREATE_DATE + ", " + COLUMN_APPT_CREATED_BY + ", " +
             COLUMN_APPT_LAST_UPDATE + ", " + COLUMN_APPT_LAST_UPDATED_BY + ", " +
             COLUMN_CUSTOMER_ID + ", "  + COLUMN_USER_ID + ", " + COLUMN_CONTACT_ID +
-            ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     public static final String UPDATE_AN_APPOINTMENT = "UPDATE " + TABLE_APPOINTMENTS + "SET " +
             COLUMN_APPT_TITLE + " = ?, " + COLUMN_APPT_DESCRIPTION + " = ?, " +
@@ -73,10 +73,10 @@ public class AppointmentDAO {
             COLUMN_APPT_LAST_UPDATE + " = ?, " + COLUMN_APPT_LAST_UPDATED_BY + " = ?, " +
             COLUMN_CUSTOMER_ID + " = ?, " + COLUMN_USER_ID + " = ?, " +
             COLUMN_CONTACT_ID + " = ?) WHERE " +
-            COLUMN_APPT_ID + " = ?";
+            COLUMN_APPT_ID + " = ?;";
 
     public static final String DELETE_AN_APPOINTMENT = "DELETE FROM " + TABLE_APPOINTMENTS + " WHERE " +
-            COLUMN_APPT_ID + " = ?";
+            COLUMN_APPT_ID + " = ?;";
 
     public static ObservableList<Appointment> loadAllAppts() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
@@ -192,7 +192,10 @@ public class AppointmentDAO {
                                       Timestamp end, Timestamp createDate, String createdBy, Timestamp lastUpdate,
                                       String lastUpdatedBy, int customerId, int userId, int contactId) {
             try {
-               //String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Update_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//               String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Update_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+//                       "INNER JOIN customers AS customer ON appointments.Customer_ID = customer.Customer_ID " +
+//                       "INNER JOIN users AS user ON appointments.User_ID = user.User_ID " +
+//                       "INNER JOIN contacts AS contact ON appointments.Contact_ID = contact.Contact_ID";
                PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);
 
                addAppointments.setString(1, title);

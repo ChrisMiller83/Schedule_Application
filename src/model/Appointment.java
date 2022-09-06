@@ -20,7 +20,7 @@ public class Appointment {
     private Timestamp createDate;
     private String createdBy;
     private Timestamp lastUpdate;
-    private String lastUpdateBy;
+    private String lastUpdatedBy;
     private int customerId;
     private int userId;
     private int contactId;
@@ -41,7 +41,7 @@ public class Appointment {
      */
     public Appointment(int apptId, String apptTitle, String apptDescription, String apptLocation,
                        String apptType, Timestamp startDateTime, Timestamp endDateTime,
-                       Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdateBy,
+                       Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy,
                        int customerId, int userId, int contactId) {
         this.apptId = apptId;
         this.apptTitle = apptTitle;
@@ -53,7 +53,7 @@ public class Appointment {
         this.createDate = createDate;
         this.createdBy = createdBy;
         this.lastUpdate = lastUpdate;
-        this.lastUpdateBy = lastUpdateBy;
+        this.lastUpdatedBy = lastUpdatedBy;
         this.customerId = customerId;
         this.userId = userId;
         this. contactId = contactId;
@@ -198,12 +198,12 @@ public class Appointment {
         this.lastUpdate = lastUpdate;
     }
 
-    public String getLastUpdateBy() {
-        return lastUpdateBy;
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
     }
 
-    public void setLastUpdateBy(String lastUpdateBy) {
-        this.lastUpdateBy = lastUpdateBy;
+    public void setLastUpdatedBy(String lastUpdateBy) {
+        this.lastUpdatedBy = lastUpdateBy;
     }
 
     /**

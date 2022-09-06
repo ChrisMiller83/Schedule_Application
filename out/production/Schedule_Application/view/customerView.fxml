@@ -36,12 +36,16 @@
    <center>
       <TableView fx:id="customersTable" prefHeight="265.0" prefWidth="580.0" style="-fx-border-color: BLUE;" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="customerIdCol" prefWidth="81.0" text="Customer_ID" />
-          <TableColumn fx:id="customerNameCol" prefWidth="108.0" text="Customer_Name" />
-            <TableColumn fx:id="addressCol" prefWidth="111.0" text="Address" />
-            <TableColumn fx:id="postalCodeCol" minWidth="0.0" prefWidth="75.0" text="Postal_Code" />
-            <TableColumn fx:id="phoneCol" minWidth="0.0" prefWidth="118.0" text="Phone" />
-            <TableColumn fx:id="countryIdCol" minWidth="0.0" prefWidth="82.0" text="Country_ID" />
+          <TableColumn fx:id="customerIdCol" prefWidth="80.0" text="Customer_ID" />
+          <TableColumn fx:id="customerNameCol" prefWidth="100.0" text="Customer_Name" />
+            <TableColumn fx:id="addressCol" prefWidth="120.0" text="Address" />
+            <TableColumn fx:id="postalCodeCol" minWidth="50.0" prefWidth="75.0" text="Postal_Code" />
+            <TableColumn fx:id="phoneCol" minWidth="50.0" prefWidth="120.0" text="Phone" />
+            <TableColumn fx:id="createDateCol" minWidth="50.0" prefWidth="120.0" text="Create_Date" />
+            <TableColumn fx:id="createdByCol" minWidth="50.0" prefWidth="120.0" text="Created_By" />
+            <TableColumn fx:id="lastUpdateCol" minWidth="50.0" prefWidth="120.0" text="Last_Update" />
+            <TableColumn fx:id="lastUpdatedByCol" minWidth="50.0" prefWidth="120.0" text="Last_Updated_By" />
+            <TableColumn fx:id="divisionIdCol" minWidth="0.0" prefWidth="82.0" text="Division_ID" />
         </columns>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

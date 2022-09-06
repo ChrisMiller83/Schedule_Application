@@ -65,7 +65,7 @@
                 <Font size="14.0" />
             </font>
         </Button>
-        <ComboBox fx:id="countryComboBox" layoutX="150.0" layoutY="345.0" onAction="#selectDivision" prefWidth="150.0" promptText="Select a Country" />
+        <ComboBox fx:id="countryComboBox" layoutX="150.0" layoutY="345.0" onAction="#setDivisionComboBox" prefWidth="150.0" promptText="Select a Country" />
         <ComboBox fx:id="divisionComboBox" layoutX="150.0" layoutY="395.0" prefWidth="150.0" promptText="Select a State / Province" />
     </children>
     <padding>

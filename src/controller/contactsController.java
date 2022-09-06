@@ -1,50 +1,102 @@
 package controller;
 
 
+import DAO.AppointmentDAO;
+import DAO.ContactDAO;
+import DAO.CustomerDAO;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.Contact;
+import model.Customer;
+import utilities.ChangeView;
+import utilities.Messages;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class contactsController implements Initializable {
 
-
+    static ObservableList<Contact> contactList;
 
     @FXML private Button addContactBtn;
     @FXML private Button updateContactBtn;
     @FXML private Button deleteContactBtn;
     @FXML private Button mainMenuBtn;
 
-    @FXML private TableView<?> contactsTable;
-    @FXML private TableColumn<?, ?> contactIdCol;
-    @FXML private TableColumn<?, ?> contactNameCol;
-    @FXML private TableColumn<?, ?> emailCol;
+    @FXML private TableView<Contact> contactsTable;
+    @FXML private TableColumn<Contact, Integer> contactIdCol;
+    @FXML private TableColumn<Contact, String> contactNameCol;
+    @FXML private TableColumn<Contact, String> emailCol;
+
+    public void setContactsTable() {
+        contactList = ContactDAO.loadAllContacts();
+        contactsTable.setItems(contactList);
+        contactIdCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        contactNameCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
+        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+    }
 
 
     @FXML
-    void deleteContact(ActionEvent event) {
+    public void deleteContact(ActionEvent actionEvent) {
+        Contact selectedContact = contactsTable.getSelectionModel().getSelectedItem();
+        if(selectedContact == null) {
+            Messages.selectionNeeded();
+            return;
+        } else {
+
+            // TODO: check if contact has any appointments
+
+            int contactId = selectedContact.getContactId();
+            boolean deleteConfirm = Messages.deleteConfirmation(selectedContact.getContactName());
+            if(deleteConfirm) {
+                System.out.println(selectedContact.getContactName() + " deleted");
+                ContactDAO.deleteContact(contactId);
+                contactsTable.setItems(ContactDAO.loadAllContacts());
+                contactsTable.refresh();
+            } else {
+                return;
+            }
+        }
 
     }
 
     @FXML
-    void toAddContacts(ActionEvent event) {
-
+    void toAddContacts(ActionEvent actionEvent) throws IOException {
+        new ChangeView(actionEvent, "addContactView.fxml");
     }
 
     @FXML
-    void toMainMenu(ActionEvent event) {
+    public void toUpdateContacts(ActionEvent actionEvent) throws IOException{
+        Contact selectedContact = contactsTable.getSelectionModel().getSelectedItem();
+        if (selectedContact == null) {
+            Messages.selectAnItemToUpdate("Contact");
+            return;
+        } else {
+            updateContactController.getSelectedContact(selectedContact);
 
+            new ChangeView(actionEvent, "updateContactView.fxml");
+
+        }
+    }
+
+    @FXML
+    void toMainMenu(ActionEvent actionEvent) throws IOException {
+        new ChangeView(actionEvent, "mainPageView.fxml");
     }
 
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        setContactsTable();
     }
+
 }

@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import model.User;
+import utilities.ChangeView;
 import utilities.Messages;
 
 import java.io.IOException;
@@ -54,15 +55,11 @@ public class addCustomerController implements Initializable {
     @FXML private Button saveBtn;
 
 
-    @FXML void cancelToCustomer(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/customerView.fxml"));
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    @FXML void cancelToCustomer(ActionEvent actionEvent) throws IOException {
+        new ChangeView(actionEvent, "customerView.fxml");
     }
 
-    public void saveCustomer(ActionEvent event) throws IOException, SQLException {
+    public void saveCustomer(ActionEvent actionEvent) throws IOException {
         if(validateCustomer()) {
             customerName = customerNameTF.getText();
             address = addressTF.getText();
@@ -74,14 +71,15 @@ public class addCustomerController implements Initializable {
             lastUpdatedBy = User.currentUser.getUserName();
             divisionId = divisionComboBox.getValue().getDivisionId();
 
-            CustomerDAO.addCustomer(customerName, address, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
-            Messages.addConfirmation(customerName);
+            boolean addConfirm = Messages.addConfirmation(customerName);
+            if (addConfirm) {
+                CustomerDAO.addCustomer(customerName, address, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
+                System.out.println(customerName + " added");
+            } else {
+                return;
+            }
         }
-        Parent root = FXMLLoader.load((getClass().getResource("/view/customerView.fxml")));
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "customerView.fxml");
     }
 
 

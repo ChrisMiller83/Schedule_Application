@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import utilities.ChangeView;
 import utilities.Messages;
 
 import java.io.IOException;
@@ -76,11 +77,7 @@ public class appointmentsController implements Initializable {
 
 
     public void toAddApptView(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load((getClass().getResource("/view/addApptView.fxml")));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "addApptView.fxml");
     }
 
     public void toUpdateAppointmentView(ActionEvent actionEvent) throws IOException {
@@ -91,11 +88,8 @@ public class appointmentsController implements Initializable {
             return;
         }
         updateAppointmentController.getSelectedAppt(apptToUpdate);
-        Parent root = FXMLLoader.load((getClass().getResource("/view/updateAppointmentView.fxml")));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+
+        new ChangeView(actionEvent, "updateAppointmentView.fxml");
     }
 
     public void deleteAppointment(ActionEvent actionEvent) throws IOException {
@@ -110,21 +104,17 @@ public class appointmentsController implements Initializable {
                 AppointmentDAO.deleteAppointment(apptId);
                 appointmentsTableView.setItems(AppointmentDAO.loadAllAppts());
                 appointmentsTableView.refresh();
+            } else {
+                return;
             }
         }
-
     }
 
     public void toMainMenu(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load((getClass().getResource("/view/mainPageView.fxml")));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "mainPageView.fxml");
     }
 
     public void setAppointmentsTableView(ObservableList<Appointment> appointments) {
-        //appointments = AppointmentDAO.loadAllAppts();
         appointmentsTableView.setItems(appointments);
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitle"));
@@ -148,22 +138,10 @@ public class appointmentsController implements Initializable {
         weeklyApptRBtn.setToggleGroup(selectedView);
         monthlyApptBtn.setToggleGroup(selectedView);
         setAppointmentsTableView(AppointmentDAO.loadAllAppts());
-
-
     }
 
 
-    public void getAllAppts(ActionEvent actionEvent) throws SQLException{
-        setAppointmentsTableView(AppointmentDAO.getApptsThisMonth());
-    }
 
-    public void getWeeksAppts(ActionEvent actionEvent) throws SQLException {
-        setAppointmentsTableView(AppointmentDAO.getApptsThisWeek());
-    }
-
-    public void getMonthsAppts(ActionEvent actionEvent) throws SQLException{
-        setAppointmentsTableView((AppointmentDAO.loadAllAppts()));
-    }
 }
 
 

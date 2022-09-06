@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
+import utilities.ChangeView;
 import utilities.Messages;
 
 import java.io.IOException;
@@ -49,11 +50,7 @@ public class customerController implements Initializable {
 
     @FXML
     public void toAddCustomer(ActionEvent actionEvent) throws IOException{
-        Parent root = FXMLLoader.load((getClass().getResource("/view/addCustomerView.fxml")));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "addCustomerView.fxml");
     }
 
     @FXML
@@ -64,11 +61,9 @@ public class customerController implements Initializable {
             return;
         } else {
             updateCustomerController.getSelectedCustomer(selectedCustomer);
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/updateCustomerView.fxml")));
-            Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+
+            new ChangeView(actionEvent, "updateCustomerView.fxml");
+
         }
     }
 
@@ -83,19 +78,18 @@ public class customerController implements Initializable {
             int customerId = selectedCustomer.getCustomerId();
             boolean deleteConfirm = Messages.deleteConfirmation(selectedCustomer.getCustomerName());
             if(deleteConfirm) {
+                System.out.println(selectedCustomer.getCustomerName() + " deleted");
                 CustomerDAO.deleteCustomer(customerId);
                 customersTable.setItems(CustomerDAO.loadAllCustomers());
                 customersTable.refresh();
+            } else {
+                return;
             }
         }
     }
 
     public void toMainMenu(ActionEvent actionEvent) throws IOException{
-        Parent root = FXMLLoader.load((getClass().getResource("/view/mainPageView.fxml")));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "mainPageView.fxml");
     }
 
     @Override
