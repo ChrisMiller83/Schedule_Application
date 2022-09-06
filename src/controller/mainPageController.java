@@ -1,5 +1,6 @@
 package controller;
 
+import DAO.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,7 +59,9 @@ public class mainPageController implements Initializable {
     }
 
     public void checkUser(){
-        if(!User.currentUser.equals("admin")){
+        if(User.currentUser.getUserName().equals("admin")){
+            usersBtn.setDisable(false);
+        } else {
             usersBtn.setDisable(true);
         }
     }
@@ -66,6 +69,7 @@ public class mainPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        UserDAO.loadAllUsers();
         checkUser();
     }
 }

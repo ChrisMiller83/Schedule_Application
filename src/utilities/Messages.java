@@ -205,17 +205,19 @@ public class Messages {
         return result.get() == ButtonType.OK;
     }
 
-    public static void errorWindow (int number) {
+    public static void validateUserError (int number) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("!! ERROR ALERT !!");
         switch (number){
             case 1:
             {
-                alert.setContentText("Invalid format: Letters are required.");
+                alert.setContentText("User Name field is empty.  Please add a user name.");
+                break;
             }
             case 2:
             {
-                alert.setContentText("Zip Code Length:  Zip code must not be longer than 5 numbers.");
+                alert.setContentText("Password field is empty.  Please add a password.");
+                break;
             }
             default:
             {

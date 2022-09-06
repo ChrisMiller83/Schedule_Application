@@ -12,6 +12,7 @@ public class User {
     private String createdBy;
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
+
     public static List<User> userArrayList = new ArrayList<>();
     public static User currentUser;
     
