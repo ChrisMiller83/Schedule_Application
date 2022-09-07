@@ -41,8 +41,6 @@ public class updateApptController implements Initializable {
     private int customerId;
     private int userId;
     private int contactId;
-    private Timestamp createDate;
-    private String createdBy;
     private Timestamp lastUpdate;
     private String lastUpdatedBy;
     private LocalDate apptDate;
@@ -214,10 +212,6 @@ public class updateApptController implements Initializable {
         ObservableList<String> typeList = FXCollections.observableArrayList();
         typeList.addAll("Lunch", "Planning Session", "Follow-up", "Project Meeting", "Open Meeting");
         typeCB.setItems(typeList);
-    }
-
-    private Timestamp getTimestamp(LocalDate LocalDate, LocalTime LocalTime) {
-        return Timestamp.valueOf(LocalDateTime.of(LocalDate, LocalTime).format(DBConnection.dtFormatter));
     }
 
     private void setTimeCB() {

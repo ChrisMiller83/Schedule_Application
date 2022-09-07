@@ -142,20 +142,9 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
-
-
-
-
     public static List<Customer> getCustomers() {
         return customers;
     }
-
-
-
-
-
-
-
 
     @Override
     public String toString() {
