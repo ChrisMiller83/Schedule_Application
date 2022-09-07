@@ -42,7 +42,7 @@ public class mainPageController implements Initializable {
     }
 
     public void toContactsView(ActionEvent actionEvent) throws IOException{
-        new ChangeView(actionEvent, "contactView.fxml");
+        new ChangeView(actionEvent, "contactsView.fxml");
     }
 
     public void toUsersView(ActionEvent actionEvent) throws IOException{

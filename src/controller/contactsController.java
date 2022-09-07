@@ -81,9 +81,7 @@ public class contactsController implements Initializable {
             return;
         } else {
             updateContactController.getSelectedContact(selectedContact);
-
             new ChangeView(actionEvent, "updateContactView.fxml");
-
         }
     }
 

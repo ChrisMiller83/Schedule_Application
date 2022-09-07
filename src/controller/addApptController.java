@@ -151,6 +151,7 @@ public class addApptController implements Initializable {
                 if(confirmAdd) {
                     AppointmentDAO.addAppointment(title, description, location, type, start, end, createDate, createdBy,
                             lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+                    System.out.println(title + " added.");
                 } else {
                     return;
                 }
@@ -158,8 +159,10 @@ public class addApptController implements Initializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            new ChangeView(actionEvent, "appointmentsView.fxml");
+        } else {
+            return;
         }
-        new ChangeView(actionEvent, "appointmentsView.fxml");
     }
 
     private boolean validateAppt() {

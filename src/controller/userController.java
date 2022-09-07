@@ -44,6 +44,7 @@ public class userController implements Initializable {
             int userId = selectedUser.getUserId();
             boolean deleteConfirm = Messages.deleteConfirmation(selectedUser.getUserName());
             if(deleteConfirm) {
+                System.out.println("User deleted: " + selectedUser.getUserName());
                 UserDAO.deleteUser(userId);
                 userTableView.setItems(UserDAO.loadAllUsers());
                 userTableView.refresh();

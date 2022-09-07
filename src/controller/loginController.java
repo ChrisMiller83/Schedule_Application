@@ -1,6 +1,7 @@
 package controller;
 
 import DAO.UserDAO;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +26,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.chrono.ChronoLocalDate;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class loginController implements Initializable {
@@ -60,18 +62,15 @@ public class loginController implements Initializable {
             if(!checkUpcomingAppointments()) {
                 Messages.noUpcomingAppointment();
             }
-            Parent root = FXMLLoader.load((getClass().getResource("/view/mainPageView.fxml")));
-            Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.show();
-            stage.setScene(scene);
+            new ChangeView(actionEvent, "mainPageView.fxml");
         } else {
             Messages.invalidLogin();
         }
     }
 
     private boolean isValid() {
-        for (User user : User.getUserArrayList()) {
+        ObservableList<User> allUsers = UserDAO.loadAllUsers();
+        for (User user : Objects.requireNonNull(allUsers)) {
             if (user.getUserName().equals(userNameTF.getText().trim()) && user.getPassword().equals(passwordTF.getText().trim())) {
                 User.currentUser = user;
                 return true;

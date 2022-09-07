@@ -136,10 +136,10 @@ public class updateCustomerController implements Initializable {
             } else {
                 return;
             }
-
-
-        }
         new ChangeView(actionEvent, "customerView.fxml");
+        } else {
+            return;
+        }
     }
 
     private void setCountryComboBox() {

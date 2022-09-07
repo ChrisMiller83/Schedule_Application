@@ -78,8 +78,10 @@ public class addCustomerController implements Initializable {
             } else {
                 return;
             }
+            new ChangeView(actionEvent, "customerView.fxml");
+        } else {
+            return;
         }
-        new ChangeView(actionEvent, "customerView.fxml");
     }
 
 

@@ -59,7 +59,7 @@
             <Label text="Contact" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <ChoiceBox fx:id="contactCB" prefHeight="25.0" prefWidth="182.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <Label text="Appointment Date" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <DatePicker fx:id="startDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <DatePicker fx:id="apptDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="2" />
             <Label text="Start Time" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <ChoiceBox fx:id="startTimeCB" prefHeight="25.0" prefWidth="179.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <Label text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="4" />

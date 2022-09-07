@@ -160,7 +160,7 @@ public class Messages {
 
     public static void checkEndTime() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("!! ERROR CHECK YOUR STARt TIME");
+        alert.setTitle("!! ERROR CHECK YOUR START TIME");
         alert.setContentText("You end time can not be before your start time.");
         alert.showAndWait();
     }
@@ -222,6 +222,34 @@ public class Messages {
             default:
             {
                 alert.setContentText("ERROR UNKNOWN");
+            }
+        }
+        alert.showAndWait();
+    }
+
+    public static void validateContactError (int number) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("!! ERROR ALERT !!");
+        switch (number){
+            case 1:
+            {
+                alert.setContentText("Contact Name field is empty.  Please add a contact name.");
+                break;
+            }
+            case 2:
+            {
+                alert.setContentText("Email field is empty.  Please add an email address.");
+                break;
+            }
+            case 3:
+            {
+                alert.setContentText("Please enter a valid email address");
+                break;
+            }
+            default:
+            {
+                alert.setContentText("ERROR UNKNOWN");
+                break;
             }
         }
         alert.showAndWait();
