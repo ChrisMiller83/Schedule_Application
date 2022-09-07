@@ -5,12 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.Appointment;
 import model.Contact;
 import model.Customer;
 import model.User;
@@ -20,18 +22,14 @@ import utilities.Messages;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
-import static java.time.LocalTime.parse;
+public class updateApptController implements Initializable {
 
-public class addApptController implements Initializable {
-    private ZonedDateTime startTimeConversion;
-    private ZonedDateTime endTimeConversion;
-
-    private ZonedDateTime timeConversion(LocalDateTime time) {
-        return ZonedDateTime.of(time, ZoneId.of("America/New_York"));
-    }
+    private static Appointment selectedAppt;
 
     private int apptId;
     private String title;
@@ -64,68 +62,17 @@ public class addApptController implements Initializable {
     @FXML private Button saveBtn;
 
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        UserDAO.loadAllUsers();
-        CustomerDAO.loadAllCustomers();
-        ContactDAO.loadAllContacts();
-        setCustomerCB();
-        setUserIdTF();
-        setContactCB();
-        setTimeCB();
-        setTypeCB();
-    }
 
-    private void setCustomerCB() {
-        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList(CustomerDAO.loadAllCustomers());
-        customerCB.setItems(customerObservableList);
-    }
 
-    private void setContactCB() {
-        ObservableList<Contact> contactObservableList = FXCollections.observableArrayList(ContactDAO.loadAllContacts());
-        contactCB.setItems(contactObservableList);
-    }
-    private void setUserIdTF() {
-        userTF.setText(User.currentUser.getUserName());
-        userTF.setDisable(true);
-    }
-
-    private void setTypeCB() {
-        ObservableList<String> typeList = FXCollections.observableArrayList();
-        typeList.addAll("Lunch", "Planning Session", "Follow-up", "Project Meeting", "Open Meeting");
-        typeCB.setItems(typeList);
-    }
-
-    private Timestamp getTimestamp(LocalDate LocalDate, LocalTime LocalTime) {
-        return Timestamp.valueOf(LocalDateTime.of(LocalDate, LocalTime).format(DBConnection.dtFormatter));
-    }
-
-    private void setTimeCB() {
-        ObservableList<LocalTime> timeOptions = FXCollections.observableArrayList();
-        LocalTime startTime = LocalTime.of(8, 0);
-        LocalTime endTime = LocalTime.of(22, 0);
-
-        timeOptions.add(startTime);
-
-        while (startTime.isBefore(endTime)){
-            startTime = startTime.plusMinutes(15);
-            timeOptions.add(startTime);
-        }
-        startTimeCB.setItems(timeOptions);
-        endTimeCB.setItems(timeOptions);
+    public static void getSelectedAppt(Appointment appointment) {
+        selectedAppt = appointment;
     }
 
     public void cancelToAppointments(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/apptsView.fxml"));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "apptsView.fxml");
     }
 
-    @FXML
-    void saveAppointment(ActionEvent actionEvent) throws IOException {
-
+    public void updateAppointment(ActionEvent actionEvent) throws IOException {
         if (validateAppt()) {
             try {
                 title = titleTF.getText();
@@ -134,21 +81,19 @@ public class addApptController implements Initializable {
                 type = typeCB.getValue();
                 start = timestamp(apptDatePicker.getValue(), startTimeCB.getValue());
                 end = timestamp(apptDatePicker.getValue(), endTimeCB.getValue());
-                createDate = Timestamp.valueOf(LocalDateTime.now());
-                createdBy = User.currentUser.getUserName();
                 lastUpdate = Timestamp.valueOf(LocalDateTime.now());
                 lastUpdatedBy = User.currentUser.getUserName();
                 customerId = customerCB.getValue().getCustomerId();
                 userId = User.currentUser.getUserId();
                 contactId = contactCB.getValue().getContactId();
+                apptId = Integer.parseInt(appointmentIdTF.getText());
 
-                System.out.println(contactId);
-                boolean confirmAdd = Messages.addConfirmation(title);
+                boolean updateConfirm = Messages.updateConfirmation(title);
 
-                if(confirmAdd) {
-                    AppointmentDAO.addAppointment(title, description, location, type, start, end, createDate, createdBy,
-                            lastUpdate, lastUpdatedBy, customerId, userId, contactId);
-                    System.out.println(title + " added.");
+                if(updateConfirm) {
+                    AppointmentDAO.updateAppointment(title, description, location, type, start, end,
+                            lastUpdate, lastUpdatedBy, customerId, userId, contactId, apptId);
+                    System.out.println(title + " updated.");
                 } else {
                     return;
                 }
@@ -160,6 +105,11 @@ public class addApptController implements Initializable {
         } else {
             return;
         }
+
+    }
+
+    private Timestamp timestamp(LocalDate date, LocalTime time) {
+        return Timestamp.valueOf(LocalDateTime.of(date, time).format(DBConnection.dtFormatter));
     }
 
     private boolean validateAppt() {
@@ -221,9 +171,80 @@ public class addApptController implements Initializable {
         return true;
     }
 
-    private Timestamp timestamp(LocalDate date, LocalTime time) {
-        return Timestamp.valueOf(LocalDateTime.of(date, time).format(DBConnection.dtFormatter));
+    public void setSelectedAppt(Appointment selectedAppt) {
+        appointmentIdTF.setText(Integer.toString(selectedAppt.getApptId()));
+        titleTF.setText(selectedAppt.getApptTitle());
+        descriptionTA.setText(selectedAppt.getApptDescription());
+        locationTF.setText(selectedAppt.getApptLocation());
+        typeCB.getSelectionModel().select(selectedAppt.getApptType());
+        apptDatePicker.setValue(selectedAppt.getStartDateTime().toLocalDateTime().toLocalDate());
+        startTimeCB.getSelectionModel().select(selectedAppt.getStartDateTime().toLocalDateTime().toLocalTime());
+        endTimeCB.getSelectionModel().select(selectedAppt.getEndDateTime().toLocalDateTime().toLocalTime());
+        userTF.setText(User.currentUser.getUserName());
+
+        for (Customer customer : CustomerDAO.loadAllCustomers()) {
+            if (customer.getCustomerId() == selectedAppt.getCustomerId()) {
+                customerCB.setValue(customer);
+            }
+        }
+
+        for (Contact contact : ContactDAO.loadAllContacts()) {
+            if (contact.getContactId() == selectedAppt.getContactId()) {
+                contactCB.setValue(contact);
+            }
+        }
     }
 
 
+    private void setCustomerCB() {
+        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList(CustomerDAO.loadAllCustomers());
+        customerCB.setItems(customerObservableList);
+    }
+
+    private void setContactCB() {
+        ObservableList<Contact> contactObservableList = FXCollections.observableArrayList(ContactDAO.loadAllContacts());
+        contactCB.setItems(contactObservableList);
+    }
+    private void setUserIdTF() {
+        userTF.setText(User.currentUser.getUserName());
+        userTF.setDisable(true);
+    }
+
+    private void setTypeCB() {
+        ObservableList<String> typeList = FXCollections.observableArrayList();
+        typeList.addAll("Lunch", "Planning Session", "Follow-up", "Project Meeting", "Open Meeting");
+        typeCB.setItems(typeList);
+    }
+
+    private Timestamp getTimestamp(LocalDate LocalDate, LocalTime LocalTime) {
+        return Timestamp.valueOf(LocalDateTime.of(LocalDate, LocalTime).format(DBConnection.dtFormatter));
+    }
+
+    private void setTimeCB() {
+        ObservableList<LocalTime> timeOptions = FXCollections.observableArrayList();
+        LocalTime startTime = LocalTime.of(8, 0);
+        LocalTime endTime = LocalTime.of(22, 0);
+
+        timeOptions.add(startTime);
+
+        while (startTime.isBefore(endTime)){
+            startTime = startTime.plusMinutes(15);
+            timeOptions.add(startTime);
+        }
+        startTimeCB.setItems(timeOptions);
+        endTimeCB.setItems(timeOptions);
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setSelectedAppt(selectedAppt);
+        UserDAO.loadAllUsers();
+        CustomerDAO.loadAllCustomers();
+        ContactDAO.loadAllContacts();
+        setCustomerCB();
+        setUserIdTF();
+        setContactCB();
+        setTimeCB();
+        setTypeCB();
+
+    }
 }

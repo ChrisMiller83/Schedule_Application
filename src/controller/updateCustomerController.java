@@ -64,8 +64,23 @@ public class updateCustomerController implements Initializable {
         postalCodeTF.setText(selectedCustomer.getPostalCode());
         phoneNumTF.setText(selectedCustomer.getPhoneNumber());
 
-        countryComboBox.getSelectionModel().select(selectedCustomer.getCustomerId());
-        divisionComboBox.getSelectionModel().select(selectedCustomer.getDivisionId());
+        for (Country country : CountryDAO.loadAllCountries()) {
+            if(country.getCountryId() == selectedCustomer.getCountryId()) {
+                System.out.println(selectedCustomer.getCountryId() + " " + country.getCountryId());
+                countryComboBox.setValue(country);
+                break;
+            }
+        }
+
+        Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
+        divisionComboBox.setItems(DivisionDAO.getDivisions(selectedCountry));
+        ObservableList<Division> DivisionsList = DivisionDAO.getDivisions(selectedCountry);
+        for (Division division : DivisionsList) {
+            if(division.getDivisionId() == selectedCustomer.getDivisionId()) {
+                divisionComboBox.setValue(division);
+                break;
+            }
+        }
     }
 
     public static void getSelectedCustomer(Customer customer) {
@@ -76,7 +91,6 @@ public class updateCustomerController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setSelectedCustomer(selectedCustomer);
         setCountryComboBox();
-        divisionComboBox.setDisable(true);
 
     }
 
@@ -126,6 +140,7 @@ public class updateCustomerController implements Initializable {
             phone = phoneNumTF.getText();
             lastUpdate = Timestamp.valueOf(LocalDateTime.now());
             lastUpdatedBy = User.currentUser.getUserName();
+            countryId = countryComboBox.getValue().getCountryId();
             divisionId = divisionComboBox.getValue().getDivisionId();
             customerId = Integer.parseInt(customerIdTF.getText());
 
@@ -151,7 +166,6 @@ public class updateCustomerController implements Initializable {
     @FXML
     public void setDivisionComboBox(ActionEvent event) {
         Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
-        divisionComboBox.setDisable(false);
         divisionComboBox.setItems(DivisionDAO.getDivisions(selectedCountry));
     }
 

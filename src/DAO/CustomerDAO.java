@@ -24,7 +24,9 @@ public class CustomerDAO {
     public static final String COLUMN_CUSTOMER_CREATED_BY = "Created_By";
     public static final String COLUMN_CUSTOMER_LAST_UPDATE = "Last_Update";
     public static final String COLUMN_CUSTOMER_LAST_UPDATED_BY = "Last_Updated_By";
+    public static final String COLUMN_CUSTOMER_COUNTRY_ID = "Country_ID";
     public static final String COLUMN_CUSTOMER_DIVISION_ID = "Division_ID";
+
     public static final String TABLE_DIVISIONS = "first_level_divisions";
     public static final String COLUMN_DIVISION_ID = "Division_ID";
     public static final String TABLE_COUNTRIES = "countries";
@@ -32,16 +34,16 @@ public class CustomerDAO {
 
 
 
-//    public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS +
-//            ", " + TABLE_DIVISIONS + ", " + TABLE_COUNTRIES + " WHERE " +
-//            TABLE_CUSTOMERS + "." + COLUMN_CUSTOMER_DIVISION_ID + " = " +
-//            TABLE_DIVISIONS + "." + COLUMN_DIVISION_ID + " AND " +
-//            TABLE_DIVISIONS + "." + COLUMN_COUNTRY_ID + " = " +
-//            TABLE_COUNTRIES + "." + COLUMN_COUNTRY_ID +
-//            " ORDER BY " + COLUMN_CUSTOMER_ID;
-
     public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS +
+            ", " + TABLE_DIVISIONS + ", " + TABLE_COUNTRIES + " WHERE " +
+            TABLE_CUSTOMERS + "." + COLUMN_DIVISION_ID + " = " +
+            TABLE_DIVISIONS + "." + COLUMN_DIVISION_ID + " AND " +
+            TABLE_DIVISIONS + "." + COLUMN_COUNTRY_ID + " = " +
+            TABLE_COUNTRIES + "." + COLUMN_COUNTRY_ID +
             " ORDER BY " + COLUMN_CUSTOMER_ID;
+
+//    public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS +
+//            " ORDER BY " + COLUMN_CUSTOMER_ID;
 
     public static final String CREATE_CUSTOMER = "INSERT INTO " + TABLE_CUSTOMERS + "( " +
             COLUMN_CUSTOMER_NAME + ", " + COLUMN_CUSTOMER_ADDRESS +
@@ -77,10 +79,11 @@ public class CustomerDAO {
                 String createdBy = result.getString(COLUMN_CUSTOMER_CREATED_BY);
                 Timestamp lastUpdate = result.getTimestamp(COLUMN_CUSTOMER_LAST_UPDATE);
                 String lastUpdateBy = result.getString(COLUMN_CUSTOMER_LAST_UPDATED_BY);
+                int countryId = result.getInt(COLUMN_CUSTOMER_COUNTRY_ID);
                 int divisionId = result.getInt(COLUMN_CUSTOMER_DIVISION_ID);
 
                 Customer customer = new Customer(customerId, customerName, address, postalCode, phoneNumber,
-                        createDate, createdBy, lastUpdate, lastUpdateBy, divisionId);
+                        createDate, createdBy, lastUpdate, lastUpdateBy, countryId, divisionId);
 
                 customersList.add(customer);
 

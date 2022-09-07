@@ -4,13 +4,9 @@ import DAO.AppointmentDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import model.Appointment;
 import utilities.ChangeView;
 import utilities.Messages;
@@ -21,7 +17,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
-public class appointmentsController implements Initializable {
+public class apptsController implements Initializable {
 
     static ObservableList<Appointment> appointments;
 
@@ -87,9 +83,9 @@ public class appointmentsController implements Initializable {
             Messages.selectAnItemToUpdate("Appointment");
             return;
         }
-        updateAppointmentController.getSelectedAppt(apptToUpdate);
+        updateApptController.getSelectedAppt(apptToUpdate);
 
-        new ChangeView(actionEvent, "updateAppointmentView.fxml");
+        new ChangeView(actionEvent, "updateApptView.fxml");
     }
 
     public void deleteAppointment(ActionEvent actionEvent) throws IOException {

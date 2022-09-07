@@ -28,7 +28,7 @@ public class mainPageController implements Initializable {
 
 
     public void toAppointmentsView(ActionEvent actionEvent) throws IOException {
-        new ChangeView(actionEvent, "appointmentsView.fxml");
+        new ChangeView(actionEvent, "apptsView.fxml");
     }
 
     public void toCustomersView(ActionEvent actionEvent) throws IOException{

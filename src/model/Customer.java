@@ -37,7 +37,7 @@ public class Customer {
      * @param divisionId state/province id
      */
     public Customer(int customerId, String customerName, String address, String postalCode, String phoneNumber,
-                    Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int divisionId) {
+                    Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int countryId,int divisionId) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
@@ -47,6 +47,7 @@ public class Customer {
         this.createdBy = createdBy;
         this.lastUpdate = lastUpdate;
         this.lastUpdatedBy = lastUpdatedBy;
+        this.countryId = countryId;
         this.divisionId = divisionId;
     }
 
@@ -92,13 +93,13 @@ public class Customer {
         return postalCode;
     }
 
-//    public int getCountryId() {
-//        return countryId;
-//    }
-//
-//    public void setCountryId(int countryId) {
-//        this.countryId = countryId;
-//    }
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
 
 
     public Timestamp getCreateDate() {
