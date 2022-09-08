@@ -4,11 +4,13 @@ package controller;
  * @author Christopher Miller - Schedule Application - WGU C195 PA
  */
 
+import dao.AppointmentDAO;
 import dao.UserDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,7 +21,9 @@ import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.DateTimeException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.chrono.ChronoLocalDate;
@@ -51,24 +55,50 @@ public class LoginController implements Initializable {
 
     public void clearTextFieldsBtn(ActionEvent actionEvent) {
         userNameTF.clear();
-        userNameTF.setPromptText("Username");
         passwordTF.clear();
-        passwordTF.setPromptText("Password");
+        userNameTF.setPromptText(languages.getString("Username"));
+        passwordTF.setPromptText(languages.getString("Password"));
     }
 
     public void loginToMainPage(ActionEvent actionEvent) throws IOException {
-        if (isValid()) {
-            checkUpcomingAppointments();
-            if(!checkUpcomingAppointments()) {
-                Messages.noUpcomingAppointment();
+        if (validLogin()) {
+            int userId = User.currentUser.getUserId();
+
+            ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
+
+            Timestamp timeNow = Timestamp.valueOf(LocalDateTime.now());
+            Timestamp timePlus15 = Timestamp.valueOf(LocalDateTime.now().plusMinutes(15));
+
+
+            for (Appointment appointment : appointments) {
+                Timestamp start = appointment.getStartDateTime();
+                if((start.after(timeNow)) && (start.before(timePlus15)) && appointment.getUserId() == userId) {
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle(languages.getString("UpcomingApptTitle"));
+                    alert.setHeaderText(languages.getString("AppointmentID") + " " + appointment.getApptId() + "\n" +
+                            languages.getString("StartTime") + " " + appointment.getStartDateTime().toLocalDateTime().toLocalDate());
+                    alert.showAndWait();
+                    break;
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle(languages.getString("ErrorNoApptsTitle"));
+                    alert.setHeaderText(languages.getString("NoUpcomingAppts"));
+                    alert.showAndWait();
+                    break;
+                }
             }
             new ChangeView(actionEvent, "MainPageView.fxml");
         } else {
-            Messages.invalidLogin();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(languages.getString("ErrorInvalidLogin"));
+            alert.setHeaderText(languages.getString("ErrorCheckUsernameAndPassword"));
+            alert.showAndWait();
+            return;
         }
     }
 
-    private boolean isValid() {
+    private boolean validLogin() {
         ObservableList<User> allUsers = UserDAO.loadAllUsers();
         for (User user : Objects.requireNonNull(allUsers)) {
             if (user.getUserName().equals(userNameTF.getText().trim()) && user.getPassword().equals(passwordTF.getText().trim())) {
@@ -79,22 +109,11 @@ public class LoginController implements Initializable {
         return false;
     }
 
-    public boolean checkUpcomingAppointments() {
-        boolean hasAppt = false;
-
-        for (Appointment appointment : Appointment.appointmentsList) {
-            if (appointment.getStartDateTime().toLocalDateTime().toLocalDate().isBefore(ChronoLocalDate.from(LocalTime.now().plusMinutes(15))) &&
-                    User.currentUser.getUserId() == appointment.getUserId()) {
-                hasAppt = true;
-                Messages.upcomingAppointment(appointment);
-                break;
-            }
-        }
-        return hasAppt;
-    }
+    
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println(String.valueOf(LocalDateTime.now()));
         UserDAO.loadAllUsers();
         setZoneID(zoneID);
         Locale currentLanguage = Locale.getDefault();
@@ -107,8 +126,6 @@ public class LoginController implements Initializable {
         passwordTF.setPromptText(languages.getString("Password"));
         clearTextFieldsBtn.setText(languages.getString("Clear"));
         loginBtn.setText(languages.getString("Login"));
-
-        // TODO add code if user language is French
 
     }
 }
