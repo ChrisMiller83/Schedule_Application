@@ -66,13 +66,13 @@ public class AppointmentDAO {
             COLUMN_CUSTOMER_ID + ", "  + COLUMN_USER_ID + ", " + COLUMN_CONTACT_ID +
             ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-    public static final String UPDATE_AN_APPOINTMENT = "UPDATE " + TABLE_APPOINTMENTS + "SET " +
+    public static final String UPDATE_AN_APPOINTMENT = "UPDATE " + TABLE_APPOINTMENTS + " SET " +
             COLUMN_APPT_TITLE + " = ?, " + COLUMN_APPT_DESCRIPTION + " = ?, " +
             COLUMN_APPT_LOCATION + " = ?, " + COLUMN_APPT_TYPE + " = ?, " +
             COLUMN_APPT_START + " = ?, " + COLUMN_APPT_END +" = ?, " +
             COLUMN_APPT_LAST_UPDATE + " = ?, " + COLUMN_APPT_LAST_UPDATED_BY + " = ?, " +
             COLUMN_CUSTOMER_ID + " = ?, " + COLUMN_USER_ID + " = ?, " +
-            COLUMN_CONTACT_ID + " = ?) WHERE " +
+            COLUMN_CONTACT_ID + " = ? WHERE " +
             COLUMN_APPT_ID + " = ?;";
 
     public static final String DELETE_AN_APPOINTMENT = "DELETE FROM " + TABLE_APPOINTMENTS + " WHERE " +
@@ -104,7 +104,7 @@ public class AppointmentDAO {
                 allAppointments.add(allAppts);
 
             }
-            // add report for loaded appointments
+            // TODO: add report for loaded appointments
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -192,10 +192,6 @@ public class AppointmentDAO {
                                       Timestamp end, Timestamp createDate, String createdBy, Timestamp lastUpdate,
                                       String lastUpdatedBy, int customerId, int userId, int contactId) {
             try {
-//               String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Update_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-//                       "INNER JOIN customers AS customer ON appointments.Customer_ID = customer.Customer_ID " +
-//                       "INNER JOIN users AS user ON appointments.User_ID = user.User_ID " +
-//                       "INNER JOIN contacts AS contact ON appointments.Contact_ID = contact.Contact_ID";
                PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);
 
                addAppointments.setString(1, title);

@@ -72,9 +72,9 @@ public class updateCustomerController implements Initializable {
             }
         }
 
-        Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
-        divisionComboBox.setItems(DivisionDAO.getDivisions(selectedCountry));
+        Country selectedCountry = countryComboBox.getValue();
         ObservableList<Division> DivisionsList = DivisionDAO.getDivisions(selectedCountry);
+        divisionComboBox.setItems(DivisionsList);
         for (Division division : DivisionsList) {
             if(division.getDivisionId() == selectedCustomer.getDivisionId()) {
                 divisionComboBox.setValue(division);
@@ -89,8 +89,8 @@ public class updateCustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setSelectedCustomer(selectedCustomer);
         setCountryComboBox();
+        setSelectedCustomer(selectedCustomer);
 
     }
 
@@ -111,18 +111,15 @@ public class updateCustomerController implements Initializable {
             Messages.validateCustomerError(4);
             return false;
         }
-        if(countryComboBox.getSelectionModel().isEmpty()) {
+        if(countryComboBox.getValue() == null) {
             Messages.validateCustomerError(5);
             return false;
         }
-        if (divisionComboBox.getSelectionModel().isEmpty()) {
+        if (divisionComboBox.getValue() == null) {
             Messages.validateCustomerError(6);
             return false;
         }
-        if (postalCodeTF.getText().length() != 5) {
-            Messages.validateCustomerError(7);
-            return false;
-        }
+
         return true;
     }
 

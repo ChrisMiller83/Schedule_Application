@@ -11,7 +11,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.fxml.Initializable;
-import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
@@ -58,9 +57,6 @@ public class updateApptController implements Initializable {
     @FXML private TextArea descriptionTA;
     @FXML private Button cancelBtn;
     @FXML private Button saveBtn;
-
-
-
 
     public static void getSelectedAppt(Appointment appointment) {
         selectedAppt = appointment;
@@ -123,7 +119,7 @@ public class updateApptController implements Initializable {
             Messages.apptEmptyField(3);
             return false;
         }
-        if (typeCB.getSelectionModel().isEmpty()) {
+        if (typeCB.getValue() == null) {
             Messages.apptEmptyField(4);
             return false;
         }
@@ -131,19 +127,19 @@ public class updateApptController implements Initializable {
             Messages.apptEmptyField(5);
             return false;
         }
-        if (startTimeCB.getSelectionModel().isEmpty()) {
+        if (startTimeCB.getValue() == null) {
             Messages.apptEmptyField(6);
             return false;
         }
-        if (endTimeCB.getSelectionModel().isEmpty()) {
+        if (endTimeCB.getValue() == null) {
             Messages.apptEmptyField(8);
             return false;
         }
-        if (customerCB.getSelectionModel().isEmpty()) {
+        if (customerCB.getValue() == null) {
             Messages.apptEmptyField(9);
             return false;
         }
-        if (contactCB.getSelectionModel().isEmpty()) {
+        if (contactCB.getValue() == null) {
             Messages.apptEmptyField(10);
             return false;
         }
