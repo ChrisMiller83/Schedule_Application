@@ -1,5 +1,8 @@
 package controller;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
 
 import dao.ContactDAO;
 import javafx.collections.ObservableList;

@@ -1,5 +1,9 @@
 package controller;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import dao.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -175,7 +179,7 @@ public class AddApptController implements Initializable {
             Messages.apptEmptyField(3);
             return false;
         }
-        if (typeCB.getSelectionModel().isEmpty()) {
+        if (typeCB.getValue() == null) {
             Messages.apptEmptyField(4);
             return false;
         }
@@ -183,19 +187,19 @@ public class AddApptController implements Initializable {
             Messages.apptEmptyField(5);
             return false;
         }
-        if (startTimeCB.getSelectionModel().isEmpty()) {
+        if (startTimeCB.getValue() == null) {
             Messages.apptEmptyField(6);
             return false;
         }
-        if (endTimeCB.getSelectionModel().isEmpty()) {
+        if (endTimeCB.getValue() == null) {
             Messages.apptEmptyField(8);
             return false;
         }
-        if (customerCB.getSelectionModel().isEmpty()) {
+        if (customerCB.getValue() == null) {
             Messages.apptEmptyField(9);
             return false;
         }
-        if (contactCB.getSelectionModel().isEmpty()) {
+        if (contactCB.getValue() == null) {
             Messages.apptEmptyField(10);
             return false;
         }

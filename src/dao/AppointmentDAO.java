@@ -1,5 +1,9 @@
 package dao;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
@@ -35,16 +39,9 @@ public class AppointmentDAO {
     public static final String COLUMN_CUSTOMER_ID = "Customer_ID";
     public static final String COLUMN_USER_ID = "User_ID";
     public static final String COLUMN_CONTACT_ID = "Contact_ID";
-
-
     public static final String TABLE_CONTACTS = "contacts";
     public static final String TABLE_USERS = "users";
     public static final String TABLE_CUSTOMERS = "customers";
-
-
-
-
-
 
     public static final String QUERY_ALL_APPOINTMENTS = "SELECT * FROM " + TABLE_APPOINTMENTS +
             " ORDER BY " + COLUMN_APPT_ID;
@@ -93,7 +90,8 @@ public class AppointmentDAO {
                 int userId = result.getInt("User_ID");
                 int contactId = result.getInt("Contact_ID");
 
-                Appointment allAppts = new Appointment(apptId, title, description, location, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+                Appointment allAppts = new Appointment(apptId, title, description, location, type, start, end,
+                        createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
 
                 allAppointments.add(allAppts);
 
@@ -133,7 +131,8 @@ public class AppointmentDAO {
                 int userId = result.getInt("User_ID");
                 int contactId = result.getInt("Contact_ID");
 
-                Appointment weeklyAppts = new Appointment(apptId, title, description, location, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+                Appointment weeklyAppts = new Appointment(apptId, title, description, location, type, start, end,
+                        createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
 
                 weeksAppointments.add(weeklyAppts);
             }
@@ -172,7 +171,8 @@ public class AppointmentDAO {
                 int userId = result.getInt("User_ID");
                 int contactId = result.getInt("Contact_ID");
 
-                Appointment monthlyAppts = new Appointment(apptId, title, description, location, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+                Appointment monthlyAppts = new Appointment(apptId, title, description, location, type, start, end,
+                        createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
 
                 monthsAppointments.add(monthlyAppts);
             }
@@ -211,7 +211,8 @@ public class AppointmentDAO {
     }
 
     public static void updateAppointment(String title, String description, String location, String type, Timestamp start,
-                                         Timestamp end, Timestamp lastUpdate, String lastUpdatedBy, int customerId, int userId, int contactId, int apptId) {
+                                         Timestamp end, Timestamp lastUpdate, String lastUpdatedBy, int customerId,
+                                         int userId, int contactId, int apptId) {
         try {
             PreparedStatement updateAppointments = DBConnection.getConnection().prepareStatement(UPDATE_AN_APPOINTMENT);
 

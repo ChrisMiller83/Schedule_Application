@@ -1,5 +1,9 @@
 package controller;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import dao.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

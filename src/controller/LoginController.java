@@ -1,5 +1,9 @@
 package controller;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import dao.UserDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,31 +19,35 @@ import utilities.Messages;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.DateTimeException;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.chrono.ChronoLocalDate;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class LoginController implements Initializable {
 
     @FXML private Label titleLabel;
-    @FXML private Label zoneIdLabel;
+    @FXML private Label locationLabel;
+    @FXML private Label zoneID;
     @FXML private Label userNameLabel;
     @FXML private Label passwordLabel;
-    @FXML private Label zoneID;
     @FXML private TextField userNameTF;
     @FXML private TextField passwordTF;
     @FXML private Button clearTextFieldsBtn;
     @FXML private Button loginBtn;
+    @FXML private ResourceBundle languages = ResourceBundle.getBundle("languages/Language");
 
-    public LoginController() {
-
-    }
+    public LoginController() {}
 
     public void setZoneID(Label zoneID) {
         zoneID.setText(String.valueOf(ZoneId.systemDefault()));
     }
+
+
 
     public void clearTextFieldsBtn(ActionEvent actionEvent) {
         userNameTF.clear();
@@ -89,6 +97,17 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UserDAO.loadAllUsers();
         setZoneID(zoneID);
+        Locale currentLanguage = Locale.getDefault();
+        Locale.setDefault(currentLanguage);
+        titleLabel.setText(languages.getString("Title"));
+        locationLabel.setText(languages.getString("Location"));
+        userNameLabel.setText(languages.getString("Username"));
+        userNameTF.setPromptText(languages.getString("Username"));
+        passwordLabel.setText(languages.getString("Password"));
+        passwordTF.setPromptText(languages.getString("Password"));
+        clearTextFieldsBtn.setText(languages.getString("Clear"));
+        loginBtn.setText(languages.getString("Login"));
+
         // TODO add code if user language is French
 
     }

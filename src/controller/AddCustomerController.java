@@ -1,5 +1,9 @@
 package controller;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import dao.*;
 
 import javafx.collections.FXCollections;
@@ -116,18 +120,13 @@ public class AddCustomerController implements Initializable {
             return false;
         }
 
-        if(countryComboBox.getSelectionModel().isEmpty()) {
+        if(countryComboBox.getValue() == null) {
             Messages.validateCustomerError(5);
             return false;
         }
 
-        if (divisionComboBox.getSelectionModel().isEmpty()) {
+        if (divisionComboBox.getValue() == null) {
             Messages.validateCustomerError(6);
-            return false;
-        }
-
-        if (postalCodeTF.getText().length() != 5) {
-            Messages.validateCustomerError(7);
             return false;
         }
 
