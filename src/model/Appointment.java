@@ -1,7 +1,5 @@
 package model;
 
-import DAO.AppointmentDAO;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
