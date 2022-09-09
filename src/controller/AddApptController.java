@@ -1,8 +1,6 @@
 package controller;
 
-/**
- * @author Christopher Miller - Schedule Application - WGU C195 PA
- */
+/** @author Christopher Miller - Schedule Application - WGU C195 PA  */
 
 import dao.*;
 import javafx.collections.FXCollections;
@@ -15,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Appointment;
 import model.Contact;
 import model.Customer;
 import model.User;
@@ -25,16 +24,20 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
-import static java.time.LocalTime.parse;
+
 
 public class AddApptController implements Initializable {
-    private ZonedDateTime startTimeConversion;
-    private ZonedDateTime endTimeConversion;
 
-    private ZonedDateTime timeConversion(LocalDateTime time) {
-        return ZonedDateTime.of(time, ZoneId.of("America/New_York"));
+    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+
+    private ZonedDateTime convertLocalDateTimeToEST(LocalDate date, LocalTime time) {
+        return ZonedDateTime.of(date, time, ZoneId.of("America/New_York"));
     }
 
     private int apptId;
@@ -146,7 +149,6 @@ public class AddApptController implements Initializable {
                 userId = User.currentUser.getUserId();
                 contactId = contactCB.getValue().getContactId();
 
-                System.out.println(contactId);
                 boolean confirmAdd = Messages.addConfirmation(title);
 
                 if(confirmAdd) {
@@ -168,65 +170,92 @@ public class AddApptController implements Initializable {
 
     private boolean validateAppt() {
         if (titleTF.getText().isEmpty()) {
-            Messages.apptEmptyField(1);
+            Messages.validateAppt(1);
             return false;
         }
         if (descriptionTA.getText().isEmpty()) {
-            Messages.apptEmptyField(2);
+            Messages.validateAppt(2);
             return false;
         }
         if (locationTF.getText().isEmpty()) {
-            Messages.apptEmptyField(3);
+            Messages.validateAppt(3);
             return false;
         }
         if (typeCB.getValue() == null) {
-            Messages.apptEmptyField(4);
+            Messages.validateAppt(4);
             return false;
         }
         if (apptDatePicker.getValue() == null) {
-            Messages.apptEmptyField(5);
+            Messages.validateAppt(5);
             return false;
         }
         if (startTimeCB.getValue() == null) {
-            Messages.apptEmptyField(6);
+            Messages.validateAppt(6);
             return false;
         }
         if (endTimeCB.getValue() == null) {
-            Messages.apptEmptyField(8);
+            Messages.validateAppt(7);
             return false;
         }
         if (customerCB.getValue() == null) {
-            Messages.apptEmptyField(9);
+            Messages.validateAppt(9);
             return false;
         }
         if (contactCB.getValue() == null) {
-            Messages.apptEmptyField(10);
+            Messages.validateAppt(10);
             return false;
         }
 
-        // TODO: fix: throws error even if date is in the future
-//        if (startDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
-//                endDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
-//                startTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now())) ||
-//                endTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now()))) {
-//            Messages.checkApptDates();
-//            return false;
-//        }
+        /** ApptDate, startTime, endTime, ZoneId, and ZonedDateTime objects for the appointment */
+        LocalDate apptDate = apptDatePicker.getValue();
+        LocalTime apptStartTime = startTimeCB.getValue();
+        LocalTime apptEndTime = endTimeCB.getValue();
+        ZoneId apptZoneId = ZoneId.of("America/New_York");
+        ZonedDateTime apptStartZDT = ZonedDateTime.of(apptDate, apptStartTime, apptZoneId);
+        ZonedDateTime apptEndZDT = ZonedDateTime.of(apptDate, apptEndTime, apptZoneId);
 
-        if (startTimeCB.getValue().isAfter(endTimeCB.getValue())) {
-            Messages.checkStartTime();
+        /** Get the ZoneId of the current OS and create an instant */
+        ZoneId osZoneId = ZoneId.of(TimeZone.getDefault().getID());
+        Instant osStartToUTC = apptStartZDT.toInstant();
+        Instant osEndToUTC = apptEndZDT.toInstant();
+
+        /** Convert appt times to local zoneId */
+        ZonedDateTime apptStartToLocalZDT = apptStartZDT.withZoneSameInstant(osZoneId);
+        ZonedDateTime apptEndToLocalZDT = apptEndZDT.withZoneSameInstant(osZoneId);
+
+
+
+        /** convert appt times to local time */
+        ZonedDateTime StartUTCToLocalZDT = osStartToUTC.atZone(osZoneId);
+        ZonedDateTime EndUTCToLocalZDT = osEndToUTC.atZone(osZoneId);
+
+
+        LocalTime businessDayStart = LocalTime.of(8, 0);
+        LocalTime businessDayEnd = LocalTime.of(22, 0);
+
+        if(apptEndTime.isBefore(apptStartTime) || apptStartTime.equals(apptEndTime)) {
+            Messages.validateAppt(8);
             return false;
         }
 
-        if (endTimeCB.getValue().isBefore(startTimeCB.getValue())) {
-            Messages.checkEndTime();
+
+
+        if(apptStartTime.isBefore(businessDayStart) || apptEndTime.isBefore(businessDayStart) ||
+           apptStartTime.isAfter(businessDayEnd) || apptEndTime.isAfter(businessDayEnd)) {
+            Messages.validateAppt(12);
             return false;
         }
+
+        customerId = customerCB.getValue().getCustomerId();
+        ObservableList<Appointment> appointmentObservableList = AppointmentDAO.loadAllAppts();
+
+
+
         return true;
     }
 
     private Timestamp timestamp(LocalDate date, LocalTime time) {
-        return Timestamp.valueOf(LocalDateTime.of(date, time).format(DBConnection.dtFormatter));
+        return Timestamp.valueOf(LocalDateTime.of(date, time).format(dateTimeFormatter));
     }
 
 

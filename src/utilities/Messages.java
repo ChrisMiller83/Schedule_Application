@@ -10,29 +10,6 @@ import java.util.Optional;
 
 public class Messages {
 
-    public static void upcomingAppointment (Appointment appointment) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("You have an upcoming appointment:");
-        alert.setHeaderText("Appointment ID: " + appointment.getApptId() + "\n" +
-                "Start Time: " + appointment.getStartDateTime().toLocalDateTime().toLocalDate() + "\n" +
-                "With " + appointment.getContactId() + " and " + appointment.getCustomerId());
-        alert.showAndWait();
-    }
-
-    public static void noUpcomingAppointment () {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("You have no upcoming appointments:");
-        alert.setHeaderText("No upcoming appointments");
-        alert.showAndWait();
-    }
-
-    public static void invalidLogin () {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Unable to Login");
-        alert.setHeaderText("Please check your username and password.");
-        alert.showAndWait();
-    }
-
     public static void validateCustomerError(int number) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR SOMETHING WENT WRONG");
@@ -67,10 +44,6 @@ public class Messages {
                 alert.setContentText("Customer state/province is empty: Please select a state/province");
                 break;
             }
-            case 7:
-            {
-                alert.setContentText("Customer postal code must be 5 characters long");
-            }
             default:
             {
                 alert.setContentText("One or more fields may be empty");
@@ -80,7 +53,7 @@ public class Messages {
         alert.showAndWait();
     }
 
-    public static void apptEmptyField(int number) {
+    public static void validateAppt(int number) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Empty Fields");
         switch (number) {
@@ -106,7 +79,7 @@ public class Messages {
             }
             case 5:
             {
-                alert.setContentText("Start date is empty:  Please select a start date.");
+                alert.setContentText("Appointment date is empty:  Please select an appointment date.");
                 break;
             }
             case 6:
@@ -116,12 +89,12 @@ public class Messages {
             }
             case 7:
             {
-                alert.setContentText("End date is empty:  Please select an end date.");
+                alert.setContentText("End time is empty:  Please select an end time.");
                 break;
             }
             case 8:
             {
-                alert.setContentText("End time is empty:  Please select an end time.");
+                alert.setContentText("Appointment end time can not be before or equal to the start time");
                 break;
             }
             case 9:
@@ -132,6 +105,16 @@ public class Messages {
             case 10:
             {
                 alert.setContentText("The contact choice box is empty:  Please select a contact.");
+                break;
+            }
+            case 11:
+            {
+                alert.setContentText("Appointment time conflicts with an existing customer appointment.");
+                break;
+            }
+            case 12:
+            {
+                alert.setContentText("Appointment times must be within business hours of 08:00 - 22:00 Eastern Standard Time.");
                 break;
             }
             default:
