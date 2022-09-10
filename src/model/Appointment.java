@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,8 @@ public class Appointment {
     private String apptDescription;
     private String apptLocation;
     private String apptType;
-    private Timestamp startDateTime;
-    private Timestamp endDateTime;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
     private Timestamp createDate;
     private String createdBy;
     private Timestamp lastUpdate;
@@ -38,7 +39,7 @@ public class Appointment {
      * @param contactId  contact id
      */
     public Appointment(int apptId, String apptTitle, String apptDescription, String apptLocation,
-                       String apptType, Timestamp startDateTime, Timestamp endDateTime,
+                       String apptType, LocalDateTime startDateTime, LocalDateTime endDateTime,
                        Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy,
                        int customerId, int userId, int contactId) {
         this.apptId = apptId;
@@ -144,7 +145,7 @@ public class Appointment {
      * setStartDateTime
      * @param startDateTime sets the date and time the appointment starts
      */
-    public void setStartDateTime(Timestamp startDateTime) {
+    public void setStartDateTime(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
@@ -152,7 +153,7 @@ public class Appointment {
      * getStartDateTime
      * @return returns the date and time the appointment starts
      */
-    public Timestamp getStartDateTime() {
+    public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
 
@@ -160,7 +161,7 @@ public class Appointment {
      * setEndDateTime
      * @param endDateTime sets the date and time the appointment ends
      */
-    public void setEndDateTime(Timestamp endDateTime) {
+    public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 
@@ -168,7 +169,7 @@ public class Appointment {
      * getEndDateTime
      * @return returns the date and time the appointment ends
      */
-    public Timestamp getEndDateTime() {
+    public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
 

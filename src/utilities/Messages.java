@@ -117,6 +117,11 @@ public class Messages {
                 alert.setContentText("Appointment times must be within business hours of 08:00 - 22:00 Eastern Standard Time.");
                 break;
             }
+            case 13:
+            {
+                alert.setContentText("The user choice box is empty:  Please select a user.");
+                break;
+            }
             default:
             {
                 alert.setContentText("One of more items are empty");
@@ -159,7 +164,7 @@ public class Messages {
 
     public static void selectionNeeded() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("!! Nothing To Delete");
+        alert.setTitle("!! No Item Selected");
         alert.setContentText("Please make a selection first.");
         alert.showAndWait();
     }

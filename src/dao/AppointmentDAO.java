@@ -7,6 +7,7 @@ package dao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.User;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -80,8 +81,8 @@ public class AppointmentDAO {
                 String description =result.getString("Description");
                 String location =result.getString("Location");
                 String type = result.getString("Type");
-                Timestamp start = result.getTimestamp("Start");
-                Timestamp end = result.getTimestamp("End");
+                LocalDateTime start = result.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime end = result.getTimestamp("End").toLocalDateTime();
                 Timestamp createDate = result.getTimestamp("Create_Date");
                 String createdBy = result.getString("Created_By");
                 Timestamp lastUpdate = result.getTimestamp("Last_Update");
@@ -121,8 +122,8 @@ public class AppointmentDAO {
                 String description =result.getString("Description");
                 String location =result.getString("Location");
                 String type = result.getString("Type");
-                Timestamp start = result.getTimestamp("Start");
-                Timestamp end = result.getTimestamp("End");
+                LocalDateTime start = result.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime end = result.getTimestamp("End").toLocalDateTime();
                 Timestamp createDate = result.getTimestamp("Create_Date");
                 String createdBy = result.getString("Created_By");
                 Timestamp lastUpdate = result.getTimestamp("Last_Update");
@@ -161,8 +162,8 @@ public class AppointmentDAO {
                 String description =result.getString("Description");
                 String location =result.getString("Location");
                 String type = result.getString("Type");
-                Timestamp start = result.getTimestamp("Start");
-                Timestamp end = result.getTimestamp("End");
+                LocalDateTime start = result.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime end = result.getTimestamp("End").toLocalDateTime();
                 Timestamp createDate = result.getTimestamp("Create_Date");
                 String createdBy = result.getString("Created_By");
                 Timestamp lastUpdate = result.getTimestamp("Last_Update");
@@ -182,9 +183,9 @@ public class AppointmentDAO {
         return monthsAppointments;
     }
 
-    public static void addAppointment(String title, String description, String location, String type, Timestamp start,
-                                      Timestamp end, Timestamp createDate, String createdBy, Timestamp lastUpdate,
-                                      String lastUpdatedBy, int customerId, int userId, int contactId) {
+    public static void addAppointment(String title, String description, String location, String type, LocalDateTime start,
+                                      LocalDateTime end, Timestamp createDate, User createdBy, Timestamp lastUpdate,
+                                      User lastUpdatedBy, int customerId, int userId, int contactId) {
             try {
                PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);
 
@@ -192,12 +193,12 @@ public class AppointmentDAO {
                addAppointments.setString(2, description);
                addAppointments.setString(3, location);
                addAppointments.setString(4, type);
-               addAppointments.setTimestamp(5, start);
-               addAppointments.setTimestamp(6, end);
+               addAppointments.setTimestamp(5, Timestamp.valueOf(start));
+               addAppointments.setTimestamp(6, Timestamp.valueOf(end));
                addAppointments.setTimestamp(7, createDate);
-               addAppointments.setString(8, createdBy);
+               addAppointments.setString(8, String.valueOf(createdBy));
                addAppointments.setTimestamp(9, lastUpdate);
-               addAppointments.setString(10, lastUpdatedBy);
+               addAppointments.setString(10, String.valueOf(lastUpdatedBy));
                addAppointments.setInt(11, customerId);
                addAppointments.setInt(12, userId);
                addAppointments.setInt(13, contactId);
@@ -210,8 +211,8 @@ public class AppointmentDAO {
             }
     }
 
-    public static void updateAppointment(String title, String description, String location, String type, Timestamp start,
-                                         Timestamp end, Timestamp lastUpdate, String lastUpdatedBy, int customerId,
+    public static void updateAppointment(String title, String description, String location, String type, LocalDateTime start,
+                                         LocalDateTime end, Timestamp lastUpdate, User lastUpdatedBy, int customerId,
                                          int userId, int contactId, int apptId) {
         try {
             PreparedStatement updateAppointments = DBConnection.getConnection().prepareStatement(UPDATE_AN_APPOINTMENT);
@@ -220,10 +221,10 @@ public class AppointmentDAO {
             updateAppointments.setString(2, description);
             updateAppointments.setString(3, location);
             updateAppointments.setString(4, type);
-            updateAppointments.setTimestamp(5, start);
-            updateAppointments.setTimestamp(6, end);
+            updateAppointments.setTimestamp(5, Timestamp.valueOf(start));
+            updateAppointments.setTimestamp(6, Timestamp.valueOf(end));
             updateAppointments.setTimestamp(7, lastUpdate);
-            updateAppointments.setString(8, lastUpdatedBy);
+            updateAppointments.setString(8, String.valueOf(lastUpdatedBy));
             updateAppointments.setInt(9, customerId);
             updateAppointments.setInt(10, userId);
             updateAppointments.setInt(11, contactId);

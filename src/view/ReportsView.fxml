@@ -1,14 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.ReportsController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: TEAL;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
+    <children>
+        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <children>
+                <Label text="REPORTS" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <AnchorPane layoutY="50.0" prefHeight="125.0" prefWidth="600.0" style="-fx-border-color: SILVER;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <children>
+                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="600.0">
+                    <children>
+                        <Label text="Total Customer Appointments By:" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutY="30.0" prefHeight="50.0" prefWidth="600.0" spacing="50.0">
+                    <children>
+                        <RadioButton fx:id="typeRB" mnemonicParsing="false" selected="true" text="Type" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                            <toggleGroup>
+                                <ToggleGroup fx:id="totalApptsToggleGroup" />
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="monthRB" mnemonicParsing="false" text="Month" textFill="WHITE" toggleGroup="$totalApptsToggleGroup">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </RadioButton>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutX="6.0" layoutY="75.0" prefHeight="50.0" prefWidth="600.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#generateTotalAppts" style="-fx-background-color: GREEN;" text="Generate Report" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutY="200.0" prefHeight="125.0" prefWidth="600.0" style="-fx-border-color: SILVER;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <children>
+                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="600.0">
+                    <children>
+                        <Label text="Contacts Schedule" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutY="30.0" prefHeight="50.0" prefWidth="600.0" spacing="50.0">
+                    <children>
+                        <ChoiceBox fx:id="contactCB" prefWidth="150.0" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutX="6.0" layoutY="75.0" prefHeight="50.0" prefWidth="600.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#generateContactSchedule" style="-fx-background-color: GREEN;" text="Generate Report" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutY="350.0" prefHeight="75.0" prefWidth="600.0" style="-fx-border-color: SILVER;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <children>
+                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="600.0">
+                    <children>
+                        <Label text="Login Reports" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutX="6.0" layoutY="25.0" prefHeight="50.0" prefWidth="600.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#generateLoginReport" style="-fx-background-color: GREEN;" text="Generate Report" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+        <HBox alignment="CENTER" layoutX="24.0" layoutY="445.0" prefHeight="50.0" prefWidth="600.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#toMainPage" style="-fx-background-color: ORANGE;" text="Main Menu" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+    </children>
 </AnchorPane>

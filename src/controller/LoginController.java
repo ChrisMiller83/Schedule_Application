@@ -66,27 +66,32 @@ public class LoginController implements Initializable {
 
             ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
 
-            Timestamp timeNow = Timestamp.valueOf(LocalDateTime.now());
-            Timestamp timePlus15 = Timestamp.valueOf(LocalDateTime.now().plusMinutes(15));
+            LocalDateTime timeNow = LocalDateTime.now();
+            LocalDateTime timePlus15 = LocalDateTime.now().plusMinutes(15);
+            boolean hasAppt = false;
 
 
             for (Appointment appointment : appointments) {
-                Timestamp start = appointment.getStartDateTime();
-                if((start.after(timeNow)) && (start.before(timePlus15)) && appointment.getUserId() == userId) {
+                LocalDateTime start = appointment.getStartDateTime();
+//                System.out.println(start + " " + timeNow + " " + timePlus15);
+                if((start.isAfter(timeNow)) && (start.isBefore(timePlus15)) && appointment.getUserId() == userId) {
 
+                    hasAppt = true;
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle(languages.getString("UpcomingApptTitle"));
-                    alert.setHeaderText(languages.getString("AppointmentID") + " " + appointment.getApptId() + "\n" +
-                            languages.getString("StartTime") + " " + appointment.getStartDateTime().toLocalDateTime().toLocalDate());
+                    alert.setHeaderText(languages.getString("AppointmentID") + " " + appointment.getApptId() +
+                            "\n" + languages.getString("StartDate") + " " + appointment.getStartDateTime().toLocalDate() +
+                            "\n" + languages.getString("StartTime") + " " + appointment.getStartDateTime().toLocalTime());
                     alert.showAndWait();
-                    break;
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle(languages.getString("ErrorNoApptsTitle"));
-                    alert.setHeaderText(languages.getString("NoUpcomingAppts"));
-                    alert.showAndWait();
-                    break;
+
                 }
+            }
+
+            if(!hasAppt) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle(languages.getString("ErrorNoApptsTitle"));
+                alert.setHeaderText(languages.getString("NoUpcomingAppts"));
+                alert.showAndWait();
             }
             new ChangeView(actionEvent, "MainPageView.fxml");
         } else {

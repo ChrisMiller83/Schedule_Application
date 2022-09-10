@@ -25,10 +25,9 @@ import utilities.Messages;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class UpdateApptController implements Initializable {
 
@@ -39,17 +38,17 @@ public class UpdateApptController implements Initializable {
     private String description;
     private String location;
     private String type;
-    private Timestamp start;
-    private Timestamp end;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private int customerId;
     private int userId;
     private int contactId;
     private Timestamp lastUpdate;
-    private String lastUpdatedBy;
+    private User lastUpdatedBy;
     private LocalDate apptDate;
 
     @FXML private TextField appointmentIdTF;
-    @FXML private TextField userTF;
+    @FXML private ChoiceBox<User> userCB;
     @FXML private ChoiceBox<Customer> customerCB;
     @FXML private TextField titleTF;
     @FXML private TextField locationTF;
@@ -77,12 +76,12 @@ public class UpdateApptController implements Initializable {
                 description = descriptionTA.getText();
                 location = locationTF.getText();
                 type = typeCB.getValue();
-                start = timestamp(apptDatePicker.getValue(), startTimeCB.getValue());
-                end = timestamp(apptDatePicker.getValue(), endTimeCB.getValue());
+                start = LocalDateTime.of(apptDatePicker.getValue(), startTimeCB.getValue());
+                end = LocalDateTime.of(apptDatePicker.getValue(), endTimeCB.getValue());
                 lastUpdate = Timestamp.valueOf(LocalDateTime.now());
-                lastUpdatedBy = User.currentUser.getUserName();
+                lastUpdatedBy = userCB.getValue();
                 customerId = customerCB.getValue().getCustomerId();
-                userId = User.currentUser.getUserId();
+                userId = userCB.getValue().getUserId();
                 contactId = contactCB.getValue().getContactId();
                 apptId = Integer.parseInt(appointmentIdTF.getText());
 
@@ -106,66 +105,89 @@ public class UpdateApptController implements Initializable {
 
     }
 
-    private Timestamp timestamp(LocalDate date, LocalTime time) {
-        return Timestamp.valueOf(LocalDateTime.of(date, time).format(DBConnection.dtFormatter));
-    }
 
     private boolean validateAppt() {
         if (titleTF.getText().isEmpty()) {
-            Messages.apptEmptyField(1);
+            Messages.validateAppt(1);
             return false;
         }
         if (descriptionTA.getText().isEmpty()) {
-            Messages.apptEmptyField(2);
+            Messages.validateAppt(2);
             return false;
         }
         if (locationTF.getText().isEmpty()) {
-            Messages.apptEmptyField(3);
+            Messages.validateAppt(3);
             return false;
         }
         if (typeCB.getValue() == null) {
-            Messages.apptEmptyField(4);
+            Messages.validateAppt(4);
             return false;
         }
         if (apptDatePicker.getValue() == null) {
-            Messages.apptEmptyField(5);
+            Messages.validateAppt(5);
             return false;
         }
         if (startTimeCB.getValue() == null) {
-            Messages.apptEmptyField(6);
+            Messages.validateAppt(6);
             return false;
         }
         if (endTimeCB.getValue() == null) {
-            Messages.apptEmptyField(8);
+            Messages.validateAppt(8);
             return false;
         }
         if (customerCB.getValue() == null) {
-            Messages.apptEmptyField(9);
+            Messages.validateAppt(9);
             return false;
         }
         if (contactCB.getValue() == null) {
-            Messages.apptEmptyField(10);
+            Messages.validateAppt(10);
+            return false;
+        }
+        if (userCB.getValue() == null) {
+            Messages.validateAppt(13);
             return false;
         }
 
-        // TODO: fix: throws error even if date is in the future
-//        if (startDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
-//                endDatePicker.getValue().isBefore(LocalDate.from(LocalDateTime.now())) ||
-//                startTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now())) ||
-//                endTimeCB.getValue().isBefore(LocalTime.from(LocalDateTime.now()))) {
-//            Messages.checkApptDates();
-//            return false;
-//        }
+        /** ApptDate, startTime, endTime, ZoneId, and ZonedDateTime objects for the appointment */
+        LocalDate apptDate = apptDatePicker.getValue();
+        LocalTime apptStartTime = startTimeCB.getValue();
+        LocalTime apptEndTime = endTimeCB.getValue();
+        ZoneId osZoneId = ZoneId.of(TimeZone.getDefault().getID());
+        ZoneId estZoneId = ZoneId.of("America/New_York");
+        ZonedDateTime apptStartZDT = ZonedDateTime.of(apptDate, apptStartTime, osZoneId);
+        ZonedDateTime apptEndZDT = ZonedDateTime.of(apptDate, apptEndTime, osZoneId);
 
-        if (startTimeCB.getValue().isAfter(endTimeCB.getValue())) {
-            Messages.checkStartTime();
+        /** Convert appt times to local zoneId */
+        ZonedDateTime apptStartToEstZDT = apptStartZDT.withZoneSameInstant(estZoneId);
+        ZonedDateTime apptEndToEstZDT = apptEndZDT.withZoneSameInstant(estZoneId);
+
+
+
+        /** convert appt times to local time */
+        LocalTime startEST = apptStartToEstZDT.toLocalTime();
+        LocalTime endEST = apptEndToEstZDT.toLocalTime();
+
+        LocalTime businessDayStart = LocalTime.of(8, 0);
+        LocalTime businessDayEnd = LocalTime.of(22, 0);
+
+        if(apptEndTime.isBefore(apptStartTime) || apptStartTime.equals(apptEndTime)) {
+            Messages.validateAppt(8);
             return false;
         }
 
-        if (endTimeCB.getValue().isBefore(startTimeCB.getValue())) {
-            Messages.checkEndTime();
+
+
+        if(startEST.isBefore(businessDayStart) || endEST.isBefore(businessDayStart) ||
+                startEST.isAfter(businessDayEnd) || endEST.isAfter(businessDayEnd)) {
+            Messages.validateAppt(12);
             return false;
         }
+
+        customerId = customerCB.getValue().getCustomerId();
+        ObservableList<Appointment> appointmentObservableList = AppointmentDAO.loadAllAppts();
+
+
+
         return true;
     }
 
@@ -175,10 +197,9 @@ public class UpdateApptController implements Initializable {
         descriptionTA.setText(selectedAppt.getApptDescription());
         locationTF.setText(selectedAppt.getApptLocation());
         typeCB.getSelectionModel().select(selectedAppt.getApptType());
-        apptDatePicker.setValue(selectedAppt.getStartDateTime().toLocalDateTime().toLocalDate());
-        startTimeCB.getSelectionModel().select(selectedAppt.getStartDateTime().toLocalDateTime().toLocalTime());
-        endTimeCB.getSelectionModel().select(selectedAppt.getEndDateTime().toLocalDateTime().toLocalTime());
-        userTF.setText(User.currentUser.getUserName());
+        apptDatePicker.setValue(selectedAppt.getStartDateTime().toLocalDate());
+        startTimeCB.getSelectionModel().select(selectedAppt.getStartDateTime().toLocalTime());
+        endTimeCB.getSelectionModel().select(selectedAppt.getEndDateTime().toLocalTime());
 
         for (Customer customer : CustomerDAO.loadAllCustomers()) {
             if (customer.getCustomerId() == selectedAppt.getCustomerId()) {
@@ -189,6 +210,12 @@ public class UpdateApptController implements Initializable {
         for (Contact contact : ContactDAO.loadAllContacts()) {
             if (contact.getContactId() == selectedAppt.getContactId()) {
                 contactCB.setValue(contact);
+            }
+        }
+
+        for (User user : UserDAO.loadAllUsers()) {
+            if(user.getUserId() == selectedAppt.getUserId()) {
+                userCB.setValue(user);
             }
         }
     }
@@ -203,26 +230,26 @@ public class UpdateApptController implements Initializable {
         ObservableList<Contact> contactObservableList = FXCollections.observableArrayList(ContactDAO.loadAllContacts());
         contactCB.setItems(contactObservableList);
     }
-    private void setUserIdTF() {
-        userTF.setText(User.currentUser.getUserName());
-        userTF.setDisable(true);
+    private void setUserCB() {
+        ObservableList<User> userObservableList = FXCollections.observableList(UserDAO.loadAllUsers());
+        userCB.setItems(userObservableList);
     }
 
     private void setTypeCB() {
         ObservableList<String> typeList = FXCollections.observableArrayList();
-        typeList.addAll("Lunch", "Planning Session", "Follow-up", "Project Meeting", "Open Meeting");
+        typeList.addAll("Lunch", "Decision-making", "Problem-solving", "Team-building", "Brainstorming", "One-on-one", "Quarterly-planning","Check-in");
         typeCB.setItems(typeList);
     }
 
     private void setTimeCB() {
         ObservableList<LocalTime> timeOptions = FXCollections.observableArrayList();
-        LocalTime startTime = LocalTime.of(8, 0);
+        LocalTime startTime = LocalTime.of(4, 0);
         LocalTime endTime = LocalTime.of(22, 0);
 
         timeOptions.add(startTime);
 
         while (startTime.isBefore(endTime)){
-            startTime = startTime.plusMinutes(15);
+            startTime = startTime.plusMinutes(30);
             timeOptions.add(startTime);
         }
         startTimeCB.setItems(timeOptions);
@@ -235,7 +262,7 @@ public class UpdateApptController implements Initializable {
         CustomerDAO.loadAllCustomers();
         ContactDAO.loadAllContacts();
         setCustomerCB();
-        setUserIdTF();
+        setUserCB();
         setContactCB();
         setTimeCB();
         setTypeCB();

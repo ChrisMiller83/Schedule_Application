@@ -33,31 +33,24 @@ import java.util.TimeZone;
 
 public class AddApptController implements Initializable {
 
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
-
-    private ZonedDateTime convertLocalDateTimeToEST(LocalDate date, LocalTime time) {
-        return ZonedDateTime.of(date, time, ZoneId.of("America/New_York"));
-    }
-
     private int apptId;
     private String title;
     private String description;
     private String location;
     private String type;
-    private Timestamp start;
-    private Timestamp end;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private int customerId;
     private int userId;
     private int contactId;
     private Timestamp createDate;
-    private String createdBy;
+    private User createdBy;
     private Timestamp lastUpdate;
-    private String lastUpdatedBy;
+    private User lastUpdatedBy;
     private LocalDate apptDate;
 
     @FXML private TextField appointmentIdTF;
-    @FXML private TextField userTF;
+    @FXML private ChoiceBox<User> userCB;
     @FXML private ChoiceBox<Customer> customerCB;
     @FXML private TextField titleTF;
     @FXML private TextField locationTF;
@@ -71,18 +64,6 @@ public class AddApptController implements Initializable {
     @FXML private Button saveBtn;
 
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        UserDAO.loadAllUsers();
-        CustomerDAO.loadAllCustomers();
-        ContactDAO.loadAllContacts();
-        setCustomerCB();
-        setUserIdTF();
-        setContactCB();
-        setTimeCB();
-        setTypeCB();
-    }
-
     private void setCustomerCB() {
         ObservableList<Customer> customerObservableList = FXCollections.observableArrayList(CustomerDAO.loadAllCustomers());
         customerCB.setItems(customerObservableList);
@@ -92,30 +73,26 @@ public class AddApptController implements Initializable {
         ObservableList<Contact> contactObservableList = FXCollections.observableArrayList(ContactDAO.loadAllContacts());
         contactCB.setItems(contactObservableList);
     }
-    private void setUserIdTF() {
-        userTF.setText(User.currentUser.getUserName());
-        userTF.setDisable(true);
+    private void setUserCB() {
+        ObservableList<User> userObservableList = FXCollections.observableArrayList(UserDAO.loadAllUsers());
+        userCB.setItems(userObservableList);
     }
 
     private void setTypeCB() {
         ObservableList<String> typeList = FXCollections.observableArrayList();
-        typeList.addAll("Lunch", "Planning Session", "Follow-up", "Project Meeting", "Open Meeting");
+        typeList.addAll("Lunch", "Decision-making", "Problem-solving", "Team-building", "Brainstorming", "One-on-one", "Quarterly-planning","Check-in");
         typeCB.setItems(typeList);
-    }
-
-    private Timestamp getTimestamp(LocalDate LocalDate, LocalTime LocalTime) {
-        return Timestamp.valueOf(LocalDateTime.of(LocalDate, LocalTime).format(DBConnection.dtFormatter));
     }
 
     private void setTimeCB() {
         ObservableList<LocalTime> timeOptions = FXCollections.observableArrayList();
-        LocalTime startTime = LocalTime.of(8, 0);
+        LocalTime startTime = LocalTime.of(4, 0);
         LocalTime endTime = LocalTime.of(22, 0);
 
         timeOptions.add(startTime);
 
         while (startTime.isBefore(endTime)){
-            startTime = startTime.plusMinutes(15);
+            startTime = startTime.plusMinutes(30);
             timeOptions.add(startTime);
         }
         startTimeCB.setItems(timeOptions);
@@ -123,11 +100,7 @@ public class AddApptController implements Initializable {
     }
 
     public void cancelToAppointments(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/ApptsView.fxml"));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        new ChangeView(actionEvent, "ApptsView.fxml");
     }
 
     @FXML
@@ -139,14 +112,14 @@ public class AddApptController implements Initializable {
                 description = descriptionTA.getText();
                 location = locationTF.getText();
                 type = typeCB.getValue();
-                start = timestamp(apptDatePicker.getValue(), startTimeCB.getValue());
-                end = timestamp(apptDatePicker.getValue(), endTimeCB.getValue());
+                start = LocalDateTime.of(apptDatePicker.getValue(), startTimeCB.getValue());
+                end = LocalDateTime.of(apptDatePicker.getValue(), endTimeCB.getValue());
                 createDate = Timestamp.valueOf(LocalDateTime.now());
-                createdBy = User.currentUser.getUserName();
+                createdBy = userCB.getValue();
                 lastUpdate = Timestamp.valueOf(LocalDateTime.now());
-                lastUpdatedBy = User.currentUser.getUserName();
+                lastUpdatedBy = userCB.getValue();
                 customerId = customerCB.getValue().getCustomerId();
-                userId = User.currentUser.getUserId();
+                userId = userCB.getValue().getUserId();
                 contactId = contactCB.getValue().getContactId();
 
                 boolean confirmAdd = Messages.addConfirmation(title);
@@ -205,30 +178,29 @@ public class AddApptController implements Initializable {
             Messages.validateAppt(10);
             return false;
         }
+        if (userCB.getValue() == null) {
+            Messages.validateAppt(13);
+            return false;
+        }
 
         /** ApptDate, startTime, endTime, ZoneId, and ZonedDateTime objects for the appointment */
         LocalDate apptDate = apptDatePicker.getValue();
         LocalTime apptStartTime = startTimeCB.getValue();
         LocalTime apptEndTime = endTimeCB.getValue();
-        ZoneId apptZoneId = ZoneId.of("America/New_York");
-        ZonedDateTime apptStartZDT = ZonedDateTime.of(apptDate, apptStartTime, apptZoneId);
-        ZonedDateTime apptEndZDT = ZonedDateTime.of(apptDate, apptEndTime, apptZoneId);
-
-        /** Get the ZoneId of the current OS and create an instant */
         ZoneId osZoneId = ZoneId.of(TimeZone.getDefault().getID());
-        Instant osStartToUTC = apptStartZDT.toInstant();
-        Instant osEndToUTC = apptEndZDT.toInstant();
+        ZoneId estZoneId = ZoneId.of("America/New_York");
+        ZonedDateTime apptStartZDT = ZonedDateTime.of(apptDate, apptStartTime, osZoneId);
+        ZonedDateTime apptEndZDT = ZonedDateTime.of(apptDate, apptEndTime, osZoneId);
 
         /** Convert appt times to local zoneId */
-        ZonedDateTime apptStartToLocalZDT = apptStartZDT.withZoneSameInstant(osZoneId);
-        ZonedDateTime apptEndToLocalZDT = apptEndZDT.withZoneSameInstant(osZoneId);
+        ZonedDateTime apptStartToEstZDT = apptStartZDT.withZoneSameInstant(estZoneId);
+        ZonedDateTime apptEndToEstZDT = apptEndZDT.withZoneSameInstant(estZoneId);
 
 
 
         /** convert appt times to local time */
-        ZonedDateTime StartUTCToLocalZDT = osStartToUTC.atZone(osZoneId);
-        ZonedDateTime EndUTCToLocalZDT = osEndToUTC.atZone(osZoneId);
-
+        LocalTime startEST = apptStartToEstZDT.toLocalTime();
+        LocalTime endEST = apptEndToEstZDT.toLocalTime();
 
         LocalTime businessDayStart = LocalTime.of(8, 0);
         LocalTime businessDayEnd = LocalTime.of(22, 0);
@@ -240,8 +212,8 @@ public class AddApptController implements Initializable {
 
 
 
-        if(apptStartTime.isBefore(businessDayStart) || apptEndTime.isBefore(businessDayStart) ||
-           apptStartTime.isAfter(businessDayEnd) || apptEndTime.isAfter(businessDayEnd)) {
+        if(startEST.isBefore(businessDayStart) || endEST.isBefore(businessDayStart) ||
+           startEST.isAfter(businessDayEnd) || endEST.isAfter(businessDayEnd)) {
             Messages.validateAppt(12);
             return false;
         }
@@ -254,8 +226,17 @@ public class AddApptController implements Initializable {
         return true;
     }
 
-    private Timestamp timestamp(LocalDate date, LocalTime time) {
-        return Timestamp.valueOf(LocalDateTime.of(date, time).format(dateTimeFormatter));
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        UserDAO.loadAllUsers();
+        CustomerDAO.loadAllCustomers();
+        ContactDAO.loadAllContacts();
+        setCustomerCB();
+        setUserCB();
+        setContactCB();
+        setTimeCB();
+        setTypeCB();
     }
 
 
