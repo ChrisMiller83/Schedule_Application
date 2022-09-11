@@ -1,7 +1,10 @@
 package model;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,9 @@ public class Appointment {
     private int customerId;
     private int userId;
     private int contactId;
+    private LocalDate apptDate;
+    private LocalTime start;
+    private LocalTime end;
     public static List<Appointment> appointmentsList = new ArrayList<>();
 
     /**
@@ -58,9 +64,18 @@ public class Appointment {
         this. contactId = contactId;
     }
 
-    public Appointment() {
-
+    public Appointment(int apptId, LocalDate apptDate, LocalTime start, LocalTime end, String apptTitle, String apptType, String apptDescription, int customerId) {
+        this.apptId = apptId;
+        this.apptDate = apptDate;
+        this.start = start;
+        this.end = end;
+        this.apptTitle = apptTitle;
+        this.apptType = apptType;
+        this.apptDescription = apptDescription;
+        this.customerId = customerId;
     }
+
+
 
 
     /**
@@ -253,9 +268,29 @@ public class Appointment {
         return contactId;
     }
 
+    public LocalDate getApptDate() {
+        return apptDate;
+    }
 
+    public void setApptDate(LocalDate apptDate) {
+        this.apptDate = apptDate;
+    }
 
+    public LocalTime getStart() {
+        return start;
+    }
 
+    public void setStart(LocalTime start) {
+        this.start = start;
+    }
+
+    public LocalTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalTime end) {
+        this.end = end;
+    }
 
     public static List<Appointment> getAppointmentList() {
         return appointmentsList;

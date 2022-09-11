@@ -17,20 +17,13 @@ import javafx.scene.control.TextField;
 import model.Appointment;
 import model.User;
 import utilities.ChangeView;
-import utilities.Messages;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
-import java.sql.Timestamp;
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.chrono.ChronoLocalDate;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.TimeZone;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class LoginController implements Initializable {
 
@@ -45,13 +38,14 @@ public class LoginController implements Initializable {
     @FXML private Button loginBtn;
     @FXML private ResourceBundle languages = ResourceBundle.getBundle("languages/Language");
 
-    public LoginController() {}
+    private static final String filename = "login_activity.txt";
+
+    public LoginController() {
+    }
 
     public void setZoneID(Label zoneID) {
         zoneID.setText(String.valueOf(ZoneId.systemDefault()));
     }
-
-
 
     public void clearTextFieldsBtn(ActionEvent actionEvent) {
         userNameTF.clear();
@@ -62,6 +56,7 @@ public class LoginController implements Initializable {
 
     public void loginToMainPage(ActionEvent actionEvent) throws IOException {
         if (validLogin()) {
+            storeLoginActivity();
             int userId = User.currentUser.getUserId();
 
             ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
@@ -73,7 +68,7 @@ public class LoginController implements Initializable {
 
             for (Appointment appointment : appointments) {
                 LocalDateTime start = appointment.getStartDateTime();
-//                System.out.println(start + " " + timeNow + " " + timePlus15);
+
                 if((start.isAfter(timeNow)) && (start.isBefore(timePlus15)) && appointment.getUserId() == userId) {
 
                     hasAppt = true;
@@ -93,8 +88,11 @@ public class LoginController implements Initializable {
                 alert.setHeaderText(languages.getString("NoUpcomingAppts"));
                 alert.showAndWait();
             }
+
             new ChangeView(actionEvent, "MainPageView.fxml");
         } else {
+
+            storeLoginActivity();
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle(languages.getString("ErrorInvalidLogin"));
             alert.setHeaderText(languages.getString("ErrorCheckUsernameAndPassword"));
@@ -103,7 +101,7 @@ public class LoginController implements Initializable {
         }
     }
 
-    private boolean validLogin() {
+    private boolean validLogin() throws IOException {
         ObservableList<User> allUsers = UserDAO.loadAllUsers();
         for (User user : Objects.requireNonNull(allUsers)) {
             if (user.getUserName().equals(userNameTF.getText().trim()) && user.getPassword().equals(passwordTF.getText().trim())) {
@@ -111,7 +109,25 @@ public class LoginController implements Initializable {
                 return true;
             }
         }
+
+
         return false;
+    }
+
+    public void storeLoginActivity() throws IOException {
+        File file = new File(filename);
+        file.createNewFile();
+        FileWriter fileWriter = new FileWriter(file, true);
+        BufferedWriter bw = new BufferedWriter(fileWriter);
+
+        bw.write("Login attempt by UserName: " + userNameTF.getText() + " on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMMM-dd-yyyy @ HH:mm:ss")) + " Login: ");
+        if (validLogin()) {
+            bw.write("Successful");
+        } else {
+            bw.write("Failed");
+        }
+        bw.newLine();
+        bw.close();
     }
 
     

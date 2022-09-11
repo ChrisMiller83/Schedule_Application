@@ -10,7 +10,9 @@ import model.Appointment;
 import model.User;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class AppointmentDAO {
     public static final String DB_NAME = "schedule.db";
@@ -69,6 +71,10 @@ public class AppointmentDAO {
 
     public static final String DELETE_AN_APPOINTMENT = "DELETE FROM " + TABLE_APPOINTMENTS + " WHERE " +
             COLUMN_APPT_ID + " = ?;";
+
+    public static final String QUERY_APPOINTMENTS_BY_CONTACT_ID = "SELECT * FROM " + TABLE_APPOINTMENTS +
+            " WHERE " + COLUMN_CONTACT_ID + " = ?;";
+
 
     public static ObservableList<Appointment> loadAllAppts() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
@@ -251,6 +257,35 @@ public class AppointmentDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ObservableList<Appointment> loadContactAppts(int contactId) {
+        ObservableList<Appointment> contactAppts = FXCollections.observableArrayList();
+
+        try {
+            PreparedStatement loadAppts = DBConnection.getConnection().prepareStatement(QUERY_APPOINTMENTS_BY_CONTACT_ID);
+            loadAppts.setInt(1, contactId);
+            ResultSet result = loadAppts.executeQuery();
+            while (result.next()) {
+                int apptId = result.getInt("Appointment_ID");
+                LocalDate apptDate = result.getTimestamp("Start").toLocalDateTime().toLocalDate();
+                LocalTime start = result.getTimestamp("Start").toLocalDateTime().toLocalTime();
+                LocalTime end = result.getTimestamp("End").toLocalDateTime().toLocalTime();
+                String apptTitle = result.getString("Title");
+                String apptType = result.getString("Type");
+                String apptDescription =result.getString("Description");
+                int customerId = result.getInt("Customer_ID");
+
+
+                Appointment appts = new Appointment(apptId, apptDate, start, end, apptTitle, apptTitle, apptDescription, customerId);
+
+                contactAppts.add(appts);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contactAppts;
     }
 
 

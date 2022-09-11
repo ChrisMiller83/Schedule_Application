@@ -1,5 +1,6 @@
 package main;
 
+import controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import dao.DBConnection;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 public class Main extends Application {
@@ -26,4 +28,6 @@ public class Main extends Application {
         launch(args);
         DBConnection.closeConnection();
     }
+
+
 }
