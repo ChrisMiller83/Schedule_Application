@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.*;
+import java.time.chrono.ChronoZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
@@ -184,21 +185,30 @@ public class AddApptController implements Initializable {
             return false;
         }
 
+        if (apptDatePicker.getValue().isBefore(LocalDate.now())) {
+            Messages.validateAppt(14);
+            return false;
+        }
 
-        /** ApptDate, startTime, endTime, ZoneId, and ZonedDateTime objects for the appointment */
-        LocalDate apptDate = apptDatePicker.getValue();
-        LocalTime apptStartTime = startTimeCB.getValue();
-        LocalTime apptEndTime = endTimeCB.getValue();
+
+        /** pickedApptDate, pickedStartTime, pickedEndTime, osZoneId(operating systems ZoneId), and ZonedDateTime objects for the appointment */
+        LocalDate pickedApptDate = apptDatePicker.getValue();
+        LocalTime pickedStartTime = startTimeCB.getValue();
+        LocalTime pickedEndTime = endTimeCB.getValue();
         ZoneId osZoneId = ZoneId.of(TimeZone.getDefault().getID());
+        ZonedDateTime pickedStartZDT = ZonedDateTime.of(pickedApptDate, pickedStartTime, osZoneId);
+        ZonedDateTime pickedEndZDT = ZonedDateTime.of(pickedApptDate, pickedEndTime, osZoneId);
+
+        /** pickedStartLDT and pickedEndLDT used to check against booked appointments */
+        LocalDateTime pickedStartLDT = LocalDateTime.of(pickedApptDate, pickedStartTime);
+        LocalDateTime pickedEndLDT = LocalDateTime.of(pickedApptDate, pickedEndTime);
+
+        /** Convert appt times to EST ZonedDateTime */
         ZoneId estZoneId = ZoneId.of("America/New_York");
-        ZonedDateTime apptStartZDT = ZonedDateTime.of(apptDate, apptStartTime, osZoneId);
-        ZonedDateTime apptEndZDT = ZonedDateTime.of(apptDate, apptEndTime, osZoneId);
+        ZonedDateTime apptStartToEstZDT = pickedStartZDT.withZoneSameInstant(estZoneId);
+        ZonedDateTime apptEndToEstZDT = pickedEndZDT.withZoneSameInstant(estZoneId);
 
-        /** Convert appt times to local zoneId */
-        ZonedDateTime apptStartToEstZDT = apptStartZDT.withZoneSameInstant(estZoneId);
-        ZonedDateTime apptEndToEstZDT = apptEndZDT.withZoneSameInstant(estZoneId);
-
-        /** convert appt times to local time */
+        /** convert appt times to local time of EST in order to check against business hours */
         LocalTime startEST = apptStartToEstZDT.toLocalTime();
         LocalTime endEST = apptEndToEstZDT.toLocalTime();
 
@@ -206,7 +216,8 @@ public class AddApptController implements Initializable {
         LocalTime businessDayStart = LocalTime.of(8, 0);
         LocalTime businessDayEnd = LocalTime.of(22, 0);
 
-        if(apptEndTime.isBefore(apptStartTime) || apptStartTime.equals(apptEndTime)) {
+        /** Checks start and end times do not match, or that start is after end, or end is before start */
+        if(pickedEndTime.isBefore(pickedStartTime) || pickedStartTime.equals(pickedEndTime)) {
             Messages.validateAppt(8);
             return false;
         }
@@ -218,15 +229,40 @@ public class AddApptController implements Initializable {
             return false;
         }
 
+        /** Check customer overlapping appointment times */
         customerId = customerCB.getValue().getCustomerId();
         ObservableList<Appointment> customerAppts = AppointmentDAO.loadCustomerAppts(customerId);
 
         for(Appointment appointment: customerAppts) {
-            if(((startEST.isAfter(apptStartTime)) && (startEST.isBefore(apptEndTime))) ||
-                    (endEST.isAfter(apptStartTime)) && (endEST.isBefore(apptEndTime))) {
+            LocalDateTime bookedApptStart = appointment.getStartDateTime();
+            System.out.println("bookedApptStart  " + bookedApptStart);
+            LocalDateTime bookedApptEnd = appointment.getEndDateTime();
+
+            /** ex: picked start 10:30 end 11:30  and booked start 10:00 end 12:00 (ps-pe 10:30-11:30 is inside bs-be 10:00-12:00) */
+            if((pickedStartLDT.isAfter(bookedApptStart)) && (pickedEndLDT.isBefore(bookedApptEnd))){
                 Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                return false;
             }
-            return false;
+            /** ex: picked end 11:30  and booked start 10:00 end 12:00 (pe of 11:30 is inside bs-be 10:00-12:00) */
+            if((pickedEndLDT.isAfter(bookedApptStart)) && (pickedEndLDT.isBefore(bookedApptEnd))) {
+                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                return false;
+            }
+            /** ex: picked start 10:30 and booked start 10:00 end 12:00 (ps of 10:30 is inside bs-be 10:00-12:00) */
+            if ((pickedStartLDT.isAfter(bookedApptStart)) && (pickedStartLDT.isBefore(bookedApptEnd))) {
+                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                return false;
+            }
+            /** ex: picked start 09:30 end 12:30  and booked start 10:00 end 12:00 (bs-be 10:00-12:00 is inside ps-pe 09:30-12:30) */
+            if((pickedStartLDT.isBefore(bookedApptStart)) && (pickedEndLDT.isAfter(bookedApptEnd))) {
+                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                return false;
+            }
+            /** ex: picked start 10:00 end 12:00  and booked start 10:00 end 12:00 (ps of 10:00 == bs 10:00 or pe 12:00 == be 12:00) */
+            if(pickedStartLDT.equals(bookedApptStart) || (pickedEndLDT.equals(bookedApptEnd))) {
+                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                return false;
+            }
         }
 
 

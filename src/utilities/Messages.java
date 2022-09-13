@@ -57,7 +57,7 @@ public class Messages {
 
     public static void validateAppt(int number) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error Empty Fields");
+        alert.setTitle("Error");
         switch (number) {
             case 1:
             {
@@ -122,6 +122,11 @@ public class Messages {
             case 13:
             {
                 alert.setContentText("The user choice box is empty:  Please select a user.");
+                break;
+            }
+            case 14:
+            {
+                alert.setContentText("Appointment date issue.  Appointments cannot be made on past dates.");
                 break;
             }
             default:
@@ -229,7 +234,7 @@ public class Messages {
     public static void overlappingAppts(int apptId, LocalDateTime start, LocalDateTime end) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("!! Overlapping Appointments");
-        alert.setContentText("Your appointment times are in conflict with another appointment" +
+        alert.setContentText("The Start/End times are in conflict with another appointment" +
                 "\nAppt ID:  " + apptId +
                 "\nStart:  " + start.format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")) +
                 "\nEnd:  " + end.format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")) +

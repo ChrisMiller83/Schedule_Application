@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
@@ -28,7 +29,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="253.0" prefWidth="600.0">
                             <children>
-                                <TableView fx:id="totalTable" layoutY="40.0" prefHeight="250.0" prefWidth="600.0">
+                                <TableView fx:id="totalTable" layoutY="20.0" prefHeight="220.0" prefWidth="600.0">
                                     <columns>
                                         <TableColumn fx:id="monthTotalCol" prefWidth="120.0" text="Month" />
                                         <TableColumn fx:id="typeTotalCol" prefWidth="120.0" text="Type" />
@@ -41,9 +42,9 @@
                 </Tab>
                 <Tab fx:id="scheduleTab" text="Contact Schedule">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="225.0" prefWidth="600.0">
                             <children>
-                                <TableView fx:id="scheduleTable" layoutY="40.0" prefHeight="216.0" prefWidth="600.0">
+                                <TableView fx:id="scheduleTable" layoutY="40.0" prefHeight="210.0" prefWidth="600.0">
                                     <columns>
                                         <TableColumn fx:id="apptIdCol" prefWidth="100.0" text="Appt ID" />
                                         <TableColumn fx:id="apptDateCol" prefWidth="100.0" text="Appt Date" />
@@ -77,21 +78,31 @@
                 <Tab fx:id="loginTab" text="Login Activity">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <TableView fx:id="loginTable" layoutY="40.0" prefHeight="235.0" prefWidth="600.0">
-                                    <columns>
-                                        <TableColumn fx:id="usernameCol" editable="false" prefWidth="100.0" text="Username" />
-                                        <TableColumn fx:id="dateTimeCol" editable="false" prefWidth="100.0" text="Date And Time" />
-                                        <TableColumn fx:id="loginStatus" editable="false" prefWidth="100.0" text="Login Status" />
-                                    </columns>
-                                </TableView>
-                            </children>
+                     <children>
+                        <TextArea fx:id="loginTA" layoutY="20.0" prefHeight="220.0" prefWidth="600.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font></TextArea>
+                     </children>
                         </AnchorPane>
                     </content>
                 </Tab>
+            <Tab fx:id="deletedApptsTab" text="Deleted Appointments">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="deletedApptsTA" layoutY="20.0" prefHeight="220.0" prefWidth="600.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
             </tabs>
         </TabPane>
-        <HBox alignment="CENTER" layoutY="350.0" prefHeight="50.0" prefWidth="600.0">
+        <HBox alignment="CENTER" layoutY="350.0" prefHeight="25.0" prefWidth="600.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#toMainMenu" style="-fx-background-color: ORANGE;" text="Main Menu" textFill="WHITE">
                     <font>
