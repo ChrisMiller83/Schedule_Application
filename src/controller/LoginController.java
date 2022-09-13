@@ -65,12 +65,9 @@ public class LoginController implements Initializable {
             LocalDateTime timePlus15 = LocalDateTime.now().plusMinutes(15);
             boolean hasAppt = false;
 
-
             for (Appointment appointment : appointments) {
                 LocalDateTime start = appointment.getStartDateTime();
-
                 if((start.isAfter(timeNow)) && (start.isBefore(timePlus15)) && appointment.getUserId() == userId) {
-
                     hasAppt = true;
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle(languages.getString("UpcomingApptTitle"));
@@ -78,7 +75,6 @@ public class LoginController implements Initializable {
                             "\n" + languages.getString("StartDate") + " " + appointment.getStartDateTime().toLocalDate() +
                             "\n" + languages.getString("StartTime") + " " + appointment.getStartDateTime().toLocalTime());
                     alert.showAndWait();
-
                 }
             }
 
@@ -89,9 +85,11 @@ public class LoginController implements Initializable {
                 alert.showAndWait();
             }
 
+            /** Once login and appt messages are shown, reset the Locale language to English and open the Main Page View */
+            Locale currentLanguage = new Locale("en");
+            Locale.setDefault(currentLanguage);
             new ChangeView(actionEvent, "MainPageView.fxml");
         } else {
-
             storeLoginActivity();
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle(languages.getString("ErrorInvalidLogin"));
@@ -109,8 +107,6 @@ public class LoginController implements Initializable {
                 return true;
             }
         }
-
-
         return false;
     }
 
@@ -120,7 +116,7 @@ public class LoginController implements Initializable {
         FileWriter fileWriter = new FileWriter(file, true);
         BufferedWriter bw = new BufferedWriter(fileWriter);
 
-        bw.write("Login attempt by UserName: " + userNameTF.getText() + " on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMMM-dd-yyyy @ HH:mm:ss")) + " Login: ");
+        bw.write("Login attempt by username:   " + userNameTF.getText() + "    Date/Time:  " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss")) + "   Login: ");
         if (validLogin()) {
             bw.write("Successful");
         } else {
@@ -134,8 +130,6 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(String.valueOf(LocalDateTime.now()));
-        UserDAO.loadAllUsers();
         setZoneID(zoneID);
         Locale currentLanguage = Locale.getDefault();
         Locale.setDefault(currentLanguage);
@@ -147,6 +141,5 @@ public class LoginController implements Initializable {
         passwordTF.setPromptText(languages.getString("Password"));
         clearTextFieldsBtn.setText(languages.getString("Clear"));
         loginBtn.setText(languages.getString("Login"));
-
     }
 }

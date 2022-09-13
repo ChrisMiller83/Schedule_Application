@@ -6,6 +6,8 @@ import javafx.scene.control.ButtonType;
 import model.Appointment;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class Messages {
@@ -132,26 +134,7 @@ public class Messages {
         alert.showAndWait();
     }
 
-    public static void checkApptDates() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("!! ERROR CHECK YOUR DATES AND TIME");
-        alert.setContentText("You can not make an appointment in the past, please check your dates and time");
-        alert.showAndWait();
-    }
 
-    public static void checkStartTime() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("!! ERROR CHECK YOUR START TIME");
-        alert.setContentText("You start time can not be after your end time.");
-        alert.showAndWait();
-    }
-
-    public static void checkEndTime() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("!! ERROR CHECK YOUR START TIME");
-        alert.setContentText("You end time can not be before your start time.");
-        alert.showAndWait();
-    }
 
     public static void selectAnItemToUpdate(String s) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -240,6 +223,17 @@ public class Messages {
                 break;
             }
         }
+        alert.showAndWait();
+    }
+
+    public static void overlappingAppts(int apptId, LocalDateTime start, LocalDateTime end) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("!! Overlapping Appointments");
+        alert.setContentText("Your appointment times are in conflict with another appointment" +
+                "\nAppt ID:  " + apptId +
+                "\nStart:  " + start.format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")) +
+                "\nEnd:  " + end.format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")) +
+                "\n\nPlease adjust your appointment times.");
         alert.showAndWait();
     }
 

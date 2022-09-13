@@ -13,16 +13,19 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 
 public class AppointmentDAO {
-    public static final String DB_NAME = "schedule.db";
-    public static final String CONNECTION_STRING = "jdbc:mysql://localhost/client_schedule/" + DB_NAME;
+
 
     /**
      * Instantiates a new appointment
      */
     public AppointmentDAO() {
     }
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
 
     /**
      * CONSTANTS used to prevent SQL injection into the appointments table
@@ -74,6 +77,14 @@ public class AppointmentDAO {
 
     public static final String QUERY_APPOINTMENTS_BY_CONTACT_ID = "SELECT * FROM " + TABLE_APPOINTMENTS +
             " WHERE " + COLUMN_CONTACT_ID + " = ?;";
+
+    public static final String QUERY_APPOINTMENTS_BY_CUSTOMER_ID = "SELECT * FROM " + TABLE_APPOINTMENTS +
+            " WHERE " + COLUMN_CUSTOMER_ID + " = ?;";
+
+    public static final String QUERY_APPT_TOTALS = "SELECT " +
+            "MONTHNAME(" + COLUMN_APPT_START + ") AS Month, " +
+            COLUMN_APPT_TYPE + ", COUNT(*) AS Total FROM " + TABLE_APPOINTMENTS +
+            " GROUP BY " + COLUMN_APPT_TYPE;
 
 
     public static ObservableList<Appointment> loadAllAppts() {
@@ -252,8 +263,6 @@ public class AppointmentDAO {
             deleteAppt.setInt(1, apptId);
             deleteAppt.executeUpdate();
 
-            // TODO: add delete appointment report
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -277,7 +286,7 @@ public class AppointmentDAO {
                 int customerId = result.getInt("Customer_ID");
 
 
-                Appointment appts = new Appointment(apptId, apptDate, start, end, apptTitle, apptTitle, apptDescription, customerId);
+                Appointment appts = new Appointment(apptId, apptDate, start, end, apptTitle, apptType, apptDescription, customerId);
 
                 contactAppts.add(appts);
 
@@ -288,6 +297,64 @@ public class AppointmentDAO {
         return contactAppts;
     }
 
+    public static ObservableList<Appointment> loadCustomerAppts(int customerId) {
+        ObservableList<Appointment> customerAppts = FXCollections.observableArrayList();
+
+        try {
+            PreparedStatement loadAppts = DBConnection.getConnection().prepareStatement(QUERY_APPOINTMENTS_BY_CUSTOMER_ID);
+            loadAppts.setInt(1, customerId);
+            ResultSet result = loadAppts.executeQuery();
+            while (result.next()) {
+                int apptId = result.getInt("Appointment_ID");
+                String title = result.getString("Title");
+                String description =result.getString("Description");
+                String location =result.getString("Location");
+                String type = result.getString("Type");
+                LocalDateTime start = result.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime end = result.getTimestamp("End").toLocalDateTime();
+                Timestamp createDate = result.getTimestamp("Create_Date");
+                String createdBy = result.getString("Created_By");
+                Timestamp lastUpdate = result.getTimestamp("Last_Update");
+                String lastUpdatedBy = result.getString("Last_Updated_By");
+                int userId = result.getInt("User_ID");
+                int contactId = result.getInt("Contact_ID");
 
 
-}
+
+                Appointment appts = new Appointment(apptId, title, description, location, type, start, end,
+                        createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+
+                customerAppts.add(appts);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerAppts;
+    }
+
+
+    public static ObservableList<Appointment> loadTotals() {
+         ObservableList<Appointment> totals = FXCollections.observableArrayList();
+         try {
+             PreparedStatement load = DBConnection.getConnection().prepareStatement(QUERY_APPT_TOTALS);
+             ResultSet result = load.executeQuery();
+             while (result.next()) {
+                 String month = result.getString("Month");
+                 String apptType = result.getString("Type");
+                 Integer total = result.getInt("Total");
+
+                 Appointment apptTotals = new Appointment(month, apptType, total);
+
+                 totals.add(apptTotals);
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return totals;
+        }
+    }
+
+
+

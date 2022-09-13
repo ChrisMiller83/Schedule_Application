@@ -8,21 +8,26 @@ package controller;
 import dao.AppointmentDAO;
 import dao.ContactDAO;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import model.Contact;
+import utilities.ChangeView;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ReportsController implements Initializable {
@@ -30,9 +35,9 @@ public class ReportsController implements Initializable {
     // Appointment by Month and Type Total Report
     @FXML private Tab totalTab;
     @FXML private TableView<Appointment> totalTable;
-    @FXML private TableColumn<Appointment, ?> monthTotalCol;
-    @FXML private TableColumn<Appointment, ?> typeTotalCol;
-    @FXML private TableColumn<Appointment, ?> totalCol;
+    @FXML private TableColumn<Appointment, String> monthTotalCol;
+    @FXML private TableColumn<Appointment, String> typeTotalCol;
+    @FXML private TableColumn<Appointment, Integer> totalCol;
 
     // Contact Appointments Report
     @FXML private Tab scheduleTab;
@@ -49,10 +54,15 @@ public class ReportsController implements Initializable {
 
     // Login Activity Report
     @FXML private Tab loginTab;
-    @FXML private TableView<?> loginTable;
-    @FXML private TableColumn<?, ?> usernameCol;
-    @FXML private TableColumn<?, ?> dateTimeCol;
-    @FXML private TableColumn<?, ?> loginStatus;
+    @FXML private TextArea loginTA;
+
+    // Deleted Appointments Report
+    @FXML private Tab deletedApptsTab;
+    @FXML private TextArea deletedApptsTA;
+
+
+    private static final String filename = "login_activity.txt";
+
 
     @FXML
     void loadContactAppts(ActionEvent event) {
@@ -72,14 +82,67 @@ public class ReportsController implements Initializable {
 
     }
 
-    @FXML
-    void toMainMenu(ActionEvent event) {
+    private void setTotalTable() {
+        ObservableList<Appointment> totals = FXCollections.observableArrayList(AppointmentDAO.loadTotals());
+        totalTable.setItems(totals);
+        monthTotalCol.setCellValueFactory(new PropertyValueFactory<>("month"));
+        typeTotalCol.setCellValueFactory(new PropertyValueFactory<>("apptType"));
+        totalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
+        totalTable.refresh();
+    }
 
+
+    @FXML
+    void toMainMenu(ActionEvent actionEvent) throws IOException {
+        new ChangeView(actionEvent, "MainPageView.fxml");
     }
 
     private void setContactCB() {
         ObservableList<Contact> contactObservableList = FXCollections.observableArrayList(ContactDAO.loadAllContacts());
         contactCB.setItems(contactObservableList);
+    }
+    @FXML
+    void setLoginTextArea() {
+        loginTA.setText(String.valueOf(readLoginActivity()));
+    }
+
+    public ObservableList<String> readLoginActivity() {
+        ObservableList<String> lines = FXCollections.observableArrayList();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+            String s;
+            while ((s = br.readLine()) != null) {
+                lines.add(s);
+                lines.add("\n");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
+    }
+
+    @FXML
+    void setDeletedApptsTA() {
+        deletedApptsTA.setText(String.valueOf(readDeleteAppts()));
+    }
+
+    public ObservableList<String> readDeleteAppts() {
+        ObservableList<String> lines = FXCollections.observableArrayList();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("deletedAppts.txt"));
+            String s;
+            while ((s = br.readLine()) != null) {
+                lines.add(s);
+                lines.add("\n");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
     }
 
 
@@ -88,6 +151,9 @@ public class ReportsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setContactCB();
+        setLoginTextArea();
+        setTotalTable();
+        setDeletedApptsTA();
     }
 }
 

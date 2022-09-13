@@ -5,6 +5,7 @@ package controller;
  */
 
 import dao.AppointmentDAO;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,10 +16,16 @@ import model.Appointment;
 import utilities.ChangeView;
 import utilities.Messages;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class ApptsController implements Initializable {
@@ -26,7 +33,8 @@ public class ApptsController implements Initializable {
     static ObservableList<Appointment> appointments;
 
     private static Appointment apptToUpdate;
-    private static int selectedAppt;
+    private static Appointment selectedAppt;
+    private static final String filename = "deletedAppts.txt";
 
 
     @FXML private Button scheduleApptBtn;
@@ -81,19 +89,45 @@ public class ApptsController implements Initializable {
     }
 
     public void toUpdateAppointmentView(ActionEvent actionEvent) throws IOException {
-        Appointment apptToUpdate = appointmentsTableView.getSelectionModel().getSelectedItem();
-
+        apptToUpdate = appointmentsTableView.getSelectionModel().getSelectedItem();
         if (apptToUpdate == null) {
             Messages.selectAnItemToUpdate("Appointment");
             return;
         }
         UpdateApptController.getSelectedAppt(apptToUpdate);
-
         new ChangeView(actionEvent, "UpdateApptView.fxml");
     }
 
+    public void deleteOldAppts() throws IOException {
+        ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
+        for (Appointment appointment : appointments) {
+            if (appointment.getStartDateTime().isBefore(LocalDateTime.now())) {
+                int apptId = appointment.getApptId();
+                storeDeletedAppts(appointment);
+                AppointmentDAO.deleteAppointment(apptId);
+                appointmentsTableView.refresh();
+            }
+        }
+    }
+
+    public void storeDeletedAppts(Appointment appointment) throws IOException {
+        File file = new File(filename);
+        file.createNewFile();
+        FileWriter fileWriter = new FileWriter(file, true);
+        BufferedWriter bw = new BufferedWriter(fileWriter);
+
+        bw.write("Appointment Deleted on:  " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH-mm-ss")) +
+                "\tApptID = " + appointment.getApptId() + "\tTitle:  " + appointment.getApptTitle() +
+                "\t Description: " + appointment.getApptDescription() + "\tType: " + appointment.getApptType() + "\tStart: " +
+                appointment.getStartDateTime() + "\tEnd: " + appointment.getEndDateTime() + "\t Contact ID: " + appointment.getContactId() +
+                "\tCustomer ID:  " + appointment.getCustomerId() + "\tUser ID:  " + appointment.getUserId());
+        bw.newLine();
+        bw.close();
+        appointmentsTableView.refresh();
+    }
+
     public void deleteAppointment(ActionEvent actionEvent) throws IOException {
-        Appointment selectedAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
+        selectedAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
         if(selectedAppt == null) {
             Messages.selectionNeeded();
             return;
@@ -101,6 +135,7 @@ public class ApptsController implements Initializable {
             int apptId = selectedAppt.getApptId();
             boolean deleteConfirm = Messages.deleteConfirmation(selectedAppt.getApptTitle());
             if(deleteConfirm) {
+                storeDeletedAppts(selectedAppt);
                 AppointmentDAO.deleteAppointment(apptId);
                 appointmentsTableView.setItems(AppointmentDAO.loadAllAppts());
                 appointmentsTableView.refresh();
@@ -113,6 +148,8 @@ public class ApptsController implements Initializable {
     public void toMainMenu(ActionEvent actionEvent) throws IOException {
         new ChangeView(actionEvent, "MainPageView.fxml");
     }
+
+
 
     public void setAppointmentsTableView(ObservableList<Appointment> appointments) {
         appointmentsTableView.setItems(appointments);
@@ -138,6 +175,11 @@ public class ApptsController implements Initializable {
         weeklyApptRBtn.setToggleGroup(selectedView);
         monthlyApptBtn.setToggleGroup(selectedView);
         setAppointmentsTableView(AppointmentDAO.loadAllAppts());
+        try {
+            deleteOldAppts();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

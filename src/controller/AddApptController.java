@@ -2,6 +2,7 @@ package controller;
 
 /** @author Christopher Miller - Schedule Application - WGU C195 PA  */
 
+import com.mysql.cj.protocol.Message;
 import dao.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -183,6 +184,7 @@ public class AddApptController implements Initializable {
             return false;
         }
 
+
         /** ApptDate, startTime, endTime, ZoneId, and ZonedDateTime objects for the appointment */
         LocalDate apptDate = apptDatePicker.getValue();
         LocalTime apptStartTime = startTimeCB.getValue();
@@ -196,12 +198,11 @@ public class AddApptController implements Initializable {
         ZonedDateTime apptStartToEstZDT = apptStartZDT.withZoneSameInstant(estZoneId);
         ZonedDateTime apptEndToEstZDT = apptEndZDT.withZoneSameInstant(estZoneId);
 
-
-
         /** convert appt times to local time */
         LocalTime startEST = apptStartToEstZDT.toLocalTime();
         LocalTime endEST = apptEndToEstZDT.toLocalTime();
 
+        /** Creates a LocalTime for the start and end of the business day */
         LocalTime businessDayStart = LocalTime.of(8, 0);
         LocalTime businessDayEnd = LocalTime.of(22, 0);
 
@@ -210,8 +211,7 @@ public class AddApptController implements Initializable {
             return false;
         }
 
-
-
+        /** Checks if appointment times are within business hours */
         if(startEST.isBefore(businessDayStart) || endEST.isBefore(businessDayStart) ||
            startEST.isAfter(businessDayEnd) || endEST.isAfter(businessDayEnd)) {
             Messages.validateAppt(12);
@@ -219,7 +219,15 @@ public class AddApptController implements Initializable {
         }
 
         customerId = customerCB.getValue().getCustomerId();
-        ObservableList<Appointment> appointmentObservableList = AppointmentDAO.loadAllAppts();
+        ObservableList<Appointment> customerAppts = AppointmentDAO.loadCustomerAppts(customerId);
+
+        for(Appointment appointment: customerAppts) {
+            if(((startEST.isAfter(apptStartTime)) && (startEST.isBefore(apptEndTime))) ||
+                    (endEST.isAfter(apptStartTime)) && (endEST.isBefore(apptEndTime))) {
+                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+            }
+            return false;
+        }
 
 
 

@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,8 @@ public class Appointment {
     private LocalDate apptDate;
     private LocalTime start;
     private LocalTime end;
+    private String month;
+    private Integer total;
     public static List<Appointment> appointmentsList = new ArrayList<>();
 
     /**
@@ -75,7 +78,11 @@ public class Appointment {
         this.customerId = customerId;
     }
 
-
+    public Appointment(String month, String apptType, Integer total) {
+        this.month = month;
+        this.apptType = apptType;
+        this.total = total;
+    }
 
 
     /**
@@ -296,9 +303,21 @@ public class Appointment {
         return appointmentsList;
     }
 
+    public String getMonth() {
+        return month;
+    }
 
+    public void setMonth(String month) {
+        this.month = month;
+    }
 
+    public Integer getTotal() {
+        return total;
+    }
 
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 }
 
 
