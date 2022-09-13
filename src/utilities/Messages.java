@@ -6,7 +6,9 @@ import javafx.scene.control.ButtonType;
 import model.Appointment;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -126,7 +128,20 @@ public class Messages {
             }
             case 14:
             {
-                alert.setContentText("Appointment date issue.  Appointments cannot be made on past dates.");
+                alert.setContentText("Appointment date issue.  Appointments cannot be made on past dates." +
+                        "\nCurrent Date:  " + LocalDate.now());
+                break;
+            }
+            case 15:
+            {
+                alert.setContentText("Appointment time issue.  Start time is before current time." +
+                        "\nCurrent Time:  " + LocalTime.now());
+                break;
+            }
+            case 16:
+            {
+                alert.setContentText("Appointment time issue.  End time is before current time." +
+                        "\nCurrent Time:  " + LocalTime.now());
                 break;
             }
             default:
