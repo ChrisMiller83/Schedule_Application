@@ -4,6 +4,7 @@ package controller;
  * @author Christopher Miller - Schedule Application - WGU C195 PA
  */
 
+import dao.AppointmentDAO;
 import dao.CustomerDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.Appointment;
+import model.Contact;
 import model.Customer;
 import utilities.ChangeView;
 import utilities.Messages;
@@ -65,6 +68,23 @@ public class CustomerController implements Initializable {
 
         }
     }
+    /**
+     * noAppointments -- checks if customer to delete has upcoming appointments.
+     * @return -- Returns false if customer has upcoming appointments, returns true is customer does not have any appts scheduled.
+     */
+    private boolean noAppointments() {
+        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+        int customerId = selectedCustomer.getCustomerId();
+        ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
+
+        for(Appointment appointment : appointments) {
+            if(appointment.getCustomerId() == customerId) {
+                Messages.hasAppointments(selectedCustomer.getCustomerName());
+                return false;
+            }
+        }
+        return true;
+    }
 
     public void deleteCustomer(ActionEvent actionEvent) {
         Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
@@ -72,17 +92,16 @@ public class CustomerController implements Initializable {
             Messages.selectionNeeded();
             return;
         } else {
-            // TODO: check if customer has any appointments
 
-            int customerId = selectedCustomer.getCustomerId();
-            boolean deleteConfirm = Messages.deleteConfirmation(selectedCustomer.getCustomerName());
-            if(deleteConfirm) {
-                System.out.println(selectedCustomer.getCustomerName() + " deleted");
-                CustomerDAO.deleteCustomer(customerId);
-                customersTable.setItems(CustomerDAO.loadAllCustomers());
-                customersTable.refresh();
-            } else {
-                return;
+            if(noAppointments()) {
+                int customerId = selectedCustomer.getCustomerId();
+                boolean deleteConfirm = Messages.deleteConfirmation(selectedCustomer.getCustomerName());
+                if (deleteConfirm) {
+                    System.out.println(selectedCustomer.getCustomerName() + " deleted");
+                    CustomerDAO.deleteCustomer(customerId);
+                    customersTable.setItems(CustomerDAO.loadAllCustomers());
+                    customersTable.refresh();
+                }
             }
         }
     }

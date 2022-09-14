@@ -4,6 +4,7 @@ package controller;
  * @author Christopher Miller - Schedule Application - WGU C195 PA
  */
 
+import dao.AppointmentDAO;
 import dao.UserDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.Appointment;
 import model.User;
 import utilities.ChangeView;
 import utilities.Messages;
@@ -37,6 +39,19 @@ public class UserController implements Initializable {
 
 
 
+    private boolean noAppointments() {
+        User selectedUser = userTableView.getSelectionModel().getSelectedItem();
+        int userId = selectedUser.getUserId();
+        ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
+
+        for(Appointment appointment : appointments) {
+            if(appointment.getUserId() == userId) {
+                Messages.hasAppointments(selectedUser.getUserName());
+                return false;
+            }
+        }
+        return true;
+    }
     @FXML
     void deleteUser(ActionEvent actionEvent) {
         User selectedUser = userTableView.getSelectionModel().getSelectedItem();
@@ -44,16 +59,17 @@ public class UserController implements Initializable {
             Messages.selectionNeeded();
             return;
         } else {
-            int userId = selectedUser.getUserId();
-            boolean deleteConfirm = Messages.deleteConfirmation(selectedUser.getUserName());
-            if(deleteConfirm) {
-                System.out.println("User deleted: " + selectedUser.getUserName());
-                UserDAO.deleteUser(userId);
-                userTableView.setItems(UserDAO.loadAllUsers());
-                userTableView.refresh();
+            if(noAppointments()) {
+                int userId = selectedUser.getUserId();
+                boolean deleteConfirm = Messages.deleteConfirmation(selectedUser.getUserName());
+                if(deleteConfirm) {
+                    System.out.println("User deleted: " + selectedUser.getUserName());
+                    UserDAO.deleteUser(userId);
+                    userTableView.setItems(UserDAO.loadAllUsers());
+                    userTableView.refresh();
+                }
             }
         }
-
     }
 
     @FXML

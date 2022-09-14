@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane style="-fx-background-color: TEAL;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateUserController">
     <children>
         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0">
@@ -67,12 +66,12 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <children>
-                <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelToUserView" prefWidth="100.0" style="-fx-background-color: RED;" text="Cancel" textFill="WHITE">
+                <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelToUserView" prefWidth="100.0" style="-fx-background-color: RED; -fx-border-color: SILVER;" text="Cancel" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#updateUser" prefWidth="100.0" style="-fx-background-color: GREEN;" text="Save" textFill="WHITE">
+                <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#updateUser" prefWidth="100.0" style="-fx-background-color: GREEN; -fx-border-color: SILVER;" text="Save" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>

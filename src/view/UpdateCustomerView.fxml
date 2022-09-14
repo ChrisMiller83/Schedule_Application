@@ -55,14 +55,14 @@
                 <Font size="14.0" />
             </font>
         </Label>
-        <Button fx:id="cancelBtn" layoutX="150.0" layoutY="445.0" mnemonicParsing="false" onAction="#cancelToCustomers" style="-fx-background-color: red;" text="Cancel" textFill="WHITE">
+        <Button fx:id="cancelBtn" layoutX="150.0" layoutY="445.0" mnemonicParsing="false" onAction="#cancelToCustomers" style="-fx-background-color: red; -fx-border-color: SILVER;" text="Cancel" textFill="WHITE">
             <font>
-                <Font size="14.0" />
+                <Font name="System Bold" size="13.0" />
             </font>
         </Button>
-        <Button fx:id="saveBtn" layoutX="250.0" layoutY="445.0" mnemonicParsing="false" onAction="#updateCustomer" style="-fx-background-color: Green;" text="Save" textFill="WHITE">
+        <Button fx:id="saveBtn" layoutX="250.0" layoutY="445.0" mnemonicParsing="false" onAction="#updateCustomer" style="-fx-background-color: Green; -fx-border-color: SILVER;" text="Save" textFill="WHITE">
             <font>
-                <Font size="14.0" />
+                <Font name="System Bold" size="13.0" />
             </font>
         </Button>
         <ComboBox fx:id="countryComboBox" layoutX="150.0" layoutY="345.0" onAction="#setDivisionComboBox" prefWidth="150.0" promptText="Select a Country" />

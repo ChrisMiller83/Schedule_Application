@@ -104,7 +104,7 @@
         </TabPane>
         <HBox alignment="CENTER" layoutY="350.0" prefHeight="25.0" prefWidth="600.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#toMainMenu" style="-fx-background-color: ORANGE;" text="Main Menu" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#toMainMenu" style="-fx-background-color: ORANGE; -fx-border-color: SILVER;" text="Main Menu" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>

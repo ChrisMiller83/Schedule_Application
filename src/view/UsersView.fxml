@@ -28,17 +28,17 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Button mnemonicParsing="false" onAction="#toAddUser" prefWidth="120.0" style="-fx-background-color: GREEN;" text="Add User" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#toAddUser" prefWidth="120.0" style="-fx-background-color: GREEN; -fx-border-color: SILVER;" text="Add User" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#toUpdateUser" prefWidth="120.0" style="-fx-background-color: PURPLE;" text="Update User" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#toUpdateUser" prefWidth="120.0" style="-fx-background-color: PURPLE; -fx-border-color: SILVER;" text="Update User" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#deleteUser" prefWidth="120.0" style="-fx-background-color: RED;" text="Delete User" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#deleteUser" prefWidth="120.0" style="-fx-background-color: RED; -fx-border-color: SILVER;" text="Delete User" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -68,7 +68,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Button mnemonicParsing="false" onAction="#toMainMenu" prefWidth="120.0" style="-fx-background-color: ORANGE;" text="Main Menu" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#toMainMenu" prefWidth="120.0" style="-fx-background-color: ORANGE; -fx-border-color: SILVER;" text="Main Menu" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

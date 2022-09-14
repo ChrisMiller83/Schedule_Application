@@ -53,7 +53,7 @@ public class ContactsController implements Initializable {
 
     /**
      * noAppointments -- checks if contact to delete has upcoming appointments.
-     * @return -- Returns false if contact has upcoming appointments, returns true is contact does not have an appts.
+     * @return -- Returns false if contact has upcoming appointments, returns true is contact does not have an appts scheduled.
      */
     private boolean noAppointments() {
         Contact selectedContact = contactsTable.getSelectionModel().getSelectedItem();
