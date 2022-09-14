@@ -36,7 +36,7 @@ public class LoginController implements Initializable {
     @FXML private TextField passwordTF;
     @FXML private Button clearTextFieldsBtn;
     @FXML private Button loginBtn;
-    @FXML private ResourceBundle languages = ResourceBundle.getBundle("languages/Language");
+    @FXML private final ResourceBundle languages = ResourceBundle.getBundle("languages/Language");
 
     private static final String filename = "login_activity.txt";
 

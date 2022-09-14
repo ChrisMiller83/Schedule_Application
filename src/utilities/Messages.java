@@ -1,19 +1,26 @@
 package utilities;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import model.Appointment;
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
 
-import java.sql.SQLException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+/**
+ * Messages class -- custom messages built here.
+ */
 public class Messages {
 
+    /**
+     * validateCustomerError -- displays error message if an error is found during validation of customer data.
+     * @param number switch case number for specific message display.
+     */
     public static void validateCustomerError(int number) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR SOMETHING WENT WRONG");
@@ -57,6 +64,10 @@ public class Messages {
         alert.showAndWait();
     }
 
+    /**
+     * validateAppt -- displays error message if an error is found during validation of appointment data.
+     * @param number switch case number for specific message display.
+     */
     public static void validateAppt(int number) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -154,8 +165,10 @@ public class Messages {
         alert.showAndWait();
     }
 
-
-
+    /**
+     * selectAnItemToUpdate -- error message used if an appointment, customer, contact, or user to update was not selected.
+     * @param s string parameter used to display if message is for Appointment, Customer, Contact, or User needing update selection.
+     */
     public static void selectAnItemToUpdate(String s) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("!! Missing " + s + " To Update");
@@ -163,8 +176,9 @@ public class Messages {
         alert.showAndWait();
     }
 
-
-
+    /**
+     * selectionNeeded -- used to display message when an item to delete has not been selected.
+     */
     public static void selectionNeeded() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("!! No Item Selected");
@@ -172,6 +186,11 @@ public class Messages {
         alert.showAndWait();
     }
 
+    /**
+     * deleteConfirmation -- displays a delete Confirmation message.
+     * @param itemToDelete -- displays the item being deleted.
+     * @return -- verifies OK or cancel was selected.
+     */
     public static boolean deleteConfirmation(String itemToDelete) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("!! DELETE CONFORMATION !!");
@@ -180,6 +199,11 @@ public class Messages {
         return result.get() == ButtonType.OK;
     }
 
+    /**
+     * addConfirmation -- displays an add Confirmation message.
+     * @param itemToAdd -- displays title/name of item being added.
+     * @return -- verifies OK or cancel was selected.
+     */
     public static boolean addConfirmation(String itemToAdd) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("!! ADD CONFORMATION !!");
@@ -188,6 +212,11 @@ public class Messages {
         return result.get() == ButtonType.OK;
     }
 
+    /**
+     * updateConfirmation -- displays an update Confirmation message.
+     * @param itemToUpdate -- displays title/name of item being updated.
+     * @return -- verifies OK or cancel was selected.
+     */
     public static boolean updateConfirmation(String itemToUpdate) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("!! UPDATE CONFORMATION !!");
@@ -196,6 +225,10 @@ public class Messages {
         return result.get() == ButtonType.OK;
     }
 
+    /**
+     * validateUserError -- displays error message if an error is found during validation of user data
+     * @param number switch case number for specific message display.
+     */
     public static void validateUserError (int number) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("!! ERROR ALERT !!");
@@ -218,6 +251,10 @@ public class Messages {
         alert.showAndWait();
     }
 
+    /**
+     * validateContactAppt -- displays error message if an error is found during validation of contact data.
+     * @param number switch case number for specific message display.
+     */
     public static void validateContactError (int number) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("!! ERROR ALERT !!");
@@ -246,6 +283,12 @@ public class Messages {
         alert.showAndWait();
     }
 
+    /**
+     * overlappingAppts -- displays error message if an overlapping customer appointment was found during appointment validation
+     * @param apptId -- apptId of booked/saved appt in overlapping conflict.
+     * @param start -- start date time of booked/save appt in overlapping conflict.
+     * @param end -- end date time of booked/save appt in overlapping conflict.
+     */
     public static void overlappingAppts(int apptId, LocalDateTime start, LocalDateTime end) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("!! Overlapping Appointments");
@@ -257,5 +300,15 @@ public class Messages {
         alert.showAndWait();
     }
 
-
+    /**
+     * hasAppointments -- warning message displayed if user, customer, or contact have upcoming appointments
+     * @param name -- user name, customer name or contact name to be deleted.
+     */
+    public static void hasAppointments(String name) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(name + " has upcoming appointments");
+        alert.setContentText(name + " has upcoming appointments." +
+            "\nPlease delete all appointments before deleting " + name);
+        alert.showAndWait();
+    }
 }

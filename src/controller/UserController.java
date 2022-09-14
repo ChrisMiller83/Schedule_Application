@@ -25,7 +25,6 @@ public class UserController implements Initializable {
     static ObservableList<User> users;
 
     private static User userToUpdate;
-    private static int selectedUser;
 
     @FXML private TableView<User> userTableView;
     @FXML private TableColumn<User, Integer> userIdCol;

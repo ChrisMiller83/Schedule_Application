@@ -5,7 +5,6 @@ package controller;
  */
 
 import dao.AppointmentDAO;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import utilities.ChangeView;
 import utilities.Messages;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -23,19 +21,20 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+/**
+ * ApptsController -- Displays tables of appointments, allows appointment deletion, and redirects to add/update appt page.
+ */
 public class ApptsController implements Initializable {
-
     static ObservableList<Appointment> appointments;
 
     private static Appointment apptToUpdate;
     private static Appointment selectedAppt;
     private static final String filename = "deletedAppts.txt";
-
 
     @FXML private Button scheduleApptBtn;
     @FXML private Button updateApptBtn;
@@ -62,8 +61,11 @@ public class ApptsController implements Initializable {
     @FXML private Button mainMenuBtn;
 
 
-    @FXML
-    void setSelectedView(ActionEvent event)  {
+    /**
+     * setSelectedView -- displays different appt tables depending on radio button selection.
+     * @param event -- radio button selected
+     */
+    public void setSelectedView(ActionEvent event)  {
         try {
             if (allApptRBtn.isSelected()) {
                 appointments = AppointmentDAO.loadAllAppts();
@@ -84,20 +86,36 @@ public class ApptsController implements Initializable {
     }
 
 
+    /**
+     * toAddApptView -- redirects to AddAppt page
+     * @param actionEvent -- Add Appointment button clicked
+     * @throws IOException
+     */
     public void toAddApptView(ActionEvent actionEvent) throws IOException {
         new ChangeView(actionEvent, "AddApptView.fxml");
     }
 
+    /**
+     * toUpdateAppointmentView -- redirects to UpdateAppt page once an appointment to update is selected.
+     * @param actionEvent -- Update Appointment button clicked.
+     * @throws IOException
+     */
     public void toUpdateAppointmentView(ActionEvent actionEvent) throws IOException {
         apptToUpdate = appointmentsTableView.getSelectionModel().getSelectedItem();
         if (apptToUpdate == null) {
             Messages.selectAnItemToUpdate("Appointment");
             return;
         }
+        /** gets the selected appointment and transfers its data to the UpdateApptController */
         UpdateApptController.getSelectedAppt(apptToUpdate);
         new ChangeView(actionEvent, "UpdateApptView.fxml");
     }
 
+    /**
+     * deleteOldAppts -- deletes old/missed appointments from the appointments table when page is loaded,
+     * and stores the deleted appointments in a txt file.
+     * @throws IOException
+     */
     public void deleteOldAppts() throws IOException {
         ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
         for (Appointment appointment : appointments) {
@@ -110,6 +128,11 @@ public class ApptsController implements Initializable {
         }
     }
 
+    /**
+     * storeDeletedAppts -- method to store deleted appointments in a txt file.
+     * @param appointment -- appointment that was deleted.
+     * @throws IOException
+     */
     public void storeDeletedAppts(Appointment appointment) throws IOException {
         File file = new File(filename);
         file.createNewFile();
@@ -126,6 +149,11 @@ public class ApptsController implements Initializable {
         appointmentsTableView.refresh();
     }
 
+    /**
+     * deleteAppointment -- allows the user to delete selected appointments and stores the deleted appt in a txt file.
+     * @param actionEvent -- appt to delete is selected and Delete Appointment button is clicked.
+     * @throws IOException
+     */
     public void deleteAppointment(ActionEvent actionEvent) throws IOException {
         selectedAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
         if(selectedAppt == null) {
@@ -145,12 +173,19 @@ public class ApptsController implements Initializable {
         }
     }
 
+    /**
+     * toMainMenu -- redirects user to the main page.
+     * @param actionEvent -- Main Menu button clicked.
+     * @throws IOException
+     */
     public void toMainMenu(ActionEvent actionEvent) throws IOException {
         new ChangeView(actionEvent, "MainPageView.fxml");
     }
 
-
-
+    /**
+     * setAppointmentsTableView -- populates appointment data to appropriate columns in appointment table
+     * @param appointments -- ObservableList of all appointments in the db.
+     */
     public void setAppointmentsTableView(ObservableList<Appointment> appointments) {
         appointmentsTableView.setItems(appointments);
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
@@ -169,6 +204,11 @@ public class ApptsController implements Initializable {
         contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
     }
 
+    /**
+     * initialize -- loads appointment tables and deletes old appts automatically when page is loaded.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allApptRBtn.setToggleGroup(selectedView);

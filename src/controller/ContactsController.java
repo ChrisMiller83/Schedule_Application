@@ -4,6 +4,7 @@ package controller;
  * @author Christopher Miller - Schedule Application - WGU C195 PA
  */
 
+import dao.AppointmentDAO;
 import dao.ContactDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.Appointment;
 import model.Contact;
 import utilities.ChangeView;
 import utilities.Messages;
@@ -21,9 +23,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * ContactsController -- Displays a table contacts, allows contacts to be deleted, and redirects to add/update contacts page
+ */
 public class ContactsController implements Initializable {
 
-    static ObservableList<Contact> contactList;
+    static ObservableList<Contact> contactList = ContactDAO.loadAllContacts();
+    private static Contact selectedContact;
 
     @FXML private Button addContactBtn;
     @FXML private Button updateContactBtn;
@@ -35,37 +41,59 @@ public class ContactsController implements Initializable {
     @FXML private TableColumn<Contact, String> contactNameCol;
     @FXML private TableColumn<Contact, String> emailCol;
 
+    /**
+     * setContactsTable -- populates contact data to appropriate columns in the contacts table
+     */
     public void setContactsTable() {
-        contactList = ContactDAO.loadAllContacts();
         contactsTable.setItems(contactList);
         contactIdCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
         contactNameCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
     }
 
-
-    @FXML
-    public void deleteContact(ActionEvent actionEvent) {
+    /**
+     * noAppointments -- checks if contact to delete has upcoming appointments.
+     * @return -- Returns false if contact has upcoming appointments, returns true is contact does not have an appts.
+     */
+    private boolean noAppointments() {
         Contact selectedContact = contactsTable.getSelectionModel().getSelectedItem();
+        int contactId = selectedContact.getContactId();
+        ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
+
+        for(Appointment appointment : appointments) {
+            if(appointment.getContactId() == contactId) {
+                Messages.hasAppointments(selectedContact.getContactName());
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * deleteContact -- deletes selected contact if contact does not have upcoming appointments.
+     * @param actionEvent -- contact to be deleted is selected and Delete Contact button is clicked.
+     */
+    public void deleteContact(ActionEvent actionEvent) {
+        selectedContact = contactsTable.getSelectionModel().getSelectedItem();
+        /** Displays error message if a contact to delete is not selected. */
         if(selectedContact == null) {
             Messages.selectionNeeded();
             return;
         } else {
-
-            // TODO: check if contact has any appointments
-
-            int contactId = selectedContact.getContactId();
-            boolean deleteConfirm = Messages.deleteConfirmation(selectedContact.getContactName());
-            if(deleteConfirm) {
-                System.out.println(selectedContact.getContactName() + " deleted");
-                ContactDAO.deleteContact(contactId);
-                contactsTable.setItems(ContactDAO.loadAllContacts());
-                contactsTable.refresh();
-            } else {
-                return;
+            if (noAppointments()) {
+                /** if contact did not have any upcoming appointment, a delete confirmation is displayed */
+                boolean deleteConfirm = Messages.deleteConfirmation(selectedContact.getContactName());
+                /** if delete is confirmed, delete contact, display console message confirming delete */
+                if (deleteConfirm) {
+                    int contactId = selectedContact.getContactId();
+                    System.out.println(selectedContact.getContactName() + " deleted");
+                    ContactDAO.deleteContact(contactId);
+                    contactsTable.setItems(ContactDAO.loadAllContacts());
+                    contactsTable.refresh();
+                }
             }
         }
-
     }
 
     @FXML
@@ -86,7 +114,7 @@ public class ContactsController implements Initializable {
     }
 
     @FXML
-    void toMainMenu(ActionEvent actionEvent) throws IOException {
+    public void toMainMenu(ActionEvent actionEvent) throws IOException {
         new ChangeView(actionEvent, "MainPageView.fxml");
     }
 

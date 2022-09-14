@@ -1,6 +1,8 @@
 package controller;
 
-/** @author Christopher Miller - Schedule Application - WGU C195 PA  */
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ * */
 
 import dao.*;
 import javafx.collections.FXCollections;
@@ -110,6 +112,11 @@ public class AddApptController implements Initializable {
         endTimeCB.setItems(timeOptions);
     }
 
+    /**
+     * cancelToAppointments -- changes view back to ApptsView
+     * @param actionEvent -- cancel button clicked
+     * @throws IOException
+     */
     public void cancelToAppointments(ActionEvent actionEvent) throws IOException {
         new ChangeView(actionEvent, "ApptsView.fxml");
     }

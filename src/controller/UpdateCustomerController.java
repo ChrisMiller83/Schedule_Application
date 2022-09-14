@@ -18,13 +18,15 @@ import javafx.scene.control.TextField;
 import model.*;
 import utilities.ChangeView;
 import utilities.Messages;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+/**
+ * UpdateCustomerController -- updates customers in the db.
+ */
 public class UpdateCustomerController implements Initializable {
     private static Customer selectedCustomer;
 
@@ -37,10 +39,8 @@ public class UpdateCustomerController implements Initializable {
     private String lastUpdatedBy;
     private int countryId;
     private int divisionId;
-
     private Country selectedCountry;
     private Division selectedDivision;
-
 
     @FXML private TextField customerIdTF;
     @FXML private TextField customerNameTF;
@@ -53,7 +53,11 @@ public class UpdateCustomerController implements Initializable {
     @FXML private Button saveBtn;
 
 
-
+    /**
+     * setSelectedCustomer -- populates all the data fields from the selected customer that was
+     * selected in the CustomerController page.
+     * @param selectedCustomer -- customer selected to update data.
+     */
     public void setSelectedCustomer(Customer selectedCustomer) {
 
         customerIdTF.setText(Integer.toString(selectedCustomer.getCustomerId()));
@@ -61,74 +65,94 @@ public class UpdateCustomerController implements Initializable {
         addressTF.setText(selectedCustomer.getAddress());
         postalCodeTF.setText(selectedCustomer.getPostalCode());
         phoneNumTF.setText(selectedCustomer.getPhoneNumber());
-
+        /** loop through the countries list in the db to find the matching countryId for the selected
+         * country and displays the selected country name.
+         */
         for (Country country : CountryDAO.loadAllCountries()) {
             if(country.getCountryId() == selectedCustomer.getCountryId()) {
-                System.out.println(selectedCustomer.getCountryId() + " " + country.getCountryId());
                 countryComboBox.setValue(country);
-                break;
             }
         }
-
+        /** gets the country Id from the selected country and loop through the division list in the db
+         * to find the matching divisionId for the selected country/division and displays the selected division name.
+         */
         Country selectedCountry = countryComboBox.getValue();
         ObservableList<Division> DivisionsList = DivisionDAO.getDivisions(selectedCountry);
         divisionComboBox.setItems(DivisionsList);
         for (Division division : DivisionsList) {
             if(division.getDivisionId() == selectedCustomer.getDivisionId()) {
                 divisionComboBox.setValue(division);
-                break;
             }
         }
     }
 
+    /**
+     * getSelectedCustomer -- gets the data from the selected customer from the CustomerController
+     * @param customer -- selected customer from the CustomerController
+     */
     public static void getSelectedCustomer(Customer customer) {
         selectedCustomer = customer;
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setCountryComboBox();
-        setSelectedCustomer(selectedCustomer);
 
-    }
-
+    /**
+     * validateCustomer:  Is called in updateCustomer, it checks for empty fields and combo boxes
+     * @return -- false if one of the checks are found, otherwise returns true and allows updateCustomer to continue
+     */
     private boolean validateCustomer() {
+        /** Checker:  customer name text field is empty */
         if (customerNameTF.getText().isEmpty()) {
             Messages.validateCustomerError(1);
             return false;
         }
+        /** Checker:  address text field is empty */
         if(addressTF.getText().isEmpty()) {
             Messages.validateCustomerError(2);
             return false;
         }
+        /** Checker:  postal code text field is empty */
         if(postalCodeTF.getText().isEmpty()) {
             Messages.validateCustomerError(3);
             return false;
         }
+        /** Checker:  phone number text field is empty */
         if (phoneNumTF.getText().isEmpty()) {
             Messages.validateCustomerError(4);
             return false;
         }
+        /** Checker: country combo box is empty */
         if(countryComboBox.getValue() == null) {
             Messages.validateCustomerError(5);
             return false;
         }
+        /** Checker:  division combo box is empty */
         if (divisionComboBox.getValue() == null) {
             Messages.validateCustomerError(6);
             return false;
         }
-
         return true;
     }
 
-
+    /**
+     * cancelToCustomer -- changes view to CustomerView
+     * @param actionEvent -- cancel button clicked
+     * @throws IOException
+     */
     public void cancelToCustomers(ActionEvent actionEvent) throws IOException {
         new ChangeView(actionEvent, "CustomerView.fxml");
     }
 
+    /**
+     * updateCustomer  -- calls validateCustomer method to run validation checks,
+     * if validation checks pass, all info from the fields and combo boxes are gathered
+     * and customer is updated in the db, otherwise error messages are given.
+     * @param actionEvent -- save button clicked
+     * @throws IOException
+     */
     public void updateCustomer(ActionEvent actionEvent) throws IOException {
+        /** validateCustomer method called to check for errors */
         if(validateCustomer()) {
-
+            /** if no errors found, gather data from fields */
             customerName = customerNameTF.getText();
             address = addressTF.getText();
             postalCode = postalCodeTF.getText();
@@ -138,30 +162,53 @@ public class UpdateCustomerController implements Initializable {
             countryId = countryComboBox.getValue().getCountryId();
             divisionId = divisionComboBox.getValue().getDivisionId();
             customerId = Integer.parseInt(customerIdTF.getText());
-
+            /** Confirmation message to update customer */
             boolean updateConfirm = Messages.updateConfirmation(customerNameTF.getText());
+            /** If confirmation was ok/yes customer is updated in the db. */
             if (updateConfirm) {
-                System.out.println(customerName + " updated");
                 CustomerDAO.updateCustomer(customerName, address, postalCode, phone, lastUpdate, lastUpdatedBy, divisionId, customerId);
+                /** console message verifying update */
+                System.out.println(customerName + " updated");
             } else {
+                /** If confirmation was no/cancel, returns to updateContactView with current update data in the fields */
                 return;
             }
-        new ChangeView(actionEvent, "CustomerView.fxml");
+            /** ChangeView brings the user back to the CustomerView page when a customer is updated in the db. */
+            new ChangeView(actionEvent, "CustomerView.fxml");
         } else {
+            /** validateAppt found an error, error message displayed, and user is returned to updateCustomer page. */
             return;
         }
     }
 
+    /**
+     * setCountryComboBox -- loads all the counties in the db for selection.
+     */
     private void setCountryComboBox() {
         ObservableList<Country> countryObservableList = FXCollections.observableList(CountryDAO.loadAllCountries());
         countryComboBox.setItems(countryObservableList);
     }
 
-
-    @FXML
+    /**
+     * setDivisionComboBox -- loads all the divisions(states/provinces)
+     * once a country is selected from the country combo box
+     * @param event -- country is selected from the country combo box
+     */
     public void setDivisionComboBox(ActionEvent event) {
         Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
         divisionComboBox.setItems(DivisionDAO.getDivisions(selectedCountry));
+    }
+
+    /**
+     * initialize -- loads combo boxes when page is loaded, set selected customer data in appropriate fields
+     * @param url -- not used
+     * @param resourceBundle -- not used
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setCountryComboBox();
+        setSelectedCustomer(selectedCustomer);
+
     }
 
 }

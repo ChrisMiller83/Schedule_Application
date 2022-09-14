@@ -59,11 +59,7 @@ public class MainPageController implements Initializable {
     }
 
     public void checkUser(){
-        if(User.currentUser.getUserName().equals("admin")){
-            usersBtn.setDisable(false);
-        } else {
-            usersBtn.setDisable(true);
-        }
+        usersBtn.setDisable(!User.currentUser.getUserName().equals("admin"));
     }
 
 

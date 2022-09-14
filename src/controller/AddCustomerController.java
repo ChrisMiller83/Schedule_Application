@@ -5,7 +5,6 @@ package controller;
  */
 
 import dao.*;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Country;
@@ -19,13 +18,15 @@ import javafx.scene.control.TextField;
 import model.User;
 import utilities.ChangeView;
 import utilities.Messages;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+/**
+ * AddCustomerController -- adds customers to the db.
+ */
 public class AddCustomerController implements Initializable {
 
     private int customerId;
@@ -41,7 +42,6 @@ public class AddCustomerController implements Initializable {
     private Country selectedCountry;
     private Division selectedDivision;
 
-
     @FXML private TextField customerIdTF;
     @FXML private TextField customerNameTF;
     @FXML private TextField phoneNumTF;
@@ -53,12 +53,26 @@ public class AddCustomerController implements Initializable {
     @FXML private Button saveBtn;
 
 
-    @FXML void cancelToCustomer(ActionEvent actionEvent) throws IOException {
+    /**
+     * cancelToCustomer -- changes view to CustomerView
+     * @param actionEvent -- cancel button clicked
+     * @throws IOException
+     */
+    public void cancelToCustomer(ActionEvent actionEvent) throws IOException {
         new ChangeView(actionEvent, "CustomerView.fxml");
     }
 
+    /**
+     * saveCustomer  -- calls validateCustomer method to run validation checks,
+     * if validation checks pass, all info from the fields and combo boxes are gathered
+     * and customer is added to the db, otherwise error messages are given.
+     * @param actionEvent -- save button clicked
+     * @throws IOException
+     */
     public void saveCustomer(ActionEvent actionEvent) throws IOException {
+        /** validateCustomer method called to check for errors */
         if(validateCustomer()) {
+            /** if no errors found, gather data from fields */
             customerName = customerNameTF.getText();
             address = addressTF.getText();
             postalCode = postalCodeTF.getText();
@@ -68,29 +82,38 @@ public class AddCustomerController implements Initializable {
             lastUpdate = Timestamp.valueOf(LocalDateTime.now());
             lastUpdatedBy = User.currentUser.getUserName();
             divisionId = divisionComboBox.getValue().getDivisionId();
-
+            /** Confirmation message to add customer */
             boolean addConfirm = Messages.addConfirmation(customerName);
+            /** If confirmation was ok/yes customer is added to the db. */
             if (addConfirm) {
                 CustomerDAO.addCustomer(customerName, address, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
+                /** console message verifying add */
                 System.out.println(customerName + " added");
             } else {
+                /** If confirmation was no/cancel, returns to addContactView with current add data in the fields */
                 return;
             }
+            /** ChangeView brings the user back to the CustomerView page when a customer is added to the db. */
             new ChangeView(actionEvent, "CustomerView.fxml");
         } else {
+            /** validateAppt found an error, error message displayed, and user is returned to addCustomer page. */
             return;
         }
     }
 
-
-
-
+    /**
+     * setCountryComboBox -- loads all the counties in the db for selection.
+     */
     private void setCountryComboBox() {
         ObservableList<Country> countryObservableList = FXCollections.observableList(CountryDAO.loadAllCountries());
         countryComboBox.setItems(countryObservableList);
     }
 
-
+    /**
+     * setDivisionComboBox -- loads all the divisions(states/provinces)
+     * once a country is selected from the country combo box
+     * @param event -- country is selected from the country combo box
+     */
     @FXML
     public void setDivisionComboBox(ActionEvent event) {
         Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
@@ -98,43 +121,50 @@ public class AddCustomerController implements Initializable {
         divisionComboBox.setItems(DivisionDAO.getDivisions(selectedCountry));
     }
 
+    /**
+     * validateCustomer:  Is called in saveCustomer, it checks for empty fields and combo boxes
+     * @return -- false if one of the checks are found, otherwise returns true and allows saveCustomer to continue
+     */
     private boolean validateCustomer() {
-
+        /** Checker:  customer name text field is empty */
         if (customerNameTF.getText().isEmpty()) {
             Messages.validateCustomerError(1);
             return false;
         }
-
+        /** Checker:  address text field is empty */
         if(addressTF.getText().isEmpty()) {
             Messages.validateCustomerError(2);
             return false;
         }
-
+        /** Checker:  postal code text field is empty */
         if(postalCodeTF.getText().isEmpty()) {
             Messages.validateCustomerError(3);
             return false;
         }
-
+        /** Checker:  phone number text field is empty */
         if (phoneNumTF.getText().isEmpty()) {
             Messages.validateCustomerError(4);
             return false;
         }
-
+        /** Checker: country combo box is empty */
         if(countryComboBox.getValue() == null) {
             Messages.validateCustomerError(5);
             return false;
         }
-
+        /** Checker:  division combo box is empty */
         if (divisionComboBox.getValue() == null) {
             Messages.validateCustomerError(6);
             return false;
         }
-
         return true;
     }
 
 
-
+    /**
+     * initialize -- loads combo boxes when page is loaded
+     * @param url -- not used
+     * @param resourceBundle -- not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setCountryComboBox();

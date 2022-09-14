@@ -16,16 +16,15 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * AppointmentDAO class -- used to connect to the database and allow sql queries, create, update, and deletes.
+ */
 public class AppointmentDAO {
-
-
     /**
      * Instantiates a new appointment
      */
     public AppointmentDAO() {
     }
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
 
     /**
      * CONSTANTS used to prevent SQL injection into the appointments table
@@ -45,10 +44,11 @@ public class AppointmentDAO {
     public static final String COLUMN_CUSTOMER_ID = "Customer_ID";
     public static final String COLUMN_USER_ID = "User_ID";
     public static final String COLUMN_CONTACT_ID = "Contact_ID";
-    public static final String TABLE_CONTACTS = "contacts";
-    public static final String TABLE_USERS = "users";
-    public static final String TABLE_CUSTOMERS = "customers";
 
+
+    /**
+     * QUERY CONSTANTS used to prevent SQL injection into the appointments table
+     */
     public static final String QUERY_ALL_APPOINTMENTS = "SELECT * FROM " + TABLE_APPOINTMENTS +
             " ORDER BY " + COLUMN_APPT_ID;
 
@@ -87,6 +87,10 @@ public class AppointmentDAO {
             " GROUP BY " + COLUMN_APPT_TYPE;
 
 
+    /**
+     * loadAllAppts -- queries the db and gets all appointments from the appointments table
+     * @return returns an ObservableList of all appointments and their data from the appointments table.
+     */
     public static ObservableList<Appointment> loadAllAppts() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
@@ -114,13 +118,17 @@ public class AppointmentDAO {
                 allAppointments.add(allAppts);
 
             }
-            // TODO: add report for loaded appointments
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return allAppointments;
     }
 
+    /**
+     * getApptsThisWeek -- queries the db and gets all appointments within the next 7 days from the db appointments table.
+     * @return -- Returns an ObservableList of all appts in the next 7 days from the db appointments table.
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getApptsThisWeek() throws SQLException {
         ObservableList<Appointment> weeksAppointments = FXCollections.observableArrayList();
 
@@ -160,13 +168,16 @@ public class AppointmentDAO {
         return weeksAppointments;
     }
 
+    /**
+     * getApptsThisMonth -- queries the db and gets all appointments within the next 30 days from the db appointments table.
+     * @return -- Returns an ObservableList of all appts in the next 30 days from the db appointments table.
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getApptsThisMonth() throws SQLException {
         ObservableList<Appointment> monthsAppointments = FXCollections.observableArrayList();
 
         LocalDateTime today = LocalDateTime.now();
         LocalDateTime nextMonth = today.plusDays(30);
-
-
 
         try {
             PreparedStatement getMonthsAppts = DBConnection.getConnection().prepareStatement(QUERY_APPOINTMENTS_BY_WEEK_OR_MONTH);
@@ -200,6 +211,22 @@ public class AppointmentDAO {
         return monthsAppointments;
     }
 
+    /**
+     * addAppointment -- Creates an new appointment/entry in the db appointments table.
+     * @param title -- appointment title
+     * @param description -- appointment description
+     * @param location -- appointment location
+     * @param type -- appointment type
+     * @param start -- start date and time
+     * @param end -- end date and time
+     * @param createDate -- Timestamp when appointment is created
+     * @param createdBy -- User name that created the appointment
+     * @param lastUpdate -- Timestamp when appointment is last updated
+     * @param lastUpdatedBy -- User name that last updated the appointment
+     * @param customerId -- customer ID
+     * @param userId -- user ID
+     * @param contactId -- contact ID
+     */
     public static void addAppointment(String title, String description, String location, String type, LocalDateTime start,
                                       LocalDateTime end, Timestamp createDate, User createdBy, Timestamp lastUpdate,
                                       User lastUpdatedBy, int customerId, int userId, int contactId) {
@@ -221,13 +248,26 @@ public class AppointmentDAO {
                addAppointments.setInt(13, contactId);
 
                addAppointments.executeUpdate();
-               // TODO: add report statement
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
     }
 
+    /**
+     * updateAppointment -- Updates an existing appointment/entry in the db appointments table that matches the appointment ID.
+     * @param title -- appointment title
+     * @param description -- appointment description
+     * @param location -- appointment location
+     * @param type -- appointment type
+     * @param start -- start date and time
+     * @param end -- end date and time
+     * @param lastUpdate -- Timestamp when appointment is last updated
+     * @param lastUpdatedBy -- User name that last updated the appointment
+     * @param customerId -- customer ID
+     * @param userId -- user ID
+     * @param contactId -- contact ID
+     * @param apptId -- appointment Id used to update the appointment entry in the db.
+     */
     public static void updateAppointment(String title, String description, String location, String type, LocalDateTime start,
                                          LocalDateTime end, Timestamp lastUpdate, User lastUpdatedBy, int customerId,
                                          int userId, int contactId, int apptId) {
@@ -248,29 +288,32 @@ public class AppointmentDAO {
             updateAppointments.setInt(12, apptId);
 
             updateAppointments.executeUpdate();
-
-            // TODO: add appointment report
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * deleteAppointment -- deletes an appointment from the db appointments table that matches the appointment Id.
+     * @param apptId -- appointment ID used to delete an appointment from the db.
+     */
     public static void deleteAppointment(int apptId){
-
         try {
             PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_AN_APPOINTMENT);
             deleteAppt.setInt(1, apptId);
             deleteAppt.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * loadContactAppts -- queries the db and gets all appointments from the appointments table that match the contact ID.
+     * @param contactId -- contact ID used to get all appointments that match the contact ID.
+     * @return -- Returns an ObservableList of all appointments that match the contact ID.
+     */
     public static ObservableList<Appointment> loadContactAppts(int contactId) {
         ObservableList<Appointment> contactAppts = FXCollections.observableArrayList();
-
         try {
             PreparedStatement loadAppts = DBConnection.getConnection().prepareStatement(QUERY_APPOINTMENTS_BY_CONTACT_ID);
             loadAppts.setInt(1, contactId);
@@ -285,11 +328,9 @@ public class AppointmentDAO {
                 String apptDescription =result.getString("Description");
                 int customerId = result.getInt("Customer_ID");
 
-
                 Appointment appts = new Appointment(apptId, apptDate, start, end, apptTitle, apptType, apptDescription, customerId);
 
                 contactAppts.add(appts);
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -297,6 +338,11 @@ public class AppointmentDAO {
         return contactAppts;
     }
 
+    /**
+     * loadCustomerAppts -- queries the db and gets all appointments from the appointments table that match the customer ID.
+     * @param customerId -- customer ID used to get all appointments that match the customer ID.
+     * @return -- Returns an ObservableList of all appointments that match the customer ID.
+     */
     public static ObservableList<Appointment> loadCustomerAppts(int customerId) {
         ObservableList<Appointment> customerAppts = FXCollections.observableArrayList();
 
@@ -319,13 +365,10 @@ public class AppointmentDAO {
                 int userId = result.getInt("User_ID");
                 int contactId = result.getInt("Contact_ID");
 
-
-
                 Appointment appts = new Appointment(apptId, title, description, location, type, start, end,
                         createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
 
                 customerAppts.add(appts);
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -334,6 +377,10 @@ public class AppointmentDAO {
     }
 
 
+    /**
+     * loadTotals -- queries the db and gets a total of all appointments from the appointments table by month and type.
+     * @return -- Returns an ObservableList of the total appointments by month and type.
+     */
     public static ObservableList<Appointment> loadTotals() {
          ObservableList<Appointment> totals = FXCollections.observableArrayList();
          try {
@@ -347,7 +394,6 @@ public class AppointmentDAO {
                  Appointment apptTotals = new Appointment(month, apptType, total);
 
                  totals.add(apptTotals);
-
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

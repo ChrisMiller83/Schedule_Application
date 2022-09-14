@@ -13,7 +13,7 @@ public class Division {
     private int divisionId;
     private String divisionName;
     private int countryId;
-    private static ObservableList<Division> allDivisions = FXCollections.observableArrayList();
+    private static final ObservableList<Division> allDivisions = FXCollections.observableArrayList();
 
     /**
      * Default Empty Division Constructor
