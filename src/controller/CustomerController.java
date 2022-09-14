@@ -15,28 +15,28 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
-import model.Contact;
 import model.Customer;
 import utilities.ChangeView;
 import utilities.Messages;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
+/**
+ * CustomerController -- Displays a table of customers,  allows customers to be deleted, and redirects to add/update customer page
+ */
 public class CustomerController implements Initializable {
 
-    private static Customer customerToBeUpdated;
-    private static int selectedCustomer;
-
-    static ObservableList<Customer> customersList;
-
+    static ObservableList<Customer> customersList = CustomerDAO.loadAllCustomers();
+    private static Customer selectedCustomer;
 
     @FXML private Button addCustomerBtn;
     @FXML private Button updateCustomerBtn;
     @FXML private Button deleteCustomerBtn;
     @FXML private Button mainMenuBtn;
+
+    /** customers table components */
     @FXML private TableView<Customer> customersTable;
     @FXML private TableColumn<Customer, Integer> customerIdCol;
     @FXML private TableColumn<Customer, String> customerNameCol;
@@ -50,33 +50,46 @@ public class CustomerController implements Initializable {
     @FXML private TableColumn<Customer, Integer> divisionIdCol;
 
 
-    @FXML
+    /**
+     * toAddCustomer -- changes the view to AddCustomerView
+     * @param actionEvent -- Add Customer button clicked
+     * @throws IOException
+     */
     public void toAddCustomer(ActionEvent actionEvent) throws IOException{
         new ChangeView(actionEvent, "AddCustomerView.fxml");
     }
 
-    @FXML
+    /**
+     * toUpdateCustomer -- user selects a customer to update and changes the view to UpdateCustomerView
+     * @param actionEvent -- customer to update is selected and then Update Customer button is clicked.
+     * @throws IOException
+     */
     public void toUpdateCustomer(ActionEvent actionEvent) throws IOException {
         Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+        /** if no customer is selected an error message is displayed */
         if (selectedCustomer == null) {
             Messages.selectAnItemToUpdate("Customer");
             return;
         } else {
+            /** the selected customer's data is sent to the update customer controller. */
             UpdateCustomerController.getSelectedCustomer(selectedCustomer);
-
+            /** changes the view to the UpdateCustomerView */
             new ChangeView(actionEvent, "UpdateCustomerView.fxml");
-
         }
     }
+
     /**
      * noAppointments -- checks if customer to delete has upcoming appointments.
-     * @return -- Returns false if customer has upcoming appointments, returns true is customer does not have any appts scheduled.
+     * @return -- Returns false if customer has upcoming appointments, returns true if customer does not have any appts scheduled.
      */
     private boolean noAppointments() {
         Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
         int customerId = selectedCustomer.getCustomerId();
         ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
 
+        /** loops through the appointment db looking for appointments with the customer id, if an appt is found an
+         *  error message is displayed telling the user they must delete the appt before they can delete the customer
+         */
         for(Appointment appointment : appointments) {
             if(appointment.getCustomerId() == customerId) {
                 Messages.hasAppointments(selectedCustomer.getCustomerName());
@@ -86,19 +99,29 @@ public class CustomerController implements Initializable {
         return true;
     }
 
+    /**
+     * deleteCustomer -- deletes selected customer if customer does not have upcoming appointments.
+     * @param actionEvent -- customer to be deleted is selected and Delete Customer button is clicked.
+     */
     public void deleteCustomer(ActionEvent actionEvent) {
-        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+        selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+        /** Displays error message if a customer to delete is not selected. */
         if(selectedCustomer == null) {
             Messages.selectionNeeded();
             return;
         } else {
-
+            /** Checks if customer has an appts by calling the noAppointments method */
             if(noAppointments()) {
+                /** if customer did not have any upcoming appts, a delete confirmation is displayed */
                 int customerId = selectedCustomer.getCustomerId();
                 boolean deleteConfirm = Messages.deleteConfirmation(selectedCustomer.getCustomerName());
+                /** if delete is confirmed, delete contact, display console message confirming delete */
                 if (deleteConfirm) {
-                    System.out.println(selectedCustomer.getCustomerName() + " deleted");
+                    /** customer is deleted from the db */
                     CustomerDAO.deleteCustomer(customerId);
+                    /** console message verifying customer deleted */
+                    System.out.println(selectedCustomer.getCustomerName() + " deleted");
+                    /** the customer table is reloaded and the deleted customer is removed from the table display */
                     customersTable.setItems(CustomerDAO.loadAllCustomers());
                     customersTable.refresh();
                 }
@@ -106,18 +129,18 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * toMainMenu -- changes the view to the Main Page View
+     * @param actionEvent -- Main Menu button clicked
+     * @throws IOException
+     */
     public void toMainMenu(ActionEvent actionEvent) throws IOException{
         new ChangeView(actionEvent, "MainPageView.fxml");
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setCustomersTable();
-    }
-
-
-
-
+    /**
+     * setCustomerTable -- populates customer data into appropriate columns in the customer table
+     */
     public void setCustomersTable() {
         customersList = CustomerDAO.loadAllCustomers();
         customersTable.setItems(customersList);
@@ -133,6 +156,13 @@ public class CustomerController implements Initializable {
         divisionIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
     }
 
-
-
+    /**
+     * initialize -- calls the setCustomersTable method to load the customer table when page is loaded
+     * @param url
+     * @param resourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setCustomersTable();
+    }
 }

@@ -36,6 +36,7 @@ public class ContactsController implements Initializable {
     @FXML private Button deleteContactBtn;
     @FXML private Button mainMenuBtn;
 
+    /** contacts table components */
     @FXML private TableView<Contact> contactsTable;
     @FXML private TableColumn<Contact, Integer> contactIdCol;
     @FXML private TableColumn<Contact, String> contactNameCol;
@@ -53,13 +54,16 @@ public class ContactsController implements Initializable {
 
     /**
      * noAppointments -- checks if contact to delete has upcoming appointments.
-     * @return -- Returns false if contact has upcoming appointments, returns true is contact does not have an appts scheduled.
+     * @return -- Returns false if contact has upcoming appointments, returns true if contact does not have an appts scheduled.
      */
     private boolean noAppointments() {
         Contact selectedContact = contactsTable.getSelectionModel().getSelectedItem();
         int contactId = selectedContact.getContactId();
         ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
 
+        /** loops through the appointment db looking for appointments with the contact id, if an appt is found an
+         *  error message is displayed telling the user they must delete the appt before they can delete the contact
+        */
         for(Appointment appointment : appointments) {
             if(appointment.getContactId() == contactId) {
                 Messages.hasAppointments(selectedContact.getContactName());
@@ -81,14 +85,18 @@ public class ContactsController implements Initializable {
             Messages.selectionNeeded();
             return;
         } else {
+            /** Checks if contact has an appts by calling the noAppointments method */
             if (noAppointments()) {
                 /** if contact did not have any upcoming appointment, a delete confirmation is displayed */
                 boolean deleteConfirm = Messages.deleteConfirmation(selectedContact.getContactName());
                 /** if delete is confirmed, delete contact, display console message confirming delete */
                 if (deleteConfirm) {
                     int contactId = selectedContact.getContactId();
-                    System.out.println(selectedContact.getContactName() + " deleted");
+                    /** contact is deleted from the db */
                     ContactDAO.deleteContact(contactId);
+                    /** console message verifying contact deleted */
+                    System.out.println(selectedContact.getContactName() + " deleted");
+                    /** the contacts table is reloaded and the deleted contact is removed from the table display */
                     contactsTable.setItems(ContactDAO.loadAllContacts());
                     contactsTable.refresh();
                 }
@@ -96,30 +104,48 @@ public class ContactsController implements Initializable {
         }
     }
 
-    @FXML
-    void toAddContacts(ActionEvent actionEvent) throws IOException {
+    /**
+     * toAddContacts -- changes the view to AddCustomerView
+     * @param actionEvent -- Add Contact button clicked
+     * @throws IOException
+     */
+    public void toAddContacts(ActionEvent actionEvent) throws IOException {
         new ChangeView(actionEvent, "AddContactView.fxml");
     }
 
-    @FXML
+    /**
+     * toUpdateContacts -- user selects a contact to update and changes the view to UpdateContactView
+     * @param actionEvent -- contact to update is selected and then Update Contact button is clicked
+     * @throws IOException
+     */
     public void toUpdateContacts(ActionEvent actionEvent) throws IOException{
         Contact selectedContact = contactsTable.getSelectionModel().getSelectedItem();
+        /** if no contact was selected an error message is displayed */
         if (selectedContact == null) {
             Messages.selectAnItemToUpdate("Contact");
             return;
         } else {
+            /** the selected contact's data is sent to the update contact controller */
             UpdateContactController.getSelectedContact(selectedContact);
+            /** changes the view to the UpdateContactView */
             new ChangeView(actionEvent, "UpdateContactView.fxml");
         }
     }
 
-    @FXML
+    /**
+     * toMainMenu -- changes the view to the Main Page View
+     * @param actionEvent -- Main Menu button clicked
+     * @throws IOException
+     */
     public void toMainMenu(ActionEvent actionEvent) throws IOException {
         new ChangeView(actionEvent, "MainPageView.fxml");
     }
 
-
-
+    /**
+     * initialize -- calls the setContactsTable method to load the contacts table when page is loaded.
+     * @param url -- not used
+     * @param resourceBundle -- not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setContactsTable();
