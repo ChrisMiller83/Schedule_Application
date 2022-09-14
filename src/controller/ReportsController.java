@@ -114,15 +114,25 @@ public class ReportsController implements Initializable {
         new ChangeView(actionEvent, "MainPageView.fxml");
     }
 
+    /**
+     * setContactCB -- adds all contact names to the contact choice box
+     */
     private void setContactCB() {
         ObservableList<Contact> contactObservableList = FXCollections.observableArrayList(ContactDAO.loadAllContacts());
         contactCB.setItems(contactObservableList);
     }
-    @FXML
-    void setLoginTextArea() {
+
+    /**
+     * setLoginTextArea -- adds the login activity from the readLoginActivity method (BufferedReader)
+     */
+    public void setLoginTextArea() {
         loginTA.setText(String.valueOf(readLoginActivity()));
     }
 
+    /**
+     * readLoginActivity -- BufferedReader method that reads the data in the login_activity.txt file
+     * @return -- returns the lines(data) from the login_activity.txt file
+     */
     public ObservableList<String> readLoginActivity() {
         ObservableList<String> lines = FXCollections.observableArrayList();
         try {
@@ -140,11 +150,17 @@ public class ReportsController implements Initializable {
         return lines;
     }
 
-    @FXML
-    void setDeletedApptsTA() {
+    /**
+     * setDeletedApptsTA -- adds the deleted appointments from the readDeleteAppts method (BufferedReader)
+     */
+    public void setDeletedApptsTA() {
         deletedApptsTA.setText(String.valueOf(readDeleteAppts()));
     }
 
+    /**
+     * readDeleteAppts -- BufferedReader method that reads the data in the deletedAppts.txt file
+     * @return -- returns the lines(data) from the deletedAppts.txt file
+     */
     public ObservableList<String> readDeleteAppts() {
         ObservableList<String> lines = FXCollections.observableArrayList();
         try {
@@ -163,8 +179,12 @@ public class ReportsController implements Initializable {
     }
 
 
-
-
+    /**
+     * initialize -- loads/sets the contact choice box, the totalTable, reads/sets the login_activity.txt and reads/sets the deleteAppts.txt file
+     * when the page is loaded.
+     * @param url -- not used
+     * @param resourceBundle -- not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setContactCB();
