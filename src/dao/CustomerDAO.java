@@ -1,15 +1,28 @@
 package dao;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
 
 import java.sql.*;
 
+/**
+ * CustomerDAO -- used to connect to the database and allow sql queries, create, update, and deletes.
+ */
 public class CustomerDAO {
 
+    /**
+     * Instantiates a new customer
+     */
     public CustomerDAO() {}
 
+    /**
+     * CONSTANTS used to prevent SQL injection into the customers table
+     */
     public static final String TABLE_CUSTOMERS = "customers";
     public static final String COLUMN_CUSTOMER_ID = "Customer_ID";
     public static final String COLUMN_CUSTOMER_NAME = "Customer_Name";
@@ -29,7 +42,9 @@ public class CustomerDAO {
     public static final String COLUMN_COUNTRY_ID = "Country_ID";
 
 
-
+    /**
+     * QUERY CONSTANTS used to prevent SQL injection into the customers talbe
+     */
     public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS +
             ", " + TABLE_DIVISIONS + ", " + TABLE_COUNTRIES + " WHERE " +
             TABLE_CUSTOMERS + "." + COLUMN_DIVISION_ID + " = " +
@@ -37,9 +52,6 @@ public class CustomerDAO {
             TABLE_DIVISIONS + "." + COLUMN_COUNTRY_ID + " = " +
             TABLE_COUNTRIES + "." + COLUMN_COUNTRY_ID +
             " ORDER BY " + COLUMN_CUSTOMER_ID;
-
-//    public static final String QUERY_ALL_CUSTOMERS = "SELECT * FROM " + TABLE_CUSTOMERS +
-//            " ORDER BY " + COLUMN_CUSTOMER_ID;
 
     public static final String CREATE_CUSTOMER = "INSERT INTO " + TABLE_CUSTOMERS + "( " +
             COLUMN_CUSTOMER_NAME + ", " + COLUMN_CUSTOMER_ADDRESS +
@@ -58,6 +70,10 @@ public class CustomerDAO {
             " WHERE " + COLUMN_CUSTOMER_ID + " = ?";
 
 
+    /**
+     * loadAllCustomers -- queries the db and gets all customers from the customers table
+     * @return -- returns an ObservableList of all customers and their data from the customers table.
+     */
     public static ObservableList<Customer> loadAllCustomers() {
         ObservableList<Customer> customersList = FXCollections.observableArrayList();
         try {
@@ -82,15 +98,25 @@ public class CustomerDAO {
                         createDate, createdBy, lastUpdate, lastUpdateBy, countryId, divisionId);
 
                 customersList.add(customer);
-
             }
-            // TODO: add customer report
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return customersList;
     }
 
+    /**
+     * addCustomer -- Creates a new customer/entry in the db customers table
+     * @param customerName -- customer name
+     * @param address -- address
+     * @param postalCode -- postal code
+     * @param phoneNumber -- phone number
+     * @param createDate -- Timestamp when customer entry created
+     * @param createdBy -- User name that created the customer
+     * @param lastUpdate -- Timestamp when customer entry was last updaated
+     * @param lastUpdatedBy -- User name that last updated the the customer
+     * @param divisionId -- state/province id
+     */
     public static void addCustomer(String customerName, String address, String postalCode, String phoneNumber,
                                    Timestamp createDate, String createdBy, Timestamp lastUpdate,
                                    String lastUpdatedBy, int divisionId) {
@@ -113,12 +139,20 @@ public class CustomerDAO {
     }
 
 
-
+    /**
+     * updateCustomer -- updates the customer/entry in the db customers table that matchs the given customerId
+     * @param customerName -- customer name
+     * @param address -- address
+     * @param postalCode -- postal code
+     * @param phoneNumber -- phone number
+     * @param lastUpdate -- Timestamp when customer entry was last updated
+     * @param lastUpdatedBy -- User name that last updated the customer entry
+     * @param divisionId -- state/province id
+     * @param customerId -- customer id used find the matching customer to be updated
+     */
     public static void updateCustomer (String customerName, String address, String postalCode, String phoneNumber,
                                        Timestamp lastUpdate, String lastUpdatedBy,  int divisionId, int customerId) {
         try {
-            //String updateCustomerData = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?,
-            //                  Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
             PreparedStatement updateCustomer = DBConnection.getConnection().prepareStatement(UPDATE_CUSTOMER);
             updateCustomer.setString(1, customerName);
             updateCustomer.setString(2, address);
@@ -134,6 +168,10 @@ public class CustomerDAO {
         }
     }
 
+    /**
+     * deleteCustomer -- deletes customer entry from the db customer table that matches the customerId
+     * @param customerId -- customer id used to find the matching customer to be deleted
+     */
     public static void deleteCustomer (int customerId) {
         try {
 
@@ -144,8 +182,6 @@ public class CustomerDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-
 
 }

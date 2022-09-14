@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import model.Appointment;
 import model.User;
 import utilities.ChangeView;
-
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -25,6 +24,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * LoginController -- Logs the user in, displays the login page in the users current language settings (English or French)
+ */
 public class LoginController implements Initializable {
 
     @FXML private Label titleLabel;
@@ -43,10 +45,18 @@ public class LoginController implements Initializable {
     public LoginController() {
     }
 
+    /**
+     * setZoneID -- gets the zoneID of the users location settings
+     * @param zoneID -- displays the user's zoneId in the zoneId label
+     */
     public void setZoneID(Label zoneID) {
         zoneID.setText(String.valueOf(ZoneId.systemDefault()));
     }
 
+    /**
+     * clearTextFieldsBtn -- clears the Username and Password text fields
+     * @param actionEvent -- Clear button is clicked
+     */
     public void clearTextFieldsBtn(ActionEvent actionEvent) {
         userNameTF.clear();
         passwordTF.clear();
@@ -54,9 +64,17 @@ public class LoginController implements Initializable {
         passwordTF.setPromptText(languages.getString("Password"));
     }
 
+    /**
+     * loginToMainPage -- logs in the user and redirects the view to the main page if username and password are valid
+     * @param actionEvent -- Login button clicked
+     * @throws IOException
+     */
     public void loginToMainPage(ActionEvent actionEvent) throws IOException {
+        /** validLogin checks if the username and password entered match username and password in the db. */
         if (validLogin()) {
+            /** storeLoginActivity is a BufferedWriter that stores login attempts */
             storeLoginActivity();
+
             int userId = User.currentUser.getUserId();
 
             ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
@@ -65,6 +83,10 @@ public class LoginController implements Initializable {
             LocalDateTime timePlus15 = LocalDateTime.now().plusMinutes(15);
             boolean hasAppt = false;
 
+            /** Loops through all appointments in the db looking for appts starting within 15 minutes that match the user id, displays a message
+             * with the upcoming appt info or displays a message with no appts if no appts were found. (Messages are display in current languge
+             * settings)
+            */
             for (Appointment appointment : appointments) {
                 LocalDateTime start = appointment.getStartDateTime();
                 if((start.isAfter(timeNow)) && (start.isBefore(timePlus15)) && appointment.getUserId() == userId) {
@@ -77,7 +99,6 @@ public class LoginController implements Initializable {
                     alert.showAndWait();
                 }
             }
-
             if(!hasAppt) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle(languages.getString("ErrorNoApptsTitle"));
@@ -99,6 +120,11 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * validLogin -- Checks the username and password the user entered against usernames/passwords in the db.
+     * @return -- returns true if username/password match an entry in the db, returns false if the username or password do not match an entry.
+     * @throws IOException
+     */
     private boolean validLogin() throws IOException {
         ObservableList<User> allUsers = UserDAO.loadAllUsers();
         for (User user : Objects.requireNonNull(allUsers)) {
@@ -110,6 +136,10 @@ public class LoginController implements Initializable {
         return false;
     }
 
+    /**
+     * storeLoginActivity -- method that uses a BufferWriter to save login attempt entries in a txt file that is later read in the ReportsController
+     * @throws IOException
+     */
     public void storeLoginActivity() throws IOException {
         File file = new File(filename);
         file.createNewFile();
@@ -126,8 +156,13 @@ public class LoginController implements Initializable {
         bw.close();
     }
 
-    
 
+    /**
+     * initialize -- when the page loads, the initializer gets the current zoneId, gets the current Locale language setting and changes all labels
+     * and text fields diplay text to the current language(English or French)
+     * @param url -- not used
+     * @param resourceBundle -- Language bundle for English or French phrases used on the login page and error messages.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setZoneID(zoneID);

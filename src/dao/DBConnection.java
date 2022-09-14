@@ -1,10 +1,18 @@
 package dao;
+
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * DBConnection -- connects the database to allow queries, creating, updates, and deletes.
+ */
 public class DBConnection {
      private static final String protocol = "jdbc";
      private static final String vendor = ":mysql:";
@@ -18,15 +26,14 @@ public class DBConnection {
      private static PreparedStatement preparedStatement;
      public static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
-     public static void makeConnection() {
-
+    /**
+     * makeConnection -- establishes a connection to the db.
+     */
+    public static void makeConnection() {
           try {
               Class.forName(driver); // Locate Driver
-              //password = Details.getPassword(); // Assign password
               connection = DriverManager.getConnection(jdbcUrl, userName, password); // reference Connection object
               System.out.println("Connection successful!");
-
-
           } catch(ClassNotFoundException e) {
               System.out.println("Error:" + e.getMessage());
           } catch(SQLException e) {
@@ -34,11 +41,15 @@ public class DBConnection {
           }
      }
 
-     public static Connection getConnection() {
-                return connection;
-            }
 
-     public static void closeConnection() {
+     public static Connection getConnection() {
+        return connection;
+     }
+
+    /**
+     * closeConnection -- shuts down the db connection when the application closes.
+     */
+    public static void closeConnection() {
           try {
               connection.close();
               System.out.println("Connection closed!");
@@ -46,5 +57,4 @@ public class DBConnection {
               System.out.println(e.getMessage());
           }
      }
-
 }

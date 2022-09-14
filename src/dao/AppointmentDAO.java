@@ -212,7 +212,7 @@ public class AppointmentDAO {
     }
 
     /**
-     * addAppointment -- Creates an new appointment/entry in the db appointments table.
+     * addAppointment -- Creates a new appointment/entry in the db appointments table.
      * @param title -- appointment title
      * @param description -- appointment description
      * @param location -- appointment location
@@ -376,7 +376,6 @@ public class AppointmentDAO {
         return customerAppts;
     }
 
-
     /**
      * loadTotals -- queries the db and gets a total of all appointments from the appointments table by month and type.
      * @return -- Returns an ObservableList of the total appointments by month and type.
@@ -401,6 +400,4 @@ public class AppointmentDAO {
             return totals;
         }
     }
-
-
-
+}

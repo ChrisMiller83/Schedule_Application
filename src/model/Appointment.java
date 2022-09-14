@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -67,6 +71,17 @@ public class Appointment {
         this. contactId = contactId;
     }
 
+    /**
+     * Appointment constructor -- used in the ReportsController to display upcoming appointments that match the customerId given.
+     * @param apptId -- appointment id
+     * @param apptDate -- appointent date
+     * @param start -- appointment start time
+     * @param end -- appointment end time
+     * @param apptTitle -- title
+     * @param apptType -- type of appointment
+     * @param apptDescription -- description
+     * @param customerId -- customerId used to find all appointments that match this id.
+     */
     public Appointment(int apptId, LocalDate apptDate, LocalTime start, LocalTime end, String apptTitle, String apptType, String apptDescription, int customerId) {
         this.apptId = apptId;
         this.apptDate = apptDate;
@@ -78,6 +93,12 @@ public class Appointment {
         this.customerId = customerId;
     }
 
+    /**
+     * Appointment construction -- used in the ReportsController to display the count of appointments by Month and Type
+     * @param month -- displays the month of the appointments
+     * @param apptType -- displays the type of appointments
+     * @param total -- displays the total count of the appointments by Month and Type
+     */
     public Appointment(String month, String apptType, Integer total) {
         this.month = month;
         this.apptType = apptType;
@@ -195,34 +216,66 @@ public class Appointment {
         return endDateTime;
     }
 
+    /**
+     * getCreatedDate
+     * @return returns/gets the date and time the appointment was created
+     */
     public Timestamp getCreateDate() {
         return createDate;
     }
 
+    /**
+     * setCreateDate
+     * @param createDate sets the date and time the appointment was created
+     */
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
+    /**
+     * getCreatedBy
+     * @return returns/gets the user name that created the appointment
+     */
     public String getCreatedBy() {
         return createdBy;
     }
 
+    /**
+     * setCreatedBy
+     * @param createdBy sets the user name that created the appointment
+     */
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
+    /**
+     * getLastUpdate
+     * @return returns/gets the date and time the appointment was last updated
+     */
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
+    /**
+     * setLastUpdate
+     * @param lastUpdate sets the date and time of last update
+     */
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
+    /**
+     * getLastUpdatedBy
+     * @return returns/gets the user name who last updated the appointment
+     */
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
+    /**
+     * setLastUpdatedBy
+     * @param lastUpdateBy sets the user name who last updated the appointment
+     */
     public void setLastUpdatedBy(String lastUpdateBy) {
         this.lastUpdatedBy = lastUpdateBy;
     }
@@ -269,12 +322,16 @@ public class Appointment {
 
     /**
      * getContactId gets the contactId
-     * @return returns the contactId
+     * @return contactId -- returns the contactId
      */
     public int getContactId() {
         return contactId;
     }
 
+    /**
+     * getApptDate
+     * @return apptDate -- Date of an appointment
+     */
     public LocalDate getApptDate() {
         return apptDate;
     }
@@ -283,6 +340,10 @@ public class Appointment {
         this.apptDate = apptDate;
     }
 
+    /**
+     * getStart
+     * @return start -- start time of appointment
+     */
     public LocalTime getStart() {
         return start;
     }
@@ -291,6 +352,10 @@ public class Appointment {
         this.start = start;
     }
 
+    /**
+     * getEnd
+     * @return end -- end time of appointment
+     */
     public LocalTime getEnd() {
         return end;
     }
