@@ -60,13 +60,13 @@ public class AppointmentDAO {
             COLUMN_APPT_TYPE + ", " + COLUMN_APPT_START + ", " + COLUMN_APPT_END + ", " +
             COLUMN_APPT_CREATE_DATE + ", " + COLUMN_APPT_CREATED_BY + ", " +
             COLUMN_APPT_LAST_UPDATE + ", " + COLUMN_APPT_LAST_UPDATED_BY + ", " +
-            COLUMN_CUSTOMER_ID + ", "  + COLUMN_USER_ID + ", " + COLUMN_CONTACT_ID +
+            COLUMN_CUSTOMER_ID + ", " + COLUMN_USER_ID + ", " + COLUMN_CONTACT_ID +
             ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     public static final String UPDATE_AN_APPOINTMENT = "UPDATE " + TABLE_APPOINTMENTS + " SET " +
             COLUMN_APPT_TITLE + " = ?, " + COLUMN_APPT_DESCRIPTION + " = ?, " +
             COLUMN_APPT_LOCATION + " = ?, " + COLUMN_APPT_TYPE + " = ?, " +
-            COLUMN_APPT_START + " = ?, " + COLUMN_APPT_END +" = ?, " +
+            COLUMN_APPT_START + " = ?, " + COLUMN_APPT_END + " = ?, " +
             COLUMN_APPT_LAST_UPDATE + " = ?, " + COLUMN_APPT_LAST_UPDATED_BY + " = ?, " +
             COLUMN_CUSTOMER_ID + " = ?, " + COLUMN_USER_ID + " = ?, " +
             COLUMN_CONTACT_ID + " = ? WHERE " +
@@ -89,18 +89,19 @@ public class AppointmentDAO {
 
     /**
      * loadAllAppts -- queries the db and gets all appointments from the appointments table
+     *
      * @return returns an ObservableList of all appointments and their data from the appointments table.
      */
     public static ObservableList<Appointment> loadAllAppts() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
         try (PreparedStatement loadAppts = DBConnection.getConnection().prepareStatement(QUERY_ALL_APPOINTMENTS);
-            ResultSet result = loadAppts.executeQuery()) {
+             ResultSet result = loadAppts.executeQuery()) {
             while (result.next()) {
                 int apptId = result.getInt("Appointment_ID");
                 String title = result.getString("Title");
-                String description =result.getString("Description");
-                String location =result.getString("Location");
+                String description = result.getString("Description");
+                String location = result.getString("Location");
                 String type = result.getString("Type");
                 LocalDateTime start = result.getTimestamp("Start").toLocalDateTime();
                 LocalDateTime end = result.getTimestamp("End").toLocalDateTime();
@@ -126,6 +127,7 @@ public class AppointmentDAO {
 
     /**
      * getApptsThisWeek -- queries the db and gets all appointments within the next 7 days from the db appointments table.
+     *
      * @return -- Returns an ObservableList of all appts in the next 7 days from the db appointments table.
      * @throws SQLException
      */
@@ -144,8 +146,8 @@ public class AppointmentDAO {
             while (result.next()) {
                 int apptId = result.getInt("Appointment_ID");
                 String title = result.getString("Title");
-                String description =result.getString("Description");
-                String location =result.getString("Location");
+                String description = result.getString("Description");
+                String location = result.getString("Location");
                 String type = result.getString("Type");
                 LocalDateTime start = result.getTimestamp("Start").toLocalDateTime();
                 LocalDateTime end = result.getTimestamp("End").toLocalDateTime();
@@ -170,6 +172,7 @@ public class AppointmentDAO {
 
     /**
      * getApptsThisMonth -- queries the db and gets all appointments within the next 30 days from the db appointments table.
+     *
      * @return -- Returns an ObservableList of all appts in the next 30 days from the db appointments table.
      * @throws SQLException
      */
@@ -187,8 +190,8 @@ public class AppointmentDAO {
             while (result.next()) {
                 int apptId = result.getInt("Appointment_ID");
                 String title = result.getString("Title");
-                String description =result.getString("Description");
-                String location =result.getString("Location");
+                String description = result.getString("Description");
+                String location = result.getString("Location");
                 String type = result.getString("Type");
                 LocalDateTime start = result.getTimestamp("Start").toLocalDateTime();
                 LocalDateTime end = result.getTimestamp("End").toLocalDateTime();
@@ -213,60 +216,62 @@ public class AppointmentDAO {
 
     /**
      * addAppointment -- Creates a new appointment/entry in the db appointments table.
-     * @param title -- appointment title
-     * @param description -- appointment description
-     * @param location -- appointment location
-     * @param type -- appointment type
-     * @param start -- start date and time
-     * @param end -- end date and time
-     * @param createDate -- Timestamp when appointment is created
-     * @param createdBy -- User name that created the appointment
-     * @param lastUpdate -- Timestamp when appointment is last updated
+     *
+     * @param title         -- appointment title
+     * @param description   -- appointment description
+     * @param location      -- appointment location
+     * @param type          -- appointment type
+     * @param start         -- start date and time
+     * @param end           -- end date and time
+     * @param createDate    -- Timestamp when appointment is created
+     * @param createdBy     -- User name that created the appointment
+     * @param lastUpdate    -- Timestamp when appointment is last updated
      * @param lastUpdatedBy -- User name that last updated the appointment
-     * @param customerId -- customer ID
-     * @param userId -- user ID
-     * @param contactId -- contact ID
+     * @param customerId    -- customer ID
+     * @param userId        -- user ID
+     * @param contactId     -- contact ID
      */
     public static void addAppointment(String title, String description, String location, String type, LocalDateTime start,
                                       LocalDateTime end, Timestamp createDate, User createdBy, Timestamp lastUpdate,
                                       User lastUpdatedBy, int customerId, int userId, int contactId) {
-            try {
-               PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);
+        try {
+            PreparedStatement addAppointments = DBConnection.getConnection().prepareStatement(ADD_NEW_APPOINTMENT);
 
-               addAppointments.setString(1, title);
-               addAppointments.setString(2, description);
-               addAppointments.setString(3, location);
-               addAppointments.setString(4, type);
-               addAppointments.setTimestamp(5, Timestamp.valueOf(start));
-               addAppointments.setTimestamp(6, Timestamp.valueOf(end));
-               addAppointments.setTimestamp(7, createDate);
-               addAppointments.setString(8, String.valueOf(createdBy));
-               addAppointments.setTimestamp(9, lastUpdate);
-               addAppointments.setString(10, String.valueOf(lastUpdatedBy));
-               addAppointments.setInt(11, customerId);
-               addAppointments.setInt(12, userId);
-               addAppointments.setInt(13, contactId);
+            addAppointments.setString(1, title);
+            addAppointments.setString(2, description);
+            addAppointments.setString(3, location);
+            addAppointments.setString(4, type);
+            addAppointments.setTimestamp(5, Timestamp.valueOf(start));
+            addAppointments.setTimestamp(6, Timestamp.valueOf(end));
+            addAppointments.setTimestamp(7, createDate);
+            addAppointments.setString(8, String.valueOf(createdBy));
+            addAppointments.setTimestamp(9, lastUpdate);
+            addAppointments.setString(10, String.valueOf(lastUpdatedBy));
+            addAppointments.setInt(11, customerId);
+            addAppointments.setInt(12, userId);
+            addAppointments.setInt(13, contactId);
 
-               addAppointments.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            addAppointments.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * updateAppointment -- Updates an existing appointment/entry in the db appointments table that matches the appointment ID.
-     * @param title -- appointment title
-     * @param description -- appointment description
-     * @param location -- appointment location
-     * @param type -- appointment type
-     * @param start -- start date and time
-     * @param end -- end date and time
-     * @param lastUpdate -- Timestamp when appointment is last updated
+     *
+     * @param title         -- appointment title
+     * @param description   -- appointment description
+     * @param location      -- appointment location
+     * @param type          -- appointment type
+     * @param start         -- start date and time
+     * @param end           -- end date and time
+     * @param lastUpdate    -- Timestamp when appointment is last updated
      * @param lastUpdatedBy -- User name that last updated the appointment
-     * @param customerId -- customer ID
-     * @param userId -- user ID
-     * @param contactId -- contact ID
-     * @param apptId -- appointment Id used to update the appointment entry in the db.
+     * @param customerId    -- customer ID
+     * @param userId        -- user ID
+     * @param contactId     -- contact ID
+     * @param apptId        -- appointment Id used to update the appointment entry in the db.
      */
     public static void updateAppointment(String title, String description, String location, String type, LocalDateTime start,
                                          LocalDateTime end, Timestamp lastUpdate, User lastUpdatedBy, int customerId,
@@ -295,9 +300,10 @@ public class AppointmentDAO {
 
     /**
      * deleteAppointment -- deletes an appointment from the db appointments table that matches the appointment Id.
+     *
      * @param apptId -- appointment ID used to delete an appointment from the db.
      */
-    public static void deleteAppointment(int apptId){
+    public static void deleteAppointment(int apptId) {
         try {
             PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_AN_APPOINTMENT);
             deleteAppt.setInt(1, apptId);
@@ -309,6 +315,7 @@ public class AppointmentDAO {
 
     /**
      * loadContactAppts -- queries the db and gets all appointments from the appointments table that match the contact ID.
+     *
      * @param contactId -- contact ID used to get all appointments that match the contact ID.
      * @return -- Returns an ObservableList of all appointments that match the contact ID.
      */
@@ -325,7 +332,7 @@ public class AppointmentDAO {
                 LocalTime end = result.getTimestamp("End").toLocalDateTime().toLocalTime();
                 String apptTitle = result.getString("Title");
                 String apptType = result.getString("Type");
-                String apptDescription =result.getString("Description");
+                String apptDescription = result.getString("Description");
                 int customerId = result.getInt("Customer_ID");
 
                 Appointment appts = new Appointment(apptId, apptDate, start, end, apptTitle, apptType, apptDescription, customerId);
@@ -340,6 +347,7 @@ public class AppointmentDAO {
 
     /**
      * loadCustomerAppts -- queries the db and gets all appointments from the appointments table that match the customer ID.
+     *
      * @param customerId -- customer ID used to get all appointments that match the customer ID.
      * @return -- Returns an ObservableList of all appointments that match the customer ID.
      */
@@ -353,8 +361,8 @@ public class AppointmentDAO {
             while (result.next()) {
                 int apptId = result.getInt("Appointment_ID");
                 String title = result.getString("Title");
-                String description =result.getString("Description");
-                String location =result.getString("Location");
+                String description = result.getString("Description");
+                String location = result.getString("Location");
                 String type = result.getString("Type");
                 LocalDateTime start = result.getTimestamp("Start").toLocalDateTime();
                 LocalDateTime end = result.getTimestamp("End").toLocalDateTime();
@@ -378,26 +386,28 @@ public class AppointmentDAO {
 
     /**
      * loadTotals -- queries the db and gets a total of all appointments from the appointments table by month and type.
+     *
      * @return -- Returns an ObservableList of the total appointments by month and type.
      */
     public static ObservableList<Appointment> loadTotals() {
-         ObservableList<Appointment> totals = FXCollections.observableArrayList();
-         try {
-             PreparedStatement load = DBConnection.getConnection().prepareStatement(QUERY_APPT_TOTALS);
-             ResultSet result = load.executeQuery();
-             while (result.next()) {
-                 String month = result.getString("Month");
-                 String apptType = result.getString("Type");
-                 Integer total = result.getInt("Total");
+        ObservableList<Appointment> totals = FXCollections.observableArrayList();
+        try {
+            PreparedStatement load = DBConnection.getConnection().prepareStatement(QUERY_APPT_TOTALS);
+            ResultSet result = load.executeQuery();
+            while (result.next()) {
+                String month = result.getString("Month");
+                String apptType = result.getString("Type");
+                Integer total = result.getInt("Total");
 
-                 Appointment apptTotals = new Appointment(month, apptType, total);
+                Appointment apptTotals = new Appointment(month, apptType, total);
 
-                 totals.add(apptTotals);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                totals.add(apptTotals);
             }
-            return totals;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return totals;
     }
+
+
 }

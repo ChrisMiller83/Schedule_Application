@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * LoginController -- Logs the user in, displays the login page in the users current language settings (English or French)
@@ -71,9 +72,9 @@ public class LoginController implements Initializable {
      */
     public void loginToMainPage(ActionEvent actionEvent) throws IOException {
         /** validLogin checks if the username and password entered match username and password in the db. */
+        storeLoginActivity();
         if (validLogin()) {
             /** storeLoginActivity is a BufferedWriter that stores login attempts */
-            storeLoginActivity();
 
             int userId = User.currentUser.getUserId();
 
@@ -81,16 +82,17 @@ public class LoginController implements Initializable {
 
             LocalDateTime timeNow = LocalDateTime.now();
             LocalDateTime timePlus15 = LocalDateTime.now().plusMinutes(15);
-            boolean hasAppt = false;
+            AtomicBoolean hasAppt = new AtomicBoolean(false);
 
-            /** Loops through all appointments in the db looking for appts starting within 15 minutes that match the user id, displays a message
+            /** FOR EACH-LAMBDA --Loops through all appointments in the db looking for appts starting within 15 minutes that match the user id, displays a message
              * with the upcoming appt info or displays a message with no appts if no appts were found. (Messages are display in current languge
              * settings)
             */
-            for (Appointment appointment : appointments) {
+            /** FOR EACH ******LAMBDA EXPRESSION ****** */
+            appointments.forEach(appointment -> {
                 LocalDateTime start = appointment.getStartDateTime();
                 if((start.isAfter(timeNow)) && (start.isBefore(timePlus15)) && appointment.getUserId() == userId) {
-                    hasAppt = true;
+                    hasAppt.set(true);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle(languages.getString("UpcomingApptTitle"));
                     alert.setHeaderText(languages.getString("AppointmentID") + " " + appointment.getApptId() +
@@ -98,8 +100,8 @@ public class LoginController implements Initializable {
                             "\n" + languages.getString("StartTime") + " " + appointment.getStartDateTime().toLocalTime());
                     alert.showAndWait();
                 }
-            }
-            if(!hasAppt) {
+            });
+            if(!hasAppt.get()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle(languages.getString("ErrorNoApptsTitle"));
                 alert.setHeaderText(languages.getString("NoUpcomingAppts"));
@@ -111,7 +113,6 @@ public class LoginController implements Initializable {
             Locale.setDefault(currentLanguage);
             new ChangeView(actionEvent, "MainPageView.fxml");
         } else {
-            storeLoginActivity();
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle(languages.getString("ErrorInvalidLogin"));
             alert.setHeaderText(languages.getString("ErrorCheckUsernameAndPassword"));
@@ -127,7 +128,7 @@ public class LoginController implements Initializable {
      */
     private boolean validLogin() throws IOException {
         ObservableList<User> allUsers = UserDAO.loadAllUsers();
-        for (User user : Objects.requireNonNull(allUsers)) {
+        for (User user : allUsers) {
             if (user.getUserName().equals(userNameTF.getText().trim()) && user.getPassword().equals(passwordTF.getText().trim())) {
                 User.currentUser = user;
                 return true;

@@ -284,6 +284,7 @@ public class AddApptController implements Initializable {
         customerId = customerCB.getValue().getCustomerId();
         ObservableList<Appointment> customerAppts = AppointmentDAO.loadCustomerAppts(customerId);
 
+
         for(Appointment appointment: customerAppts) {
             LocalDateTime bookedApptStart = appointment.getStartDateTime();
             LocalDateTime bookedApptEnd = appointment.getEndDateTime();

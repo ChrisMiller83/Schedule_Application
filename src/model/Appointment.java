@@ -36,7 +36,6 @@ public class Appointment {
     private LocalTime end;
     private String month;
     private Integer total;
-    public static List<Appointment> appointmentsList = new ArrayList<>();
 
     /**
      * Appointment constructor
@@ -105,14 +104,6 @@ public class Appointment {
         this.total = total;
     }
 
-
-    /**
-     * @param apptId sets the appointment id
-     */
-    public void setApptId(int apptId) {
-        this.apptId = apptId;
-    }
-
     /**
      * @return returns the apptId
      */
@@ -121,11 +112,10 @@ public class Appointment {
     }
 
     /**
-     * setApptTitle
-     * @param apptTitle sets the appointments apptTitle
+     * @param apptId sets the appointment id
      */
-    public void setApptTitle(String apptTitle) {
-        this.apptTitle = apptTitle;
+    public void setApptId(int apptId) {
+        this.apptId = apptId;
     }
 
     /**
@@ -137,11 +127,11 @@ public class Appointment {
     }
 
     /**
-     * setApptDescription
-     * @param apptDescription sets the description of the appointment
+     * setApptTitle
+     * @param apptTitle sets the appointments apptTitle
      */
-    public void setApptDescription(String apptDescription) {
-        this.apptDescription = apptDescription;
+    public void setApptTitle(String apptTitle) {
+        this.apptTitle = apptTitle;
     }
 
     /**
@@ -153,11 +143,11 @@ public class Appointment {
     }
 
     /**
-     * setApptLocation
-     * @param apptLocation sets the appointment location.
+     * setApptDescription
+     * @param apptDescription sets the description of the appointment
      */
-    public void setApptLocation(String apptLocation) {
-        this.apptLocation = apptLocation;
+    public void setApptDescription(String apptDescription) {
+        this.apptDescription = apptDescription;
     }
 
     /**
@@ -169,11 +159,11 @@ public class Appointment {
     }
 
     /**
-     * setApptType
-     * @param apptType sets the type of appointment
+     * setApptLocation
+     * @param apptLocation sets the appointment location.
      */
-    public void setApptType(String apptType) {
-        this.apptType = apptType;
+    public void setApptLocation(String apptLocation) {
+        this.apptLocation = apptLocation;
     }
 
     /**
@@ -185,11 +175,11 @@ public class Appointment {
     }
 
     /**
-     * setStartDateTime
-     * @param startDateTime sets the date and time the appointment starts
+     * setApptType
+     * @param apptType sets the type of appointment
      */
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
+    public void setApptType(String apptType) {
+        this.apptType = apptType;
     }
 
     /**
@@ -201,11 +191,11 @@ public class Appointment {
     }
 
     /**
-     * setEndDateTime
-     * @param endDateTime sets the date and time the appointment ends
+     * setStartDateTime
+     * @param startDateTime sets the date and time the appointment starts
      */
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
     /**
@@ -214,6 +204,14 @@ public class Appointment {
      */
     public LocalDateTime getEndDateTime() {
         return endDateTime;
+    }
+
+    /**
+     * setEndDateTime
+     * @param endDateTime sets the date and time the appointment ends
+     */
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
     }
 
     /**
@@ -281,14 +279,6 @@ public class Appointment {
     }
 
     /**
-     * setCustomerId
-     * @param customerId sets the customerId
-     */
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    /**
      * getCustomerId
      * @return returns the customerId
      */
@@ -297,11 +287,11 @@ public class Appointment {
     }
 
     /**
-     * setUserId
-     * @param userId sets the userId
+     * setCustomerId
+     * @param customerId sets the customerId
      */
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     /**
@@ -313,11 +303,11 @@ public class Appointment {
     }
 
     /**
-     * setContactId
-     * @param contactId sets the contactId
+     * setUserId
+     * @param userId sets the userId
      */
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     /**
@@ -326,6 +316,14 @@ public class Appointment {
      */
     public int getContactId() {
         return contactId;
+    }
+
+    /**
+     * setContactId
+     * @param contactId sets the contactId
+     */
+    public void setContactId(int contactId) {
+        this.contactId = contactId;
     }
 
     /**
@@ -364,9 +362,7 @@ public class Appointment {
         this.end = end;
     }
 
-    public static List<Appointment> getAppointmentList() {
-        return appointmentsList;
-    }
+
 
     public String getMonth() {
         return month;

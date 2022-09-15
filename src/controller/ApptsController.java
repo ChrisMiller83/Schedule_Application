@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -118,14 +117,19 @@ public class ApptsController implements Initializable {
      */
     public void deleteOldAppts() throws IOException {
         ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
-        for (Appointment appointment : appointments) {
+        /** FOR EACH ******LAMBDA EXPRESSION ****** */
+        appointments.forEach(appointment -> {
             if (appointment.getStartDateTime().isBefore(LocalDateTime.now())) {
                 int apptId = appointment.getApptId();
-                storeDeletedAppts(appointment);
+                try {
+                    storeDeletedAppts(appointment);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 AppointmentDAO.deleteAppointment(apptId);
                 appointmentsTableView.refresh();
             }
-        }
+        });
     }
 
     /**
