@@ -67,6 +67,7 @@ public class LoginController implements Initializable {
 
     /**
      * loginToMainPage -- logs in the user and redirects the view to the main page if username and password are valid
+     * A For Each Lambda expression is used in this method to replace the for loop that loops through the appointments list.
      * @param actionEvent -- Login button clicked
      * @throws IOException
      */
@@ -88,7 +89,6 @@ public class LoginController implements Initializable {
              * with the upcoming appt info or displays a message with no appts if no appts were found. (Messages are display in current languge
              * settings)
             */
-            /** FOR EACH ******LAMBDA EXPRESSION ****** */
             appointments.forEach(appointment -> {
                 LocalDateTime start = appointment.getStartDateTime();
                 if((start.isAfter(timeNow)) && (start.isBefore(timePlus15)) && appointment.getUserId() == userId) {

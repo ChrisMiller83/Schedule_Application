@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +16,6 @@ public class Division {
     private int divisionId;
     private String divisionName;
     private int countryId;
-    private static final ObservableList<Division> allDivisions = FXCollections.observableArrayList();
 
     /**
      * Default Empty Division Constructor
@@ -33,35 +35,35 @@ public class Division {
         this.countryId = countryId;
     }
 
+    /** divisionId setter */
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
     }
 
+    /** divisionId getter */
     public int getDivisionId() {
         return divisionId;
     }
 
+    /** divisionName setter */
     public void setDivisionName(String division) {
         this.divisionName = divisionName;
     }
 
+    /** divisionName getter */
     public String getDivisionName() {
         return divisionName;
     }
 
+    /** countryId setter */
     public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
 
+    /** countryId getter */
     public int getCountryId() {
         return countryId;
     }
-
-    public static List<Division> getDivisions () {
-        return allDivisions;
-    }
-
-
 
     @Override
     public String toString() {

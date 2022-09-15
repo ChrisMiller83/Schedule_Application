@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +25,9 @@ public class Customer {
     private int countryId;
     private int divisionId;
 
-    public static List<Customer> customers = new ArrayList<>();
+
+    /** Empty Default Constructor */
+    public Customer() {}
 
     /**
      * Customer constructor
@@ -51,100 +57,116 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
-    public Customer() {
-    }
-
+    /** customerId setter */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
+    /** customerId getter */
     public int getCustomerId() {
         return customerId;
     }
 
+    /** customerName setter */
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
 
+    /** customerName getter */
     public String getCustomerName() {
         return customerName;
     }
 
+    /** address setter */
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /** address getter */
     public String getAddress() {
         return address;
     }
+
+    /** phoneNumber setter */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    /** phoneNumber getter */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /** postalCode setter */
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
+    /** postalCode getter */
     public String getPostalCode() {
         return postalCode;
     }
 
+    /** countryId getter */
     public int getCountryId() {
         return countryId;
     }
 
+    /** countryId setter */
     public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
 
-
+    /** createDate getter */
     public Timestamp getCreateDate() {
         return createDate;
     }
 
+    /** createDate setter */
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
+    /** createdBy getter */
     public String getCreatedBy() {
         return createdBy;
     }
 
+    /** createdBy setter */
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
+    /** lastUpdate getter */
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
+    /** lastUpdate setter */
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
+    /** lastUpdatedBy getter */
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
+    /** lastUpdatedBy setter */
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
+    /** divisionId getter */
     public int getDivisionId() {
         return divisionId;
     }
 
+    /** divisionId setter */
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
     }
 
-    public static List<Customer> getCustomers() {
-        return customers;
-    }
 
     @Override
     public String toString() {

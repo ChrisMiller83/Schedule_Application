@@ -37,8 +37,11 @@ public class Appointment {
     private String month;
     private Integer total;
 
+    /** Empty default constructor */
+    public Appointment() {};
+
     /**
-     * Appointment constructor
+     * Main Appointment constructor
      * @param apptId the appointment's id number
      * @param apptTitle apptTitle of the appointment
      * @param apptDescription  description of what the appointment is for
@@ -104,278 +107,192 @@ public class Appointment {
         this.total = total;
     }
 
-    /**
-     * @return returns the apptId
-     */
+    /** the apptId getter */
     public int getApptId() {
         return apptId;
     }
 
-    /**
-     * @param apptId sets the appointment id
-     */
+    /** apptId setter */
     public void setApptId(int apptId) {
         this.apptId = apptId;
     }
 
-    /**
-     * getApptTitle
-     * @return returns the appointments apptTitle
-     */
+    /** apptTitle getter */
     public String getApptTitle() {
         return apptTitle;
     }
 
-    /**
-     * setApptTitle
-     * @param apptTitle sets the appointments apptTitle
-     */
+    /** apptTitle setter */
     public void setApptTitle(String apptTitle) {
         this.apptTitle = apptTitle;
     }
 
-    /**
-     * getApptDescription
-     * @return returns a description of the appointment
-     */
+    /** apptDescription getter */
     public String getApptDescription() {
         return apptDescription;
     }
 
-    /**
-     * setApptDescription
-     * @param apptDescription sets the description of the appointment
-     */
+    /** apptDescription setter */
     public void setApptDescription(String apptDescription) {
         this.apptDescription = apptDescription;
     }
 
-    /**
-     * getApptLocation
-     * @return returns the appointment location.
-     */
+    /** apptLocation getter */
     public String getApptLocation() {
         return  apptLocation;
     }
 
-    /**
-     * setApptLocation
-     * @param apptLocation sets the appointment location.
-     */
+    /** apptLocation setter */
     public void setApptLocation(String apptLocation) {
         this.apptLocation = apptLocation;
     }
 
-    /**
-     * getApptType
-     * @return returns type of appointment.
-     */
+    /** apptType getter */
     public String getApptType() {
         return apptType;
     }
 
-    /**
-     * setApptType
-     * @param apptType sets the type of appointment
-     */
+    /** apptType setter */
     public void setApptType(String apptType) {
         this.apptType = apptType;
     }
 
-    /**
-     * getStartDateTime
-     * @return returns the date and time the appointment starts
-     */
+    /** startDateTime getter */
     public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    /**
-     * setStartDateTime
-     * @param startDateTime sets the date and time the appointment starts
-     */
+    /** startDateTime setter */
     public void setStartDateTime(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
-    /**
-     * getEndDateTime
-     * @return returns the date and time the appointment ends
-     */
+    /** endDateTime getter */
     public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
 
-    /**
-     * setEndDateTime
-     * @param endDateTime sets the date and time the appointment ends
-     */
+    /** endDateTime setter */
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 
-    /**
-     * getCreatedDate
-     * @return returns/gets the date and time the appointment was created
-     */
+    /** createdDate getter */
     public Timestamp getCreateDate() {
         return createDate;
     }
 
-    /**
-     * setCreateDate
-     * @param createDate sets the date and time the appointment was created
-     */
+    /** createDate setter */
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
-    /**
-     * getCreatedBy
-     * @return returns/gets the user name that created the appointment
-     */
+    /** createdBy getter */
     public String getCreatedBy() {
         return createdBy;
     }
 
-    /**
-     * setCreatedBy
-     * @param createdBy sets the user name that created the appointment
-     */
+    /** createdBy setter */
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
-    /**
-     * getLastUpdate
-     * @return returns/gets the date and time the appointment was last updated
-     */
+    /** lastUpdate getter */
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    /**
-     * setLastUpdate
-     * @param lastUpdate sets the date and time of last update
-     */
+    /** lastUpdate setter */
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
-    /**
-     * getLastUpdatedBy
-     * @return returns/gets the user name who last updated the appointment
-     */
+    /** lastUpdatedBy getter */
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
-    /**
-     * setLastUpdatedBy
-     * @param lastUpdateBy sets the user name who last updated the appointment
-     */
+    /** lastUpdateBy setter */
     public void setLastUpdatedBy(String lastUpdateBy) {
         this.lastUpdatedBy = lastUpdateBy;
     }
 
-    /**
-     * getCustomerId
-     * @return returns the customerId
-     */
+    /** customerId getter */
     public int getCustomerId() {
         return customerId;
     }
 
-    /**
-     * setCustomerId
-     * @param customerId sets the customerId
-     */
+    /** customerId setter */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
-    /**
-     * getUserId
-     * @return returns the userId
-     */
+    /** userId getter */
     public int getUserId() {
         return userId;
     }
 
-    /**
-     * setUserId
-     * @param userId sets the userId
-     */
+    /** userId setter */
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    /**
-     * getContactId gets the contactId
-     * @return contactId -- returns the contactId
-     */
+    /** contactId getter */
     public int getContactId() {
         return contactId;
     }
 
-    /**
-     * setContactId
-     * @param contactId sets the contactId
-     */
+    /** contactId setter */
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 
-    /**
-     * getApptDate
-     * @return apptDate -- Date of an appointment
-     */
+    /** apptDate getter */
     public LocalDate getApptDate() {
         return apptDate;
     }
 
+    /** apptDate setter */
     public void setApptDate(LocalDate apptDate) {
         this.apptDate = apptDate;
     }
 
-    /**
-     * getStart
-     * @return start -- start time of appointment
-     */
+    /** start time getter */
     public LocalTime getStart() {
         return start;
     }
 
+    /** start time setter */
     public void setStart(LocalTime start) {
         this.start = start;
     }
 
-    /**
-     * getEnd
-     * @return end -- end time of appointment
-     */
+    /** end time getter */
     public LocalTime getEnd() {
         return end;
     }
 
+    /** end time setter */
     public void setEnd(LocalTime end) {
         this.end = end;
     }
 
-
-
+    /** month getter */
     public String getMonth() {
         return month;
     }
 
+    /** month setter */
     public void setMonth(String month) {
         this.month = month;
     }
 
+    /** total getter */
     public Integer getTotal() {
         return total;
     }
 
+    /** total setter */
     public void setTotal(Integer total) {
         this.total = total;
     }

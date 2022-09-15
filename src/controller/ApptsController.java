@@ -112,7 +112,8 @@ public class ApptsController implements Initializable {
 
     /**
      * deleteOldAppts -- deletes old/missed appointments from the appointments table when page is loaded,
-     * and stores the deleted appointments in a txt file.
+     * and stores the deleted appointments in a txt file
+     * A For Each Lambda expression replaces the for loop that loops through the appointment list.
      * @throws IOException
      */
     public void deleteOldAppts() throws IOException {

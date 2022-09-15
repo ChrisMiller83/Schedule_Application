@@ -1,16 +1,20 @@
 package model;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Contact model class.
- */
+/** Contact model class. */
 public class Contact {
     private int contactId;
     private String contactName;
     private String email;
-    public static List<Contact> contactArrayList = new ArrayList<>();
+
+    /** Empty default constructor */
+    public Contact() {};
 
     /**
      * Contact constructor.
@@ -24,61 +28,36 @@ public class Contact {
         this.email = email;
     }
 
-    /**
-     * setContactId
-     * @param contactId set the contact Id
-     */
+    /** contactId setter */
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 
-    /**
-     * getContactId
-     * @return returns the contact Id
-     */
+    /** contactId getter */
     public int getContactId() {
         return contactId;
     }
 
-    /**
-     * setContactName
-     * @param contactName sets the contact name
-     */
+    /** contactName setter */
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
 
-    /**
-     * getContactName
-     * @return returns the contact name
-     */
+    /** contactName getter */
     public String getContactName() {
         return contactName;
     }
 
-    /**
-     * setEmail
-     * @param email sets the contact email
-     */
+    /** email setter */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * getEmail
-     * @return returns the contact's email
-     */
+    /** email getter */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * getContacts
-     * @return returns a list of contacts
-     */
-    public static List<Contact> getContacts() {
-        return contactArrayList;
-    }
 
     /**
      * toString

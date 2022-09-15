@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * @author Christopher Miller - Schedule Application - WGU C195 PA
+ */
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +14,9 @@ import java.util.List;
 public class Country {
     private int countryId;
     private String country;
-    public static List<Country> countryList = new ArrayList<>();
 
+    /** Empty default constructor */
+    public Country() {};
 
     /**
      * Country constructor
@@ -23,61 +28,26 @@ public class Country {
         this.country = country;
     }
 
-    /**
-     * setCountryId
-     * @param countryId sets the country id
-     */
+    /** countryId setter */
     public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
 
-    /**
-     * getCountryId
-     * @return returns the country id
-     */
+    /** countryId getter */
     public int getCountryId() {
         return countryId;
     }
 
-    /**
-     * setCountry
-     * @param country sets the country name
-     */
+    /** country name setter */
     public void setCountry(String country) {
         this.country = country;
     }
 
-    /**
-     * getCountry
-     * @return returns the country name
-     */
+    /** country name getter */
     public String getCountry() {
         return country;
     }
 
-
-
-    /**
-     * getCountry
-     * @return returns a list of countries
-     */
-    public static List<Country> getCountries() {
-        return countryList;
-    }
-
-    public static int getCountryId(int index) {
-        for (Division divisions : Division.getDivisions()) {
-            if (index == divisions.getDivisionId()) {
-                return divisions.getCountryId();
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * toString
-     * @return Overrides the default toString() method to return the country name.
-     */
     @Override
     public String toString() {
         return country;
