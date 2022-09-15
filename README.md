@@ -16,7 +16,7 @@ The purpose of the application is to provide a GUI based scheduling application 
 
 ### JDK VERSION: 17.0.1
 
-### MySQL Connector: MySQL Workbench 8.0 CE
+### MySQL Connector: mysql-connector-java-8.0.25
 
 ### HOW TO RUN PROGRAM:
 When the  ▶️ run button in IntelliJ to start the application is selected and the program is initialized. The user is directed to the 

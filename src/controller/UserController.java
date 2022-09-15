@@ -23,6 +23,9 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
+/**
+ * UserController -- -- Displays tables of users, allows user deletion, and redirects to add/update user page.
+ */
 public class UserController implements Initializable {
     static ObservableList<User> usersList = UserDAO.loadAllUsers();
     private static User selectedUser;
