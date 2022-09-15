@@ -16,3 +16,7 @@ Appointment Deleted on:  09-13-2022 10-35-23	ApptID = 38	Title:  test appt end	 
 Appointment Deleted on:  09-13-2022 10-40-07	ApptID = 40	Title:  test again	 Description: test again	Type: Problem-solving	Start: 2022-09-15T10:00	End: 2022-09-15T11:00	 Contact ID: 2	Customer ID:  2	User ID:  1
 Appointment Deleted on:  09-14-2022 20-46-20	ApptID = 42	Title:  test delete Contact	 Description: test delete Contact	Type: Problem-solving	Start: 2022-09-14T10:30	End: 2022-09-14T12:00	 Contact ID: 4	Customer ID:  13	User ID:  2
 Appointment Deleted on:  09-14-2022 20-57-40	ApptID = 37	Title:  abc	 Description: test	Type: Problem-solving	Start: 2022-09-15T11:30	End: 2022-09-15T12:30	 Contact ID: 1	Customer ID:  2	User ID:  2
+Appointment Deleted on:  09-15-2022 11-21-40	ApptID = 32	Title:  testReport	 Description: testReports	Type: Check-in	Start: 2022-09-15T10:00	End: 2022-09-15T11:30	 Contact ID: 1	Customer ID:  2	User ID:  2
+Appointment Deleted on:  09-15-2022 11-21-40	ApptID = 39	Title:  test times	 Description: test times	Type: Problem-solving	Start: 2022-09-15T09:00	End: 2022-09-15T10:00	 Contact ID: 2	Customer ID:  2	User ID:  1
+Appointment Deleted on:  09-15-2022 11-21-40	ApptID = 43	Title:  test Lambda	 Description: test Lambda	Type: One-on-one	Start: 2022-09-15T07:00	End: 2022-09-15T07:30	 Contact ID: 2	Customer ID:  3	User ID:  1
+Appointment Deleted on:  09-15-2022 11-22-20	ApptID = 41	Title:  test ttttt	 Description: ttrgfg	Type: Problem-solving	Start: 2022-09-15T20:00	End: 2022-09-15T21:00	 Contact ID: 1	Customer ID:  2	User ID:  2

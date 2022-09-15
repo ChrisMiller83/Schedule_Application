@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -101,6 +102,14 @@ public class UserController implements Initializable {
      */
     public void deleteUser(ActionEvent actionEvent) {
         selectedUser = userTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedUser.getUserId() == 2) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Unable to delete admin");
+            alert.setContentText("admin can not be deleted, admin has special privileges.");
+            alert.showAndWait();
+            return;
+        }
         /** Displays error message if a user to delete is not selected */
         if (selectedUser == null) {
             Messages.selectionNeeded();

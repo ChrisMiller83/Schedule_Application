@@ -155,6 +155,11 @@ public class Messages {
                         "\nCurrent Time:  " + LocalTime.now());
                 break;
             }
+            case 17:
+            {
+                alert.setContentText("Description length is too long.  Max description length is 50 characters.");
+                break;
+            }
             default:
             {
                 alert.setContentText("One of more items are empty");

@@ -65,7 +65,7 @@
             <Label text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <ChoiceBox fx:id="endTimeCB" prefHeight="25.0" prefWidth="176.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
             <Label text="Description" GridPane.rowIndex="5" />
-            <TextArea fx:id="descriptionTA" prefHeight="48.0" prefWidth="108.0" promptText="Brief Description of Appointment" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+            <TextArea fx:id="descriptionTA"  prefHeight="48.0" prefWidth="108.0" promptText="Brief Description of Appointment (50 character max)" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
             <Label text="User" GridPane.rowIndex="1" />
             <ChoiceBox fx:id="userCB" prefHeight="25.0" prefWidth="176.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         </GridPane>

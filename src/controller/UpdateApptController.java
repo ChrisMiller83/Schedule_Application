@@ -145,6 +145,11 @@ public class UpdateApptController implements Initializable {
             Messages.validateAppt(2);
             return false;
         }
+        /** Checker:  Description length is more than 50 chars */
+        if (descriptionTA.getText().length() > 50) {
+            Messages.validateAppt(17);
+            return false;
+        }
         /** Checker:  Location text field is empty */
         if (locationTF.getText().isEmpty()) {
             Messages.validateAppt(3);

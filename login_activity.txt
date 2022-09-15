@@ -82,3 +82,13 @@ Login attempt by username:   test    Date/Time:  09-13-2022 19:24:50   Login: Su
 Login attempt by username:   test    Date/Time:  09-13-2022 19:28:55   Login: Successful
 Login attempt by username:   test    Date/Time:  09-14-2022 20:46:17   Login: Successful
 Login attempt by username:   test    Date/Time:  09-14-2022 20:57:24   Login: Successful
+Login attempt by username:   admin    Date/Time:  09-15-2022 11:21:19   Login: Successful
+Login attempt by username:   admin    Date/Time:  09-15-2022 11:41:30   Login: Successful
+Login attempt by username:   admin    Date/Time:  09-15-2022 11:45:55   Login: Successful
+Login attempt by username:   admin    Date/Time:  09-15-2022 11:47:53   Login: Successful
+Login attempt by username:   admin    Date/Time:  09-15-2022 11:49:42   Login: Successful
+Login attempt by username:   admin    Date/Time:  09-15-2022 11:52:20   Login: Successful
+Login attempt by username:   test    Date/Time:  09-15-2022 11:52:47   Login: Successful
+Login attempt by username:   test    Date/Time:  09-15-2022 12:06:48   Login: Successful
+Login attempt by username:   test    Date/Time:  09-15-2022 12:12:41   Login: Successful
+Login attempt by username:   test    Date/Time:  09-15-2022 12:13:21   Login: Successful

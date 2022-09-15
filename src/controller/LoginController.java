@@ -96,6 +96,7 @@ public class LoginController implements Initializable {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle(languages.getString("UpcomingApptTitle"));
                     alert.setHeaderText(languages.getString("AppointmentID") + " " + appointment.getApptId() +
+                            "\n" + languages.getString("ApptTitle") + " " + appointment.getApptTitle() +
                             "\n" + languages.getString("StartDate") + " " + appointment.getStartDateTime().toLocalDate() +
                             "\n" + languages.getString("StartTime") + " " + appointment.getStartDateTime().toLocalTime());
                     alert.showAndWait();

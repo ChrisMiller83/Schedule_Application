@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -133,15 +135,15 @@ public class ReportsController implements Initializable {
      * readLoginActivity -- BufferedReader method that reads the data in the login_activity.txt file
      * @return -- returns the lines(data) from the login_activity.txt file
      */
-    public ObservableList<String> readLoginActivity() {
-        ObservableList<String> lines = FXCollections.observableArrayList();
+    public List<String> readLoginActivity() {
+        List<String> lines = new ArrayList<String>();
+        String s;
         try {
             BufferedReader br = new BufferedReader(new FileReader(filename));
-            String s;
             while ((s = br.readLine()) != null) {
-                lines.add(s);
-                lines.add("\n");
+                lines.add(s + "\n");
             }
+            br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -167,8 +169,8 @@ public class ReportsController implements Initializable {
             BufferedReader br = new BufferedReader(new FileReader("deletedAppts.txt"));
             String s;
             while ((s = br.readLine()) != null) {
-                lines.add(s);
-                lines.add("\n");
+                lines.add(s + "\n");
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
