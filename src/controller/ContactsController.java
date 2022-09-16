@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 public class ContactsController implements Initializable {
 
     static ObservableList<Contact> contactList = ContactDAO.loadAllContacts();
+    static ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
     private static Contact selectedContact;
 
     @FXML private Button addContactBtn;
@@ -53,27 +54,6 @@ public class ContactsController implements Initializable {
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
     }
 
-    /**
-     * noAppointments -- checks if contact to delete has upcoming appointments.
-     * @return -- Returns false if contact has upcoming appointments, returns true if contact does not have an appts scheduled.
-     */
-    private boolean noAppointments() {
-        Contact selectedContact = contactsTable.getSelectionModel().getSelectedItem();
-        int contactId = selectedContact.getContactId();
-        ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
-
-        /** loops through the appointment db looking for appointments with the contact id, if an appt is found an
-         *  error message is displayed telling the user they must delete the appt before they can delete the contact
-        */
-        for(Appointment appointment : appointments) {
-            if(appointment.getContactId() == contactId) {
-                Messages.hasAppointments(selectedContact.getContactName());
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     /**
      * deleteContact -- deletes selected contact if contact does not have upcoming appointments.
@@ -86,26 +66,31 @@ public class ContactsController implements Initializable {
             Messages.selectionNeeded();
             return;
         } else {
-            /** Checks if contact has an appts by calling the noAppointments method */
-            if (noAppointments()) {
-                /** if contact did not have any upcoming appointment, a delete confirmation is displayed */
-                boolean deleteConfirm = Messages.deleteConfirmation(selectedContact.getContactName());
-                /** if delete is confirmed, delete contact, display console message confirming delete */
-                if (deleteConfirm) {
-                    int contactId = selectedContact.getContactId();
-                    /** contact is deleted from the db */
-                    ContactDAO.deleteContact(contactId);
+            boolean deleteConfirm = Messages.deleteConfirmation(selectedContact.getContactName());
+            /** if delete is confirmed, delete contact, display console message confirming delete */
+            if (deleteConfirm) {
+                 int contactId = selectedContact.getContactId();
 
-                    /** Lambda expression -- console message verifying delete */
-                    MessageLambdaInterface message = s -> System.out.println(s + " deleted.");
-                    message.displayMessage(selectedContact.getContactName());
-
-                    /** the contacts table is reloaded and the deleted contact is removed from the table display */
-                    contactsTable.setItems(ContactDAO.loadAllContacts());
-                    contactsTable.refresh();
+                /** Automatically deletes all appointments from the db that have the selectedContact's contactId */
+                for (Appointment appointment : appointments) {
+                    if(appointment.getContactId() == contactId) {
+                        AppointmentDAO.deleteAllCustomerAppts(contactId);
+                    }
                 }
+
+                 /** contact is deleted from the db */
+                 ContactDAO.deleteContact(contactId);
+
+                 /** Lambda expression -- console message verifying delete */
+                 MessageLambdaInterface message = s -> System.out.println(s + " deleted.");
+                 message.displayMessage(selectedContact.getContactName());
+
+                 /** the contacts table is reloaded and the deleted contact is removed from the table display */
+                 contactsTable.setItems(ContactDAO.loadAllContacts());
+                 contactsTable.refresh();
             }
         }
+
     }
 
     /**

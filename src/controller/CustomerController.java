@@ -81,27 +81,6 @@ public class CustomerController implements Initializable {
     }
 
     /**
-     * noAppointments -- checks if customer to delete has upcoming appointments.
-     * @return -- Returns false if customer has upcoming appointments, returns true if customer does not have any appts scheduled.
-     */
-    private boolean noAppointments() {
-        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
-        int customerId = selectedCustomer.getCustomerId();
-        ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
-
-        /** loops through the appointment db looking for appointments with the customer id, if an appt is found an
-         *  error message is displayed telling the user they must delete the appt before they can delete the customer
-         */
-        for(Appointment appointment : appointments) {
-            if(appointment.getCustomerId() == customerId) {
-                Messages.hasAppointments(selectedCustomer.getCustomerName());
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * deleteCustomer -- deletes selected customer if customer does not have upcoming appointments.
      * @param actionEvent -- customer to be deleted is selected and Delete Customer button is clicked.
      */
@@ -112,33 +91,30 @@ public class CustomerController implements Initializable {
             Messages.selectionNeeded();
             return;
         } else {
-            /** Checks if customer has an appts by calling the noAppointments method */
-            if(noAppointments()) {
-                /** if customer did not have any upcoming appts, a delete confirmation is displayed */
-                int customerId = selectedCustomer.getCustomerId();
+            /** if customer did not have any upcoming appts, a delete confirmation is displayed */
+            int customerId = selectedCustomer.getCustomerId();
 
+            boolean deleteConfirm = Messages.deleteConfirmation(selectedCustomer.getCustomerName());
+            /** if delete is confirmed, delete contact, display console message confirming delete */
+            if (deleteConfirm) {
 
-                boolean deleteConfirm = Messages.deleteConfirmation(selectedCustomer.getCustomerName());
-                /** if delete is confirmed, delete contact, display console message confirming delete */
-                if (deleteConfirm) {
-                    // TODO: remove the noAppointments method and method call if auto delete appts is required or delete auto-delete for loop
-//                    /** Automatically deletes all appointments from the db that have the selectedCustomer's customerId */
-//                    for (Appointment appointment : appointments) {
-//                        if(appointment.getCustomerId() == customerId) {
-//                            AppointmentDAO.deleteAllCustomerAppts(customerId);
-//                        }
-//                    }
-                    /** customer is deleted from the db */
-                    CustomerDAO.deleteCustomer(customerId);
-
-                    /** Lambda expression -- console message verifying delete */
-                    MessageLambdaInterface message = s -> System.out.println(s + " deleted.");
-                    message.displayMessage(selectedCustomer.getCustomerName());
-
-                    /** the customer table is reloaded and the deleted customer is removed from the table display */
-                    customersTable.setItems(CustomerDAO.loadAllCustomers());
-                    customersTable.refresh();
+                /** Automatically deletes all appointments from the db that have the selectedCustomer's customerId */
+                for (Appointment appointment : appointments) {
+                    if(appointment.getCustomerId() == customerId) {
+                        AppointmentDAO.deleteAllCustomerAppts(customerId);
+                    }
                 }
+
+                /** customer is deleted from the db */
+                CustomerDAO.deleteCustomer(customerId);
+
+                /** Lambda expression -- console message verifying delete */
+                MessageLambdaInterface message = s -> System.out.println(s + " deleted.");
+                message.displayMessage(selectedCustomer.getCustomerName());
+
+                /** the customer table is reloaded and the deleted customer is removed from the table display */
+                customersTable.setItems(CustomerDAO.loadAllCustomers());
+                customersTable.refresh();
             }
         }
     }

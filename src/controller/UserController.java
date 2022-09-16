@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
  */
 public class UserController implements Initializable {
     static ObservableList<User> usersList = UserDAO.loadAllUsers();
+    static ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
     private static User selectedUser;
 
     /** user table components */
@@ -80,27 +81,6 @@ public class UserController implements Initializable {
     }
 
     /**
-     * noAppointments -- checks if user to delete has upcoming appointments.
-     * @return -- Returns false if user has upcoming appointments, returns true if user does not have an appts scheduled.
-     */
-    private boolean noAppointments() {
-        selectedUser = userTableView.getSelectionModel().getSelectedItem();
-        int userId = selectedUser.getUserId();
-        ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
-
-        /** loops through the appointment db looking for appointments with the user id, if an appt is found an
-         *  error message is displayed telling the admin they must delete the appt before they can delete the user
-         */
-        for(Appointment appointment : appointments) {
-            if(appointment.getUserId() == userId) {
-                Messages.hasAppointments(selectedUser.getUserName());
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * deleteUser -- deletes selected user if user does not have upcoming appts.
      * @param actionEvent -- user to be deleted is selected and Delete User button is clicked.
      */
@@ -110,7 +90,7 @@ public class UserController implements Initializable {
         if (selectedUser.getUserId() == 2) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Unable to delete admin");
-            alert.setContentText("admin can not be deleted, admin has special privileges.");
+            alert.setContentText("admin can not be deleted, admin has special privileges to add, update and delete.");
             alert.showAndWait();
             return;
         }
@@ -119,13 +99,21 @@ public class UserController implements Initializable {
             Messages.selectionNeeded();
             return;
         } else {
-            /** Checks if contact has an appts by calling the noAppointments method */
-            if(noAppointments()) {
+
+
                 /** if user did not have any upcoming appointment, a delete confirmation is displayed */
                 boolean deleteConfirm = Messages.deleteConfirmation(selectedUser.getUserName());
                 /** if delete is confirmed, delete user, display console message confirming delete */
                 if(deleteConfirm) {
                     int userId = selectedUser.getUserId();
+
+                    /** Automatically deletes all appointments from the db that have the selectedUser's userId */
+                    for (Appointment appointment : appointments) {
+                        if(appointment.getUserId() == userId) {
+                            AppointmentDAO.deleteAllCustomerAppts(userId);
+                        }
+                    }
+
                     /** user is deleted from the db */
                     UserDAO.deleteUser(userId);
 
@@ -138,7 +126,7 @@ public class UserController implements Initializable {
                     userTableView.refresh();
                 }
             }
-        }
+
     }
 
     /**

@@ -79,6 +79,12 @@ public class AppointmentDAO {
     public static final String DELETE_ALL_CUSTOMER_APPOINTMENTS = "DELETE FROM " + TABLE_APPOINTMENTS + " WHERE " +
             COLUMN_CUSTOMER_ID + " = ?;";
 
+    public static final String DELETE_ALL_CONTACT_APPOINTMENTS = "DELETE FROM " + TABLE_APPOINTMENTS + " WHERE " +
+            COLUMN_CONTACT_ID + " = ?;";
+
+    public static final String DELETE_ALL_USER_APPOINTMENTS = "DELETE FROM " + TABLE_APPOINTMENTS + " WHERE " +
+            COLUMN_USER_ID + " = ?;";
+
     public static final String QUERY_APPOINTMENTS_BY_CONTACT_ID = "SELECT * FROM " + TABLE_APPOINTMENTS +
             " WHERE " + COLUMN_CONTACT_ID + " = ?;";
 
@@ -318,7 +324,7 @@ public class AppointmentDAO {
     }
 
     /**
-     * deleteAllCustomerAppts -- deletes all appts that contain the customerId from the db appointments table.
+     * deleteAllCustomerAppts -- deletes all appts that contain the matching customerId from the db appointments table.
      *
      * @param customerId -- customerId is used to find all appointments that have the customerId
      */
@@ -326,6 +332,38 @@ public class AppointmentDAO {
         try {
             PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_ALL_CUSTOMER_APPOINTMENTS);
             deleteAppt.setInt(1, customerId);
+            deleteAppt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * deleteAllContactAppts -- deletes all appts that contain the matching contactId from the db appointments table.
+     *
+     * @param contactId -- contactId is used to find all appointments that have the customerId
+     */
+    public static void deleteAllContactAppts(int contactId) {
+        try {
+            PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_ALL_CONTACT_APPOINTMENTS);
+            deleteAppt.setInt(1, contactId);
+            deleteAppt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * deleteAllUserAppts -- deletes all appts that contain the userId from the db appointments table.
+     *
+     * @param userId -- userId is used to find all appointments that have the userId
+     */
+    public static void deleteAllUserAppts(int userId) {
+        try {
+            PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_ALL_USER_APPOINTMENTS);
+            deleteAppt.setInt(1, userId);
             deleteAppt.executeUpdate();
 
         } catch (SQLException e) {
