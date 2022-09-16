@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 public class CustomerController implements Initializable {
 
     static ObservableList<Customer> customersList = CustomerDAO.loadAllCustomers();
+    static ObservableList<Appointment> appointments = AppointmentDAO.loadAllAppts();
     private static Customer selectedCustomer;
 
     @FXML private Button addCustomerBtn;
@@ -115,9 +116,18 @@ public class CustomerController implements Initializable {
             if(noAppointments()) {
                 /** if customer did not have any upcoming appts, a delete confirmation is displayed */
                 int customerId = selectedCustomer.getCustomerId();
+
+
                 boolean deleteConfirm = Messages.deleteConfirmation(selectedCustomer.getCustomerName());
                 /** if delete is confirmed, delete contact, display console message confirming delete */
                 if (deleteConfirm) {
+                    // TODO: remove the noAppointments method and method call if auto delete appts is required or delete auto-delete for loop
+//                    /** Automatically deletes all appointments from the db that have the selectedCustomer's customerId */
+//                    for (Appointment appointment : appointments) {
+//                        if(appointment.getCustomerId() == customerId) {
+//                            AppointmentDAO.deleteAllCustomerAppts(customerId);
+//                        }
+//                    }
                     /** customer is deleted from the db */
                     CustomerDAO.deleteCustomer(customerId);
 

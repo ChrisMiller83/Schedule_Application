@@ -20,3 +20,5 @@ Appointment Deleted on:  09-15-2022 11-21-40	ApptID = 32	Title:  testReport	 Des
 Appointment Deleted on:  09-15-2022 11-21-40	ApptID = 39	Title:  test times	 Description: test times	Type: Problem-solving	Start: 2022-09-15T09:00	End: 2022-09-15T10:00	 Contact ID: 2	Customer ID:  2	User ID:  1
 Appointment Deleted on:  09-15-2022 11-21-40	ApptID = 43	Title:  test Lambda	 Description: test Lambda	Type: One-on-one	Start: 2022-09-15T07:00	End: 2022-09-15T07:30	 Contact ID: 2	Customer ID:  3	User ID:  1
 Appointment Deleted on:  09-15-2022 11-22-20	ApptID = 41	Title:  test ttttt	 Description: ttrgfg	Type: Problem-solving	Start: 2022-09-15T20:00	End: 2022-09-15T21:00	 Contact ID: 1	Customer ID:  2	User ID:  2
+Appointment Deleted on:  09-16-2022 14-12-59	ApptID = 45	Title:  Lunch	 Description: Lunch at Applebees	Type: Lunch	Start: 2022-09-15T12:00	End: 2022-09-15T13:00	 Contact ID: 4	Customer ID:  13	User ID:  2
+Appointment Deleted on:  09-16-2022 14-16-45	ApptID = 47	Title:  test delete	 Description: test delete confirmation	Type: Problem-solving	Start: 2022-09-19T10:00	End: 2022-09-19T11:00	 Contact ID: 1	Customer ID:  2	User ID:  1

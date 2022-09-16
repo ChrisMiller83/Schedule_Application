@@ -167,7 +167,7 @@ public class ApptsController implements Initializable {
             return;
         } else {
             int apptId = selectedAppt.getApptId();
-            boolean deleteConfirm = Messages.deleteConfirmation(selectedAppt.getApptTitle());
+            boolean deleteConfirm = Messages.deleteApptConfirmation(selectedAppt.getApptId(), selectedAppt.getApptType());
             if(deleteConfirm) {
                 storeDeletedAppts(selectedAppt);
                 AppointmentDAO.deleteAppointment(apptId);

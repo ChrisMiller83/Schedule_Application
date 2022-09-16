@@ -252,30 +252,40 @@ public class UpdateApptController implements Initializable {
             LocalDateTime bookedApptStart = appointment.getStartDateTime();
             LocalDateTime bookedApptEnd = appointment.getEndDateTime();
 
-            /** ex: picked start 10:30 end 11:30  and booked start 10:00 end 12:00 (ps-pe 10:30-11:30 is inside bs-be 10:00-12:00) */
-            if((pickedStartLDT.isAfter(bookedApptStart)) && (pickedEndLDT.isBefore(bookedApptEnd))){
-                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
-                return false;
-            }
-            /** ex: picked end 11:30  and booked start 10:00 end 12:00 (pe of 11:30 is inside bs-be 10:00-12:00) */
-            if((pickedEndLDT.isAfter(bookedApptStart)) && (pickedEndLDT.isBefore(bookedApptEnd))) {
-                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
-                return false;
-            }
-            /** ex: picked start 10:30 and booked start 10:00 end 12:00 (ps of 10:30 is inside bs-be 10:00-12:00) */
-            if ((pickedStartLDT.isAfter(bookedApptStart)) && (pickedStartLDT.isBefore(bookedApptEnd))) {
-                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
-                return false;
-            }
-            /** ex: picked start 09:30 end 12:30  and booked start 10:00 end 12:00 (bs-be 10:00-12:00 is inside ps-pe 09:30-12:30) */
-            if((pickedStartLDT.isBefore(bookedApptStart)) && (pickedEndLDT.isAfter(bookedApptEnd))) {
-                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
-                return false;
-            }
-            /** ex: picked start 10:00 end 12:00  and booked start 10:00 end 12:00 (ps of 10:00 == bs 10:00 or pe 12:00 == be 12:00) */
-            if(pickedStartLDT.equals(bookedApptStart) || (pickedEndLDT.equals(bookedApptEnd))) {
-                Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
-                return false;
+            /** When the for loop gets to the appt you are updating if the start date/time && the end date/time
+             * have not been altered it will skip it. However if the date or time has been altered the checks for
+             * overlapping overlapping appointments begin.
+             */
+            if(appointment.getApptId() == selectedAppt.getApptId() &&
+                    (appointment.getStartDateTime().equals(selectedAppt.getStartDateTime())) &&
+                    (appointment.getEndDateTime().equals(selectedAppt.getEndDateTime()))) {
+                continue;
+            } else {
+                /** ex: picked start 10:30 end 11:30  and booked start 10:00 end 12:00 (ps-pe 10:30-11:30 is inside bs-be 10:00-12:00) */
+                if ((pickedStartLDT.isAfter(bookedApptStart)) && (pickedEndLDT.isBefore(bookedApptEnd))) {
+                    Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                    return false;
+                }
+                /** ex: picked end 11:30  and booked start 10:00 end 12:00 (pe of 11:30 is inside bs-be 10:00-12:00) */
+                if ((pickedEndLDT.isAfter(bookedApptStart)) && (pickedEndLDT.isBefore(bookedApptEnd))) {
+                    Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                    return false;
+                }
+                /** ex: picked start 10:30 and booked start 10:00 end 12:00 (ps of 10:30 is inside bs-be 10:00-12:00) */
+                if ((pickedStartLDT.isAfter(bookedApptStart)) && (pickedStartLDT.isBefore(bookedApptEnd))) {
+                    Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                    return false;
+                }
+                /** ex: picked start 09:30 end 12:30  and booked start 10:00 end 12:00 (bs-be 10:00-12:00 is inside ps-pe 09:30-12:30) */
+                if ((pickedStartLDT.isBefore(bookedApptStart)) && (pickedEndLDT.isAfter(bookedApptEnd))) {
+                    Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                    return false;
+                }
+                /** ex: picked start 10:00 end 12:00  and booked start 10:00 end 12:00 (ps of 10:00 == bs 10:00 or pe 12:00 == be 12:00) */
+                if (pickedStartLDT.equals(bookedApptStart) || (pickedEndLDT.equals(bookedApptEnd))) {
+                    Messages.overlappingAppts(appointment.getApptId(), appointment.getStartDateTime(), appointment.getEndDateTime());
+                    return false;
+                }
             }
         }
         return true;

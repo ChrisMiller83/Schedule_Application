@@ -205,6 +205,22 @@ public class Messages {
     }
 
     /**
+     * deleteApptConfirmation -- displays a delete Confirmation message.
+     * @param apptID -- displays the appointment id being deleted.
+     * @param apptType -- displays the appointment type being deleted.
+     * @return -- verifies OK or cancel was selected.
+     */
+    public static boolean deleteApptConfirmation(int apptID, String apptType) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("!! DELETE CONFORMATION !!");
+        alert.setContentText("Delete: " +
+                "\nAppt ID: " + apptID +
+                "\nAppt Type: " + apptType);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
+    }
+
+    /**
      * addConfirmation -- displays an add Confirmation message.
      * @param itemToAdd -- displays title/name of item being added.
      * @return -- verifies OK or cancel was selected.

@@ -92,3 +92,4 @@ Login attempt by username:   test    Date/Time:  09-15-2022 11:52:47   Login: Su
 Login attempt by username:   test    Date/Time:  09-15-2022 12:06:48   Login: Successful
 Login attempt by username:   test    Date/Time:  09-15-2022 12:12:41   Login: Successful
 Login attempt by username:   test    Date/Time:  09-15-2022 12:13:21   Login: Successful
+Login attempt by username:   test    Date/Time:  09-16-2022 14:12:57   Login: Successful

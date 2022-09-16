@@ -7,6 +7,7 @@ package dao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.MessageLambdaInterface;
 import model.User;
 
 import java.sql.*;
@@ -74,6 +75,9 @@ public class AppointmentDAO {
 
     public static final String DELETE_AN_APPOINTMENT = "DELETE FROM " + TABLE_APPOINTMENTS + " WHERE " +
             COLUMN_APPT_ID + " = ?;";
+
+    public static final String DELETE_ALL_CUSTOMER_APPOINTMENTS = "DELETE FROM " + TABLE_APPOINTMENTS + " WHERE " +
+            COLUMN_CUSTOMER_ID + " = ?;";
 
     public static final String QUERY_APPOINTMENTS_BY_CONTACT_ID = "SELECT * FROM " + TABLE_APPOINTMENTS +
             " WHERE " + COLUMN_CONTACT_ID + " = ?;";
@@ -308,6 +312,22 @@ public class AppointmentDAO {
             PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_AN_APPOINTMENT);
             deleteAppt.setInt(1, apptId);
             deleteAppt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * deleteAllCustomerAppts -- deletes all appts that contain the customerId from the db appointments table.
+     *
+     * @param customerId -- customerId is used to find all appointments that have the customerId
+     */
+    public static void deleteAllCustomerAppts(int customerId) {
+        try {
+            PreparedStatement deleteAppt = DBConnection.getConnection().prepareStatement(DELETE_ALL_CUSTOMER_APPOINTMENTS);
+            deleteAppt.setInt(1, customerId);
+            deleteAppt.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
