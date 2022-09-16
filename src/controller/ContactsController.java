@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import model.Contact;
+import model.MessageLambdaInterface;
 import utilities.ChangeView;
 import utilities.Messages;
 
@@ -94,8 +95,11 @@ public class ContactsController implements Initializable {
                     int contactId = selectedContact.getContactId();
                     /** contact is deleted from the db */
                     ContactDAO.deleteContact(contactId);
-                    /** console message verifying contact deleted */
-                    System.out.println(selectedContact.getContactName() + " deleted");
+
+                    /** Lambda expression -- console message verifying delete */
+                    MessageLambdaInterface message = s -> System.out.println(s + " deleted.");
+                    message.displayMessage(selectedContact.getContactName());
+
                     /** the contacts table is reloaded and the deleted contact is removed from the table display */
                     contactsTable.setItems(ContactDAO.loadAllContacts());
                     contactsTable.refresh();

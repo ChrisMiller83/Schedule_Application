@@ -11,10 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import model.Appointment;
-import model.Contact;
-import model.Customer;
-import model.User;
+import model.*;
 import utilities.ChangeView;
 import utilities.Messages;
 import java.io.IOException;
@@ -152,8 +149,9 @@ public class AddApptController implements Initializable {
                 if(confirmAdd) {
                     AppointmentDAO.addAppointment(title, description, location, type, start, end, createDate, createdBy,
                             lastUpdate, lastUpdatedBy, customerId, userId, contactId);
-                    /** console message verifying add */
-                    System.out.println(title + " added.");
+                    /** Lambda expression -- console message verifying add */
+                    MessageLambdaInterface message = s -> System.out.println(s + " added.");
+                    message.displayMessage(title);
                 } else {
                     /** If confirmation was no/cancel, returns to addApptView with current add data in the fields */
                     return;

@@ -167,8 +167,11 @@ public class UpdateCustomerController implements Initializable {
             /** If confirmation was ok/yes customer is updated in the db. */
             if (updateConfirm) {
                 CustomerDAO.updateCustomer(customerName, address, postalCode, phone, lastUpdate, lastUpdatedBy, divisionId, customerId);
-                /** console message verifying update */
-                System.out.println(customerName + " updated");
+
+                /** Lambda expression -- console message verifying update */
+                MessageLambdaInterface message = s -> System.out.println(s + " updated.");
+                message.displayMessage(customerName);
+
             } else {
                 /** If confirmation was no/cancel, returns to updateContactView with current update data in the fields */
                 return;

@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import model.Customer;
+import model.MessageLambdaInterface;
 import utilities.ChangeView;
 import utilities.Messages;
 import java.io.IOException;
@@ -119,8 +120,11 @@ public class CustomerController implements Initializable {
                 if (deleteConfirm) {
                     /** customer is deleted from the db */
                     CustomerDAO.deleteCustomer(customerId);
-                    /** console message verifying customer deleted */
-                    System.out.println(selectedCustomer.getCustomerName() + " deleted");
+
+                    /** Lambda expression -- console message verifying delete */
+                    MessageLambdaInterface message = s -> System.out.println(s + " deleted.");
+                    message.displayMessage(selectedCustomer.getCustomerName());
+
                     /** the customer table is reloaded and the deleted customer is removed from the table display */
                     customersTable.setItems(CustomerDAO.loadAllCustomers());
                     customersTable.refresh();

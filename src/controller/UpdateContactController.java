@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.fxml.Initializable;
 import model.Contact;
+import model.MessageLambdaInterface;
 import utilities.ChangeView;
 import utilities.Messages;
 
@@ -54,8 +55,11 @@ public class UpdateContactController implements Initializable {
             /** If confirmation was ok/yes contact is updated in the db. */
             if (updateConfirm) {
                 ContactDAO.updateContact(contactName, email, contactId);
-                /** console message verifying update */
-                System.out.println(contactName + " updated.");
+
+                /** Lambda expression -- console message verifying update */
+                MessageLambdaInterface message = s -> System.out.println(s + " updated.");
+                message.displayMessage(contactName);
+
             } else {
                 /** If confirmation was no/cancel, returns to updateContactView with current add data in the fields */
                 return;

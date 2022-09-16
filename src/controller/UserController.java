@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
+import model.MessageLambdaInterface;
 import model.User;
 import utilities.ChangeView;
 import utilities.Messages;
@@ -127,8 +128,11 @@ public class UserController implements Initializable {
                     int userId = selectedUser.getUserId();
                     /** user is deleted from the db */
                     UserDAO.deleteUser(userId);
-                    /** console message verifying contact deleted */
-                    System.out.println("User deleted: " + selectedUser.getUserName());
+
+                    /** Lambda expression -- console message verifying delete */
+                    MessageLambdaInterface message = s -> System.out.println(s + " deleted.");
+                    message.displayMessage(selectedUser.getUserName());
+
                     /** the user table is reloaded and the deleted user is removed form the table display */
                     userTableView.setItems(UserDAO.loadAllUsers());
                     userTableView.refresh();

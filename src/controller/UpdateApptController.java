@@ -15,10 +15,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.fxml.Initializable;
-import model.Appointment;
-import model.Contact;
-import model.Customer;
-import model.User;
+import model.*;
 import utilities.ChangeView;
 import utilities.Messages;
 
@@ -111,8 +108,11 @@ public class UpdateApptController implements Initializable {
                 if(updateConfirm) {
                     AppointmentDAO.updateAppointment(title, description, location, type, start, end,
                             lastUpdate, lastUpdatedBy, customerId, userId, contactId, apptId);
-                    /** console message verifying update */
-                    System.out.println(title + " updated.");
+
+                    /** Lambda expression -- console message verifying update */
+                    MessageLambdaInterface message = s -> System.out.println(s + " updated.");
+                    message.displayMessage(title);
+
                 } else {
                     /** If confirmation was no/cancel, returns to addApptView with current add data in the fields */
                     return;

@@ -8,6 +8,7 @@ import dao.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import model.MessageLambdaInterface;
 import model.User;
 import utilities.ChangeView;
 import javafx.event.ActionEvent;
@@ -66,8 +67,11 @@ public class AddUserController {
             /** If confirmation was ok/yes user is added to the db. */
             if (saveConfirm) {
                 UserDAO.addUser(userName, password, createdDate, createdBy,lastUpdated,lastUpdatedBy);
-                /** console message verifying add */
-                System.out.println("New user added: " + userName);
+
+                /** Lambda expression -- console message verifying add */
+                MessageLambdaInterface message = s -> System.out.println(s + " added.");
+                message.displayMessage(userName);
+
             } else {
                 /** If confirmation was no/cancel, returns to addUserView with current add data in the fields */
                 return;

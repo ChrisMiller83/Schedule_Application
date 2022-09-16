@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.fxml.Initializable;
+import model.MessageLambdaInterface;
 import utilities.ChangeView;
 import utilities.Messages;
 import java.io.IOException;
@@ -45,8 +46,9 @@ public class AddContactController implements Initializable {
             /** If confirmation was ok/yes contact is added to the db. */
             if (addConfirm) {
                 ContactDAO.addContact(contactName, email);
-                /** console message verifying add */
-                System.out.println(contactName + " added.");
+                /** Lambda expression -- console message verifying add */
+                MessageLambdaInterface message = s -> System.out.println(s + " added.");
+                message.displayMessage(contactName);
             } else {
                 /** If confirmation was no/cancel, returns to addContactView with current add data in the fields */
                 return;

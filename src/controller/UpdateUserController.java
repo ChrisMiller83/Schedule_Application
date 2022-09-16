@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import model.MessageLambdaInterface;
 import model.User;
 import utilities.ChangeView;
 import utilities.Messages;
@@ -86,8 +87,11 @@ public class UpdateUserController implements Initializable {
             /** If confirmation was ok/yes user is added to the db. */
             if(updateConfirm) {
                 UserDAO.updateUser(userName, password, lastUpdated, lastUpdatedBy, userId);
-                /** console message verifying add */
-                System.out.println("User updated: " + userName);
+
+                /** Lambda expression -- console message verifying update */
+                MessageLambdaInterface message = s -> System.out.println(s + " updated.");
+                message.displayMessage(userName);
+
             } else {
                 /** If confirmation was no/cancel, returns to updateUserView with current update data in the fields */
                 return;

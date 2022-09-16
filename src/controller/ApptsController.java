@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
+import model.MessageLambdaInterface;
 import utilities.ChangeView;
 import utilities.Messages;
 import java.io.BufferedWriter;
@@ -170,6 +171,11 @@ public class ApptsController implements Initializable {
             if(deleteConfirm) {
                 storeDeletedAppts(selectedAppt);
                 AppointmentDAO.deleteAppointment(apptId);
+
+                /** Lambda expression -- console message verifying delete */
+                MessageLambdaInterface message = s -> System.out.println(s + " deleted.");
+                message.displayMessage(selectedAppt.getApptTitle());
+
                 appointmentsTableView.setItems(AppointmentDAO.loadAllAppts());
                 appointmentsTableView.refresh();
             } else {
