@@ -81,7 +81,8 @@ public class UpdateApptController implements Initializable {
     /**
      * updateAppointment -- calls validateAppt method to run validation checks,
      * if passes validation checks, all info from the fields are gathered and appt is
-     * updated in the db otherwise error messages are given.
+     * updated in the db otherwise error messages are given
+     * -- A Lambda expression is used for a console message verifying appointment update.
      * @param actionEvent saveBtn was pressed
      * @throws IOException
      */
@@ -256,9 +257,7 @@ public class UpdateApptController implements Initializable {
              * have not been altered it will skip it. However if the date or time has been altered the checks for
              * overlapping overlapping appointments begin.
              */
-            if(appointment.getApptId() == selectedAppt.getApptId() &&
-                    (appointment.getStartDateTime().equals(selectedAppt.getStartDateTime())) &&
-                    (appointment.getEndDateTime().equals(selectedAppt.getEndDateTime()))) {
+            if(appointment.getApptId() == selectedAppt.getApptId()) {
                 continue;
             } else {
                 /** ex: picked start 10:30 end 11:30  and booked start 10:00 end 12:00 (ps-pe 10:30-11:30 is inside bs-be 10:00-12:00) */
@@ -300,10 +299,10 @@ public class UpdateApptController implements Initializable {
         titleTF.setText(selectedAppt.getApptTitle());
         descriptionTA.setText(selectedAppt.getApptDescription());
         locationTF.setText(selectedAppt.getApptLocation());
-        typeCB.getSelectionModel().select(selectedAppt.getApptType());
+        typeCB.setValue(selectedAppt.getApptType());
         apptDatePicker.setValue(selectedAppt.getStartDateTime().toLocalDate());
-        startTimeCB.getSelectionModel().select(selectedAppt.getStartDateTime().toLocalTime());
-        endTimeCB.getSelectionModel().select(selectedAppt.getEndDateTime().toLocalTime());
+        startTimeCB.setValue(selectedAppt.getStartDateTime().toLocalTime());
+        endTimeCB.setValue(selectedAppt.getEndDateTime().toLocalTime());
 
         /** Loops through the customer list to find the matching customerId of the selectedAppt and displays the
          * selectedAppts' customer name.
@@ -393,7 +392,6 @@ public class UpdateApptController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setSelectedAppt(selectedAppt);
         UserDAO.loadAllUsers();
         CustomerDAO.loadAllCustomers();
         ContactDAO.loadAllContacts();
@@ -402,6 +400,7 @@ public class UpdateApptController implements Initializable {
         setContactCB();
         setTimeCB();
         setTypeCB();
+        setSelectedAppt(selectedAppt);
 
     }
 }

@@ -56,7 +56,8 @@ public class ContactsController implements Initializable {
 
 
     /**
-     * deleteContact -- deletes selected contact if contact does not have upcoming appointments.
+     * deleteContact -- deletes selected contact if contact does not have upcoming appointments
+     * -- A Lambda expression is used for a console message verifying contact delete
      * @param actionEvent -- contact to be deleted is selected and Delete Contact button is clicked.
      */
     public void deleteContact(ActionEvent actionEvent) {

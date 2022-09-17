@@ -121,7 +121,8 @@ public class AddApptController implements Initializable {
     /**
      * saveAppointment -- calls validateAppt method to run validation checks,
      * if passes validation checks, all info from the fields are gathered and appt is
-     * saved in the db otherwise error messages are given.
+     * saved in the db otherwise error messages are given
+     * -- A Lambda expression is used for a console message verifying appointment add.
      * @param actionEvent saveBtn was pressed
      * @throws IOException
      */

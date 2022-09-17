@@ -145,7 +145,8 @@ public class UpdateCustomerController implements Initializable {
     /**
      * updateCustomer  -- calls validateCustomer method to run validation checks,
      * if validation checks pass, all info from the fields and combo boxes are gathered
-     * and customer is updated in the db, otherwise error messages are given.
+     * and customer is updated in the db, otherwise error messages are given
+     * -- A Lambda expression is used for a console message verifying customer update
      * @param actionEvent -- save button clicked
      * @throws IOException
      */

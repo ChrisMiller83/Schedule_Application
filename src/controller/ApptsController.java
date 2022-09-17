@@ -156,7 +156,8 @@ public class ApptsController implements Initializable {
     }
 
     /**
-     * deleteAppointment -- allows the user to delete selected appointments and stores the deleted appt in a txt file.
+     * deleteAppointment -- allows the user to delete selected appointments and stores the deleted appt in a txt file
+     * -- A Lambda expression used for console message verifying appointment delete.
      * @param actionEvent -- appt to delete is selected and Delete Appointment button is clicked.
      * @throws IOException
      */

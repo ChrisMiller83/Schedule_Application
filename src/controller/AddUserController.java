@@ -48,7 +48,8 @@ public class AddUserController {
     /**
      * saveUser  -- calls validateUser method to run validation checks,
      * if validation checks pass, all info from the fields are gathered
-     * and user is added to the db, otherwise error messages are given.
+     * and user is added to the db, otherwise error messages are given
+     * -- A Lambda expression used for console message verifying user add.
      * @param actionEvent -- save button clicked
      * @throws IOException
      */

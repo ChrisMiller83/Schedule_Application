@@ -66,7 +66,8 @@ public class AddCustomerController implements Initializable {
     /**
      * saveCustomer  -- calls validateCustomer method to run validation checks,
      * if validation checks pass, all info from the fields and combo boxes are gathered
-     * and customer is added to the db, otherwise error messages are given.
+     * and customer is added to the db, otherwise error messages are given
+     * -- A Lambda expression is used for a console message verifying customer add.
      * @param actionEvent -- save button clicked
      * @throws IOException
      */

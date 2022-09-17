@@ -69,7 +69,8 @@ public class UpdateUserController implements Initializable {
     /**
      * updateUser  -- calls validateUser method to run validation checks,
      * if validation checks pass, all info from the fields are gathered
-     * and user is updated in the db, otherwise error messages are given.
+     * and user is updated in the db, otherwise error messages are given
+     * -- A Lambda expression is used for a console message verifying user update
      * @param actionEvent -- save button clicked
      * @throws IOException
      */

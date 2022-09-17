@@ -40,7 +40,8 @@ public class UpdateContactController implements Initializable {
     /**
      * updateContact -- calls validateAppt method to run validation checks,
      * if validation checks pass, all info from the fields are gathered and contact is
-     * updated in the db otherwise error messages are given.
+     * updated in the db otherwise error messages are given
+     * -- A Lambda expression is used for a console message verifying contact update.
      * @param actionEvent -- saveBtn was clicked.
      */
     public void updateContact(ActionEvent actionEvent) throws IOException {

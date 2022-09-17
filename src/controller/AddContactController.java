@@ -32,7 +32,8 @@ public class AddContactController implements Initializable {
     /**
      * saveContact -- calls validateAppt method to run validation checks,
      * if validation checks pass, all info from the fields are gathered and contact is
-     * saved in the db otherwise error messages are given.
+     * saved in the db otherwise error messages are given
+     * -- A Lambda expression is used for a console message verifying contact add.
      * @param actionEvent -- saveBtn was clicked.
      */
     public void saveContact(ActionEvent actionEvent) throws IOException {

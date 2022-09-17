@@ -81,7 +81,8 @@ public class CustomerController implements Initializable {
     }
 
     /**
-     * deleteCustomer -- deletes selected customer if customer does not have upcoming appointments.
+     * deleteCustomer -- deletes selected customer if customer does not have upcoming appointments
+     * -- A Lambda expression is used for a console message verifying customer delete.
      * @param actionEvent -- customer to be deleted is selected and Delete Customer button is clicked.
      */
     public void deleteCustomer(ActionEvent actionEvent) {

@@ -81,7 +81,8 @@ public class UserController implements Initializable {
     }
 
     /**
-     * deleteUser -- deletes selected user if user does not have upcoming appts.
+     * deleteUser -- deletes selected user if user does not have upcoming appts
+     * -- A Lambda expression is used for a console message verifying user delete.
      * @param actionEvent -- user to be deleted is selected and Delete User button is clicked.
      */
     public void deleteUser(ActionEvent actionEvent) {
